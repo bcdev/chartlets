@@ -1,9 +1,11 @@
 import { VegaLite } from "react-vega";
 import type { TopLevelSpec } from "vega-lite";
 
-import type { ComponentState, ComponentProps } from "@/index";
+import type { ComponentProps, ComponentState } from "@/index";
 import { useSignalListeners } from "./hooks/useSignalListeners";
 import { useVegaTheme, type VegaTheme } from "./hooks/useVegaTheme";
+import { useEffect, useState } from "react";
+import { Skeleton } from "@/plugins/mui/Skeleton";
 
 interface VegaChartState extends ComponentState {
   theme?: VegaTheme | "default" | "system";
@@ -19,22 +21,35 @@ export function VegaChart({
   id,
   style,
   theme,
-  chart,
+  chart: initialChart,
+  skeletonProps,
   onChange,
 }: VegaChartProps) {
-  const signalListeners = useSignalListeners(chart, type, id, onChange);
+  const signalListeners = useSignalListeners(initialChart, type, id, onChange);
   const vegaTheme = useVegaTheme(theme);
-  if (chart) {
-    return (
-      <VegaLite
-        theme={vegaTheme}
-        spec={chart}
-        style={style}
-        signalListeners={signalListeners}
-        actions={false}
-      />
-    );
-  } else {
-    return <div id={id} style={style} />;
-  }
+  const [chart, setChart] = useState<TopLevelSpec | null | undefined>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (initialChart) {
+      setLoading(false);
+      setChart(initialChart);
+    }
+  }, [initialChart]);
+
+  return (
+    <Skeleton loading={loading} {...skeletonProps}>
+      {chart ? (
+        <VegaLite
+          theme={vegaTheme}
+          spec={chart}
+          style={style}
+          signalListeners={signalListeners}
+          actions={false}
+        />
+      ) : (
+        <div id={id} style={style} />
+      )}
+    </Skeleton>
+  );
 }

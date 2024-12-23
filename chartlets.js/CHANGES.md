@@ -43,6 +43,7 @@
   - `Switch`
   - `Tabs`
   - `Slider`
+  - `Skeleton` (currently supported for Vega Charts)
 
 * Supporting `tooltip` property for interactive MUI components.
 

@@ -23,6 +23,7 @@
   - `RadioGroup` and `Radio`
   - `Tabs`
   - `Slider`
+  - `Skeleton` (currently supported for Vega Charts)
 
 ## Version 0.0.29 (from 2024/11/26)
 

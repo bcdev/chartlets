@@ -43,6 +43,7 @@
   - `Switch`
   - `Tabs`
   - `Slider`
+  - `Dialog`
 
 * Supporting `tooltip` property for interactive MUI components.
 

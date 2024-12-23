@@ -1,7 +1,7 @@
 from typing import Any
 import altair as alt
 from chartlets import Component, Input, Output, State
-from chartlets.components import VegaChart, Box, Select
+from chartlets.components import VegaChart, Box, Select, Skeleton
 
 from server.context import Context
 from server.panel import Panel
@@ -13,8 +13,12 @@ panel = Panel(__name__, title="Panel A")
 @panel.layout()
 def render_panel(ctx: Context) -> Component:
     selected_dataset: int = 0
+    chart_skeleton = Skeleton(height="100px", variant="rounded", animation="wave")
     chart = VegaChart(
-        id="chart", chart=make_chart(ctx, selected_dataset), style={"flexGrow": 1}
+        id="chart",
+        chart=make_chart(ctx, selected_dataset),
+        style={"flexGrow": 1},
+        skeletonProps=chart_skeleton.to_dict(),
     )
     select = Select(
         id="selected_dataset",

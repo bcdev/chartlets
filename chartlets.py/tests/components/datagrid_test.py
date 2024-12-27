@@ -1,8 +1,8 @@
-from chartlets.components import Table
+from chartlets.components import DataGrid
 from tests.component_test import make_base
 
 
-class TableTest(make_base(Table)):
+class DataGridTest(make_base(DataGrid)):
     def test_is_json_serializable(self):
         columns = [
             {"field": "id", "headerName": "ID"},
@@ -15,10 +15,12 @@ class TableTest(make_base(Table)):
             {"id": 2, "firstName": "Jane", "lastName": "Smith", "age": 25},
         ]
         self.assert_is_json_serializable(
-            self.cls(rows=rows, columns=columns, id="my-table", checkboxSelection=True),
+            self.cls(
+                rows=rows, columns=columns, id="my-datagrid", checkboxSelection=True
+            ),
             {
-                "type": "Table",
-                "id": "my-table",
+                "type": "DataGrid",
+                "id": "my-datagrid",
                 "rows": rows,
                 "columns": columns,
                 "checkboxSelection": True,

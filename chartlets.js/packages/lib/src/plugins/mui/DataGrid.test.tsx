@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
-import { Table } from "./Table";
+import { DataGrid } from "./DataGrid";
 import { createChangeHandler } from "@/plugins/mui/common.test";
 
-describe("Table", () => {
+describe("DataGrid", () => {
   const mockColumns = [
     { field: "id", headerName: "ID" },
     { field: "name", headerName: "Name" },
@@ -11,14 +11,14 @@ describe("Table", () => {
   const mockRows = [{ id: 1, name: "MockRow" }];
   const paginationModel = { page: 1, pageSize: 10 };
 
-  it("should render the Table component", () => {
+  it("should render the DataGrid component", () => {
     render(
-      <Table
+      <DataGrid
         columns={mockColumns}
         rows={mockRows}
-        type="Table"
-        id="tableId"
-        ariaLabel="Test Table"
+        type="DataGrid"
+        id="datagridId"
+        ariaLabel="Test DataGrid"
         onChange={() => {}}
         paginationModel={paginationModel}
         pageSizeOptions={[10, 25, 50]}
@@ -28,17 +28,17 @@ describe("Table", () => {
     expect(screen.getByText("MockRow")).toBeInTheDocument();
 
     const grid = screen.getByTestId("data-grid-test-id");
-    expect(grid).toHaveAttribute("aria-label", "Test Table");
+    expect(grid).toHaveAttribute("aria-label", "Test DataGrid");
   });
 
   it("should handle row click", () => {
     const { recordedEvents, onChange } = createChangeHandler();
     render(
-      <Table
+      <DataGrid
         columns={mockColumns}
         rows={mockRows}
-        type="Table"
-        id="tableId"
+        type="DataGrid"
+        id="datagridId"
         onChange={onChange}
       />,
     );
@@ -47,21 +47,21 @@ describe("Table", () => {
     fireEvent.click(row);
 
     expect(recordedEvents.length).toBe(1);
-    expect(recordedEvents[0].componentType).toBe("Table");
-    expect(recordedEvents[0].id).toBe("tableId");
+    expect(recordedEvents[0].componentType).toBe("DataGrid");
+    expect(recordedEvents[0].id).toBe("datagridId");
     expect(recordedEvents[0].property).toBe("value");
     expect(recordedEvents[0].value).toEqual(mockRows[0]);
   });
 
   it("should render with other props correctly", () => {
     render(
-      <Table
+      <DataGrid
         columns={mockColumns}
         rows={mockRows}
-        type="Table"
-        id="tableId"
+        type="DataGrid"
+        id="datagridId"
         onChange={() => {}}
-        ariaLabel="Test Table"
+        ariaLabel="Test DataGrid"
         autoPageSize={true}
         checkboxSelection={true}
         density="compact"
@@ -86,7 +86,12 @@ describe("Table", () => {
 
   it("should not render if no columns are provided", () => {
     render(
-      <Table rows={mockRows} type="Table" id="tableId" onChange={() => {}} />,
+      <DataGrid
+        rows={mockRows}
+        type="DataGrid"
+        id="datagridId"
+        onChange={() => {}}
+      />,
     );
     expect(screen.queryByRole("grid")).not.toBeInTheDocument();
   });

@@ -1,5 +1,5 @@
 from chartlets import Component, Input, Output
-from chartlets.components import Box, Slider, Typography, Table
+from chartlets.components import Box, Slider, Typography, DataGrid
 
 from server.context import Context
 from server.panel import Panel
@@ -49,10 +49,12 @@ def render_panel(
         {"id": 3, "firstName": "Peter", "lastName": "Jones", "age": 40},
     ]
 
-    table = Table(id="table", rows=rows, columns=columns, checkboxSelection=True)
+    datagrid = DataGrid(
+        id="datagrid", rows=rows, columns=columns, checkboxSelection=True
+    )
 
-    table_text = Typography(
-        id="table_text", children=["Click on any row in " "the table."]
+    datagrid_text = Typography(
+        id="datagrid_text", children=["Click on any row in the datagrid."]
     )
 
     return Box(
@@ -63,17 +65,17 @@ def render_panel(
             "height": "100%",
             "gap": "6px",
         },
-        children=[slider, info_text, table, table_text],
+        children=[slider, info_text, datagrid, datagrid_text],
     )
 
 
 # noinspection PyUnusedLocal
 @panel.callback(
     Input("slider"),
-    Input("table"),
+    Input("datagrid"),
     Output("info_text", "children"),
-    Output("table_text", "children"),
+    Output("datagrid_text", "children"),
 )
-def update_info_text(ctx: Context, slider: int, table) -> tuple[str, str]:
+def update_info_text(ctx: Context, slider: int, datagrid) -> tuple[str, str]:
     slider = slider or 0
-    return f"The value is {slider}.", f"The selected row is {table}."
+    return f"The value is {slider}.", f"The selected row is {datagrid}."

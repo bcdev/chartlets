@@ -23,12 +23,9 @@ class InitialState(TypedDict):
 
 
 @dataclass(frozen=True)
-class Table(Component):
-    """The Data Grid presents information in a structured format of rows and
+class DataGrid(Component):
+    """The DataGrid presents information in a structured format of rows and
     columns.
-
-    The data is displayed in a user-friendly interface for efficient editing,
-    reviewing, and analysis.
     """
 
     rows: List[dict[str, Any]] = field(default_factory=list)

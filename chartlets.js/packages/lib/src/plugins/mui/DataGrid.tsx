@@ -9,7 +9,7 @@ import {
 } from "@mui/x-data-grid";
 import type { ComponentProps, ComponentState } from "@/index";
 
-interface TableState extends ComponentState {
+interface DataGridState extends ComponentState {
   rows?: GridRowModel[];
   columns?: GridColDef[];
   ariaLabel?: string;
@@ -41,9 +41,9 @@ interface TableState extends ComponentState {
   rowSelection?: boolean;
 }
 
-interface TableProps extends ComponentProps, TableState {}
+interface DataGridProps extends ComponentProps, DataGridState {}
 
-export const Table = ({
+export const DataGrid = ({
   type,
   id,
   style,
@@ -73,7 +73,7 @@ export const Table = ({
   paginationModel,
   pageSizeOptions,
   onChange,
-}: TableProps) => {
+}: DataGridProps) => {
   if (!columns) {
     return;
   }

@@ -43,7 +43,7 @@
   - `Switch`
   - `Tabs`
   - `Slider`
-  - `Table`
+  - `DataGrid`
 
 * Supporting `tooltip` property for interactive MUI components.
 

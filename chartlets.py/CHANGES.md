@@ -1,7 +1,7 @@
 
 ## Version 0.1.0 (from 2025/01/14)
 
-* Reorganised Chartlets project to better separate demo from library code.
+* Reorganised Chartlets project to better separate demo from library code. 
   Created separate folder `demo` in `chartlets.py` that contains 
   a demo `server` package and example configuration.
   Also simplified demo server code:

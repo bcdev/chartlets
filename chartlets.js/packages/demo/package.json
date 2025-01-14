@@ -1,6 +1,6 @@
 {
   "name": "chartlets-demo",
-  "version": "0.1.0-dev.0",
+  "version": "0.1.0",
   "description": "Demonstrator for the Chartlets framework.",
   "type": "module",
   "files": [

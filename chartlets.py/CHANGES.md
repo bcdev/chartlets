@@ -1,6 +1,7 @@
-## Version 0.1.0 (in development)
 
-* Reorganised Chartlets project to better separate demo from library code.
+## Version 0.1.0 (from 2025/01/14)
+
+* Reorganised Chartlets project to better separate demo from library code. 
   Created separate folder `demo` in `chartlets.py` that contains 
   a demo `server` package and example configuration.
   Also simplified demo server code:
@@ -25,6 +26,7 @@
   - `Slider`
   - `Tabs` and `Tab`
  
+
 ## Version 0.0.29 (from 2024/11/26)
 
 * Fixed a bug that prevents using annotations of type `dict` or `dict[str, T]`.

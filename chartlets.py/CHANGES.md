@@ -1,4 +1,4 @@
-## Version 0.1.0 (in development)
+## Version 0.1.0 (from 14.01.2025)
 
 * Reorganised Chartlets project to better separate demo from library code.
   Created separate folder `demo` in `chartlets.py` that contains 

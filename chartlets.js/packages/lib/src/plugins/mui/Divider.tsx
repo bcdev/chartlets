@@ -33,7 +33,7 @@ export const Divider = ({
       flexItem={flexItem}
       textAlign={textAlign}
     >
-      <Children nodes={nodes} onChange={onChange} />
+      {nodes && nodes.length && <Children nodes={nodes} onChange={onChange} />}
     </MuiDivider>
   );
 };

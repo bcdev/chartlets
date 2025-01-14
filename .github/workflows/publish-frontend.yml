@@ -1,11 +1,16 @@
-name: Package and Publish to NPM
+name: Frontend CI workflow
 
-on:
-  release:
-    types: [published]
-  workflow_dispatch:
+on: 
+  push:
+    paths:
+      - chartlets.js/**
+    branches:
+      - main
+  pull_request:
+    paths:
+        - chartlets.js/**
 
-jobs:
+jobs:    
   npm-tests-lib:
       runs-on: ubuntu-latest
       strategy:
@@ -41,7 +46,7 @@ jobs:
             token: ${{ secrets.CODECOV_TOKEN }}
             
         - run: npm run build
-        
+      
   npm-tests-demo:
       runs-on: ubuntu-latest
       strategy:
@@ -65,28 +70,3 @@ jobs:
         - run: npm ci
         - run: npm run lint
         - run: npm run build
-    
-  npm-deploy:
-    name: Publish TS-React Package to npmjs
-    runs-on: ubuntu-latest
-    needs: [npm-tests-lib, npm-tests-demo]
-    defaults:
-      run:
-        working-directory: chartlets.js/packages/lib
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18.x'
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'npm'
-          cache-dependency-path: chartlets.js/package-lock.json
-          
-      - run: npm ci
-      - run: npm run build
-      - run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

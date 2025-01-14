@@ -49,6 +49,7 @@ jobs:
       
   npm-tests-demo:
       runs-on: ubuntu-latest
+      needs: npm-tests-lib
       strategy:
         matrix:
           node-version: [18.x, 20.x]

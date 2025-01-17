@@ -64,6 +64,7 @@ def render_panel(
             "width": "100%",
             "height": "100%",
             "gap": "6px",
+            "padding": "15px",
         },
         children=[slider, info_text, datagrid, datagrid_text],
     )

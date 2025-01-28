@@ -16,6 +16,7 @@ export type SelectOption =
 
 interface SelectState extends ComponentState {
   options?: SelectOption[];
+  multiple?: boolean
 }
 
 interface SelectProps extends ComponentProps, SelectState {}
@@ -30,6 +31,7 @@ export function Select({
   style,
   tooltip,
   label,
+  multiple,
   onChange,
 }: SelectProps) {
   const handleChange = (event: SelectChangeEvent) => {
@@ -56,6 +58,7 @@ export function Select({
           name={name}
           value={`${value}`}
           disabled={disabled}
+          multiple={multiple}
           onChange={handleChange}
         >
           {Array.isArray(options) &&

@@ -1,4 +1,10 @@
-## Version 0.1.0 (in development)
+## Version 0.1.3 (from 2025/01/28)
+
+* **Chore:** Version bump to align CI process with GitHub release flow. 
+  No functional changes. This release ensures proper triggering of the CI 
+  pipeline for publishing and NPM.
+
+## Version 0.1.0 (from 2025/01/14)
 
 * Reorganised Chartlets project to better separate demo from library code.
   Using monorepo layout for `chartlets.js` with workspaces `lib` and `demo`

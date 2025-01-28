@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/bcdev/chartlets/actions/workflows/frontend-ci.yml/badge.svg)](https://github.com/bcdev/chartlets/actions/workflows/frontend-ci.yml)
 [![codecov](https://codecov.io/gh/bcdev/chartlets/graph/badge.svg?token=zJBPMFvnpg&flag=frontend)](https://codecov.io/gh/bcdev/chartlets)
-[![npm](https://badge.fury.io/js/chartlets.svg)](https://npmjs.org/package/chartlets)
+![NPM Version](https://img.shields.io/npm/v/chartlets)
 ![](https://img.shields.io/badge/Linting-TypeScript%20%26%20Prettier-blue?logo=typescript&logoColor=white)
 
 Chartlets is a software framework that allows websites developed with

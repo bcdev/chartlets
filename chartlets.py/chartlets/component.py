@@ -19,7 +19,7 @@ class Component(ABC):
     name: str | None = None
     """HTML `name` attribute. Optional."""
 
-    value: bool | int | float | str | None = None
+    value: bool | int | float | str | list[bool | int | float | str] | None = None
     """HTML `value` attribute. Required for specific components."""
 
     style: dict[str, Any] | None = None

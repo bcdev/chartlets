@@ -1,3 +1,4 @@
+import * as React from "react";
 import MuiFormControl from "@mui/material/FormControl";
 import MuiInputLabel from "@mui/material/InputLabel";
 import MuiMenuItem from "@mui/material/MenuItem";
@@ -34,6 +35,8 @@ export function Select({
 	multiple,
 	onChange,
 }: SelectProps) {
+	const [personName, setPersonName] = React.useState<string[]>([]);
+
 	const handleChange = (event: SelectChangeEvent) => {
 		if (id) {
 			let newValue: string | number = event.target.value;

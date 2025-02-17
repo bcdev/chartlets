@@ -24,11 +24,10 @@ def render_panel(
     )
     select = Select(
         id="selected_variable_name",
-        value=[var_name],
+        value=var_name,
         label="Variable",
         options=[(v, v) for v in variable_names],
         style={"flexGrow": 0, "minWidth": 120},
-        multiple=True,
         tooltip="Select the variable of the test dataset to be used",
     )
     control_group = Box(

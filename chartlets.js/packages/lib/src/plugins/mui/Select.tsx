@@ -1,4 +1,3 @@
-import * as React from "react";
 import MuiFormControl from "@mui/material/FormControl";
 import MuiInputLabel from "@mui/material/InputLabel";
 import MuiMenuItem from "@mui/material/MenuItem";
@@ -32,17 +31,19 @@ export function Select({
 	style,
 	tooltip,
 	label,
-	multiple,
+	multiple = false,
 	onChange,
 }: SelectProps) {
-	const [personName, setPersonName] = React.useState<string[]>([]);
-
-	const handleChange = (event: SelectChangeEvent) => {
+	const handleChange = (event: SelectChangeEvent<unknown>) => {
 		if (id) {
-			let newValue: string | number = event.target.value;
-			if (typeof value == "number") {
-				newValue = Number.parseInt(newValue);
+			let newValue: string | number | (string | number)[] = multiple
+				? (event.target.value as (string | number)[])
+				: (event.target.value as string | number);
+
+			if (!multiple && typeof value === "number") {
+				newValue = Number.parseInt(newValue as string);
 			}
+
 			onChange({
 				componentType: type,
 				id: id,
@@ -59,16 +60,18 @@ export function Select({
 					labelId={`${id}-label`}
 					id={id}
 					name={name}
-					value={`${value}`}
+					value={value}
 					disabled={disabled}
 					multiple={multiple}
 					onChange={handleChange}>
 					{Array.isArray(options) &&
-						options.map(normalizeSelectOption).map(([value, text], index) => (
-							<MuiMenuItem key={index} value={value}>
-								{text}
-							</MuiMenuItem>
-						))}
+						options
+							.map(normalizeSelectOption)
+							.map(([optionValue, optionLabel], index) => (
+								<MuiMenuItem key={index} value={optionValue}>
+									{optionLabel}
+								</MuiMenuItem>
+							))}
 				</MuiSelect>
 			</MuiFormControl>
 		</Tooltip>

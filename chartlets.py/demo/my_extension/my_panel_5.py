@@ -17,13 +17,10 @@ def render_panel(
 ) -> Component:
     dataset = ctx.datasets.get(selected_dataset_id)
     variable_names, selected_var_names = get_variable_names(dataset)
-    print(selected_var_names)
-    print(type(selected_var_names))
 
     select = Select(
         id="selected_variable_name",
-        # value=[selected_var_names],
-        value=[selected_var_names],
+        value=[],
         label="Variable",
         options=[(v, v) for v in variable_names],
         style={"flexGrow": 0, "minWidth": 120},
@@ -88,11 +85,8 @@ def update_info_text(
     dataset_id: str = "",
     selected_var_names: list[str] | None = None,
 ) -> list[str]:
-    print(selected_var_names)
-    print(type(selected_var_names))
 
     if selected_var_names is not None:
-        # text = ", ".join(selected_var_names)
         text = ", ".join(map(str, selected_var_names))
         return [f"The dataset is {dataset_id} and the selected variables are: {text}"]
     else:

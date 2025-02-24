@@ -3,6 +3,7 @@ import { Box } from "./Box";
 import { Button } from "./Button";
 import { Checkbox } from "./Checkbox";
 import { CircularProgress } from "./CircularProgress";
+import { Divider } from "./Divider";
 import { IconButton } from "./IconButton";
 import { LinearProgress } from "./LinearProgress";
 import { RadioGroup } from "./RadioGroup";
@@ -21,6 +22,7 @@ export default function mui(): Plugin {
       ["Checkbox", Checkbox],
       ["CircularProgress", CircularProgress],
       ["DataGrid", DataGrid],
+      ["Divider", Divider],
       ["IconButton", IconButton],
       ["LinearProgress", LinearProgress],
       ["RadioGroup", RadioGroup],

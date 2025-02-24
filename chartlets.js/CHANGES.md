@@ -1,3 +1,8 @@
+## Version 0.1.4 (in development)
+
+* In `chartlets.js` we no longer emit warnings and errors in common 
+  situations to avoid too much spam in the browser console.
+
 ## Version 0.1.3 (from 2025/01/28)
 
 * **Chore:** Version bump to align CI process with GitHub release flow. 

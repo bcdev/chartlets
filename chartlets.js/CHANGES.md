@@ -1,7 +1,4 @@
 ## Version 0.1.4 (in development)
-
-* In `chartlets.js` we no longer emit warnings and errors in common 
-  situations to avoid too much spam in the browser console.
   
 * Add `multiple` property for `Select` component to enable the
   of multiple elements.

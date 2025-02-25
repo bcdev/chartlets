@@ -13,6 +13,7 @@ import { Tabs } from "./Tabs";
 import { Typography } from "./Typography";
 import { Slider } from "./Slider";
 import { DataGrid } from "@/plugins/mui/DataGrid";
+import { Dialog } from "@/plugins/mui/Dialog";
 
 export default function mui(): Plugin {
   return {
@@ -22,6 +23,7 @@ export default function mui(): Plugin {
       ["Checkbox", Checkbox],
       ["CircularProgress", CircularProgress],
       ["DataGrid", DataGrid],
+      ["Dialog", Dialog],
       ["Divider", Divider],
       ["IconButton", IconButton],
       ["LinearProgress", LinearProgress],

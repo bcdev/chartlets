@@ -1,11 +1,9 @@
 import {
   DataGrid as MuiDataGrid,
-  type GridCallbackDetails,
   type GridColDef,
   type GridPaginationModel,
   type GridRowModel,
-  type GridRowParams,
-  type MuiEvent,
+  type GridRowSelectionModel,
 } from "@mui/x-data-grid";
 import type { ComponentProps, ComponentState } from "@/index";
 
@@ -78,17 +76,16 @@ export const DataGrid = ({
     return;
   }
 
-  const handleClick = (
-    params: GridRowParams,
-    _event: MuiEvent,
-    _details: GridCallbackDetails,
-  ) => {
+  const onRowsSelectionHandler = (ids: GridRowSelectionModel) => {
     if (id) {
+      const selectedRowsData = ids.map((id) =>
+        rows?.find((row) => row.id === id),
+      );
       onChange({
         componentType: type,
         id: id,
         property: "value",
-        value: params.row,
+        value: selectedRowsData,
       });
     }
   };
@@ -117,7 +114,7 @@ export const DataGrid = ({
         hideFooterPagination={hideFooterPagination}
         initialState={initialState}
         loading={loading}
-        onRowClick={handleClick}
+        onRowSelectionModelChange={onRowsSelectionHandler}
         paginationModel={paginationModel}
         pageSizeOptions={pageSizeOptions}
         rowHeight={rowHeight}

@@ -50,7 +50,7 @@ describe("DataGrid", () => {
     expect(recordedEvents[0].componentType).toBe("DataGrid");
     expect(recordedEvents[0].id).toBe("datagridId");
     expect(recordedEvents[0].property).toBe("value");
-    expect(recordedEvents[0].value).toEqual(mockRows[0]);
+    expect(recordedEvents[0].value).toEqual(mockRows);
   });
 
   it("should render with other props correctly", () => {

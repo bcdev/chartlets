@@ -13,6 +13,7 @@ from .radiogroup import RadioGroup
 from .select import Select
 from .slider import Slider
 from .switch import Switch
+from .datagrid import DataGrid
 from .tabs import Tab
 from .tabs import Tabs
 from .typography import Typography

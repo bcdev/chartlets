@@ -12,6 +12,7 @@ import { Switch } from "./Switch";
 import { Tabs } from "./Tabs";
 import { Typography } from "./Typography";
 import { Slider } from "./Slider";
+import { DataGrid } from "@/plugins/mui/DataGrid";
 
 export default function mui(): Plugin {
   return {
@@ -20,6 +21,7 @@ export default function mui(): Plugin {
       ["Button", Button],
       ["Checkbox", Checkbox],
       ["CircularProgress", CircularProgress],
+      ["DataGrid", DataGrid],
       ["Divider", Divider],
       ["IconButton", IconButton],
       ["LinearProgress", LinearProgress],

@@ -77,16 +77,12 @@ export const Dialog = ({
       aria-describedby={ariaDescribedBy}
     >
       {title && (
-        <>
-          <DialogTitle {...titleProps}>{title}</DialogTitle>
-        </>
+        <DialogTitle {...titleProps}>{title}</DialogTitle>
       )}
       {content && (
-        <>
-          <DialogContent {...contentProps}>
-            <DialogContentText>{content}</DialogContentText>
-          </DialogContent>
-        </>
+        <DialogContent {...contentProps}>
+          <DialogContentText>{content}</DialogContentText>
+        </DialogContent>
       )}
       {nodes && (
         <DialogActions>

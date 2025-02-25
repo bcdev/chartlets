@@ -1,10 +1,10 @@
-from chartlets import Component, Input, State, Output
+from chartlets import Component, Input, Output
 from chartlets.components import Box, Typography, Table
 
 from server.context import Context
 from server.panel import Panel
 
-from chartlets.components.table import TableColumn, TableRowData
+from chartlets.components.table import TableColumn, TableRow
 
 panel = Panel(__name__, title="Panel F")
 
@@ -15,25 +15,21 @@ def render_panel(
     ctx: Context,
 ) -> Component:
     columns: list[TableColumn] = [
-        {"id": "id", "label": "ID"},
-        {"id": "firstName", "label": "First Name", "align": "left"},
+        {"id": "id", "label": "ID", "sortDirection": "desc"},
+        {
+            "id": "firstName",
+            "label": "First Name",
+            "align": "left",
+            "sortDirection": "desc",
+        },
         {"id": "lastName", "label": "Last Name", "align": "center"},
         {"id": "age", "label": "Age"},
     ]
 
-    rows: list[TableRowData] = [
-        {
-            "id": 1,
-            "data": {"id": "1", "firstName": "John", "lastName": "Doe", "age": 30},
-        },
-        {
-            "id": 2,
-            "data": {"id": "2", "firstName": "Jane", "lastName": "Smith", "age": 25},
-        },
-        {
-            "id": 3,
-            "data": {"id": "3", "firstName": "Peter", "lastName": "Jones", "age": 40},
-        },
+    rows: TableRow = [
+        ["1", "John", "Doe", 30],
+        ["2", "Jane", "Smith", 25],
+        ["3", "Peter", "Jones", 40],
     ]
 
     table = Table(id="table", rows=rows, columns=columns, hover=True)

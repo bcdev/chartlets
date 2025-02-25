@@ -1,4 +1,4 @@
-from chartlets.components.table import TableColumn, TableRowData, Table
+from chartlets.components.table import TableColumn, Table, TableRow
 from tests.component_test import make_base
 
 
@@ -18,13 +18,10 @@ class TableTest(make_base(Table)):
             {"id": "lastName", "label": "Last Name"},
             {"id": "age", "label": "Age"},
         ]
-        rows: list[TableRowData] = [
-            {
-                "id": "1",
-                "data": {"firstName": "John", "lastName": "Doe", "age": 30},
-            },
-            {"id": "2", "data": {"firstName": "Jane", "lastName": "Smith", "age": 25}},
-            {"id": 3, "data": {"firstName": "Johnie", "lastName": "Undoe", "age": 40}},
+        rows: TableRow = [
+            ["John", "Doe", 30],
+            ["Jane", "Smith", 25],
+            ["Johnie", "Undoe", 40],
         ]
         hover: bool = True
         style = {"background-color": "lightgray", "width": "100%"}

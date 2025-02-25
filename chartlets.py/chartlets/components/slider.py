@@ -68,7 +68,7 @@ class Slider(Component):
     tooltip: str | None = None
     """Tooltip title. Optional."""
 
-    track: Literal["inverted", "normal"] | False | None = None
+    track: Literal["inverted", "normal"] | bool | None = None
     """The track presentation:
 
     - `normal`: the track will render a bar representing the slider value.

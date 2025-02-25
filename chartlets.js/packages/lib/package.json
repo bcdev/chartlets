@@ -1,6 +1,6 @@
 {
   "name": "chartlets",
-  "version": "0.1.0-dev.0",
+  "version": "0.1.4-dev.0",
   "description": "An experimental library for integrating interactive charts into existing JavaScript applications.",
   "type": "module",
   "files": [
@@ -59,13 +59,17 @@
     "zustand": "^5.0"
   },
   "peerDependencies": {
-    "@mui/material": ">=6",
-    "react": ">=18",
-    "react-dom": ">=18",
+    "@mui/material": "^6.2.1",
+    "@mui/x-data-grid": ">=7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-vega": ">=7",
     "vega-themes": ">=2"
   },
   "peerDependenciesMeta": {
+    "@mui/x-data-grid": {
+      "optional": true
+    },
     "react": {
       "optional": false
     },
@@ -74,6 +78,7 @@
     }
   },
   "devDependencies": {
+    "@mui/x-data-grid": "^7.23.5",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "@types/node": "^20.11.17",

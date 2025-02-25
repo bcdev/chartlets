@@ -44,12 +44,18 @@ export function getInputValue(
   } else if (isHostChannel(input) && hostStore) {
     inputValue = getInputValueFromHostStore(hostStore, property);
   } else {
-    console.warn(`input with unknown data source:`, input);
+    // We no longer log, as the situation is quite common if a
+    // component has not yet been rendered.
+    // Enable logging for debugging only:
+    // console.warn(`input with unknown data source:`, input);
   }
   if (inputValue === undefined || inputValue === noValue) {
     // We use null, because undefined is not JSON-serializable.
     inputValue = null;
-    console.warn(`value is undefined for input`, input);
+    // We no longer log, as the situation is quite common if a
+    // component has not yet been rendered.
+    // Enable logging for debugging only:
+    // console.warn(`value is undefined for input`, input);
   }
   return inputValue;
 }

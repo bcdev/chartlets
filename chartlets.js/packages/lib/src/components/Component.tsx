@@ -12,9 +12,12 @@ export function Component(props: ComponentProps) {
   if (typeof ActualComponent === "function") {
     return <ActualComponent {...props} />;
   } else {
-    console.error(
-      `chartlets: invalid component type encountered: ${componentType}`,
-    );
+    // We no longer log, as the situation is quite common
+    // and users can not do anything against it.
+    // Enable error logging for debugging only:
+    // console.error(
+    //  `chartlets: invalid component type encountered: ${componentType}`,
+    // );
     return null;
   }
 }

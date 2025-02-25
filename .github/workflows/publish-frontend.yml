@@ -10,7 +10,7 @@ jobs:
       runs-on: ubuntu-latest
       strategy:
         matrix:
-          node-version: [16.x, 18.x, 20.x]
+          node-version: [18.x, 20.x]
           # See supported Node.js release schedule at
           # https://nodejs.org/en/about/releases/
       defaults:
@@ -35,7 +35,7 @@ jobs:
           uses: codecov/codecov-action@v4
           with:
             fail_ci_if_error: true
-            directory: coverage/
+            directory: chartlets.js/packages/lib/coverage/
             flags: frontend
             verbose: true
             token: ${{ secrets.CODECOV_TOKEN }}
@@ -44,27 +44,44 @@ jobs:
         
   npm-tests-demo:
       runs-on: ubuntu-latest
-      strategy:
-        matrix:
-          node-version: [16.x, 18.x, 20.x]
-          # See supported Node.js release schedule at
-          # https://nodejs.org/en/about/releases/
-      defaults:
-        run:
-          working-directory: chartlets.js/packages/demo
-  
       steps:
-        - uses: actions/checkout@v3
-        - name: Use Node.js ${{ matrix.node-version }}
-          uses: actions/setup-node@v3
+        - name: git-checkout chartlets
+          uses: actions/checkout@v4
+  
+        - name: Set up Node.js
+          uses: actions/setup-node@v4
           with:
-            node-version: ${{ matrix.node-version }}
-            cache: 'npm'
-            cache-dependency-path: chartlets.js/package-lock.json
-            
-        - run: npm ci
-        - run: npm run lint
-        - run: npm run build
+            node-version: '20.x'
+  
+        - name: Install common dependencies
+          run: |
+            cd chartlets.js 
+            npm install 
+  
+        - name: Lib lint
+          run: |
+            cd chartlets.js/packages/lib  
+            npm run lint
+  
+        - name: Lib tests
+          run: |
+            cd chartlets.js/packages/lib  
+            npm run test
+  
+        - name: Lib build
+          run: |
+            cd chartlets.js/packages/lib  
+            npm run build
+  
+        - name: Demo lint
+          run: |
+            cd chartlets.js/packages/demo  
+            npm run lint
+  
+        - name: Demo build
+          run: |
+            cd chartlets.js/packages/demo  
+            npm run build
     
   npm-deploy:
     name: Publish TS-React Package to npmjs
@@ -72,7 +89,7 @@ jobs:
     needs: [npm-tests-lib, npm-tests-demo]
     defaults:
       run:
-        working-directory: chartlets.js/packages/lib
+        working-directory: chartlets.js
 
     steps:
       - uses: actions/checkout@v4
@@ -85,8 +102,11 @@ jobs:
           cache: 'npm'
           cache-dependency-path: chartlets.js/package-lock.json
           
-      - run: npm ci
-      - run: npm run build
-      - run: npm publish --access public
+      - name: Install dependencies, build, and publish (packages/lib)
+        run: |
+          cd packages/lib
+          npm ci
+          npm run build
+          npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

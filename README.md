@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/bcdev/chartlets/actions/workflows/frontend-ci.yml/badge.svg)](https://github.com/bcdev/chartlets/actions/workflows/frontend-ci.yml)
 [![codecov](https://codecov.io/gh/bcdev/chartlets/graph/badge.svg?token=zJBPMFvnpg&flag=frontend)](https://codecov.io/gh/bcdev/chartlets)
-[![npm](https://badge.fury.io/js/chartlets.svg)](https://npmjs.org/package/chartlets)
+[![NPM Version](https://img.shields.io/npm/v/chartlets)](https://www.npmjs.com/package/chartlets)
 
 [![CI](https://github.com/bcdev/chartlets/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/bcdev/chartlets/actions/workflows/backend-ci.yml)
 [![codecov](https://codecov.io/gh/bcdev/chartlets/graph/badge.svg?token=zJBPMFvnpg&flag=backend)](https://codecov.io/gh/bcdev/chartlets)

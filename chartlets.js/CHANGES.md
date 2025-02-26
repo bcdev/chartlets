@@ -6,6 +6,7 @@
 * New (MUI) components
   - `DataGrid`
   - `Dialog`
+  - `Table`
 
 ## Version 0.1.3 (from 2025/01/28)
 
@@ -59,7 +60,6 @@
   - `Switch`
   - `Tabs`
   - `Slider`
-  - `Table`
 
 * Supporting `tooltip` property for interactive MUI components.
 

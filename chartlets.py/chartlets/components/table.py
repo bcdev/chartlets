@@ -15,8 +15,6 @@ class TableCellProps(TypedDict, total=False):
     align: Literal["inherit", "left", "center", "right", "justify"] | None
     """The alignment of the cell content."""
 
-    # sortDirection:
-
 
 class TableColumn(TableCellProps):
     """Defines a column in the table."""
@@ -24,7 +22,9 @@ class TableColumn(TableCellProps):
     label: str
     """The display label for the column header."""
 
+
 type TableRow = list[list[str | int | float | bool | None]]
+
 
 @dataclass(frozen=True)
 class Table(Component):

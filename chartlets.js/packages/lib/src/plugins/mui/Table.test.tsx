@@ -6,8 +6,8 @@ import { createChangeHandler } from "@/plugins/mui/common.test";
 
 describe("Table", () => {
   const rows = [
-    { id: 1, data: { firstName: "John", lastName: "Doe" } },
-    { id: 2, data: { firstName: "Johnie", lastName: "Undoe" } },
+    ["John", "Doe"],
+    ["Johnie", "Undoe"],
   ];
   const columns = [
     { id: "firstName", label: "First Name" },
@@ -30,9 +30,8 @@ describe("Table", () => {
     columns.forEach((column) => {
       expect(screen.getByText(column.label)).toBeInTheDocument();
     });
-    rows.forEach((row) => {
-      expect(screen.getByText(row.data.firstName)).toBeInTheDocument();
-      expect(screen.getByText(row.data.lastName)).toBeInTheDocument();
+    rows.forEach((row, index) => {
+      expect(screen.getByText(row[index])).toBeInTheDocument();
     });
   });
 
@@ -69,11 +68,8 @@ describe("Table", () => {
       id: "table",
       property: "value",
       value: {
-        id: 1,
-        data: {
-          firstName: "John",
-          lastName: "Doe",
-        },
+        firstName: "John",
+        lastName: "Doe",
       },
     });
   });

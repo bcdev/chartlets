@@ -14,7 +14,6 @@ interface TableCellProps {
   id: string | number;
   size?: "medium" | "small";
   align?: "inherit" | "left" | "center" | "right" | "justify";
-  padding?: "checkbox" | "none" | "normal";
   sx?: SxProps;
 }
 
@@ -70,30 +69,6 @@ export const Table = ({
     }
   };
 
-  // function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  //   if (b[orderBy] < a[orderBy]) {
-  //     return -1;
-  //   }
-  //   if (b[orderBy] > a[orderBy]) {
-  //     return 1;
-  //   }
-  //   return 0;
-  // }
-  //
-  // type Order = "asc" | "desc";
-  //
-  // function getComparator<Key extends keyof any>(
-  //   order: Order,
-  //   orderBy: Key,
-  // ): (
-  //   a: { [key in Key]: number | string },
-  //   b: { [key in Key]: number | string },
-  // ) => number {
-  //   return order === "desc"
-  //     ? (a, b) => descendingComparator(a, b, orderBy)
-  //     : (a, b) => -descendingComparator(a, b, orderBy);
-  // }
-
   return (
     <TableContainer component={Paper} sx={style} id={id}>
       <MuiTable stickyHeader={stickyHeader}>
@@ -104,7 +79,6 @@ export const Table = ({
                 key={column.id}
                 align={column.align || "inherit"}
                 size={column.size || "medium"}
-                padding={column.padding}
               >
                 {column.label}
               </TableCell>
@@ -123,7 +97,6 @@ export const Table = ({
                   key={item_index}
                   align={columns[item_index].align || "inherit"}
                   size={columns[item_index].size || "medium"}
-                  padding={columns[item_index].padding}
                 >
                   {item}
                 </TableCell>

@@ -6,6 +6,7 @@
 * New (MUI) components
   - `DataGrid`
   - `Dialog`
+  - `Table`
 
 ## Version 0.1.3 (from 2025/01/28)
 

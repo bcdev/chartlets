@@ -15,6 +15,7 @@ from .select import Select
 from .slider import Slider
 from .switch import Switch
 from .datagrid import DataGrid
+from .table import Table
 from .tabs import Tab
 from .tabs import Tabs
 from .typography import Typography

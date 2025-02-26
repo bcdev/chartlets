@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Literal, TypedDict
+from typing import Literal, TypedDict, TypeAlias
 from chartlets import Component
 
 

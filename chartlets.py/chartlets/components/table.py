@@ -23,7 +23,7 @@ class TableColumn(TableCellProps):
     """The display label for the column header."""
 
 
-type TableRow = list[list[str | int | float | bool | None]]
+TableRow = list[list[str | int | float | bool | None]]
 
 
 @dataclass(frozen=True)

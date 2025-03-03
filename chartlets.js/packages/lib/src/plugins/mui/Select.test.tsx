@@ -126,24 +126,20 @@ describe("Select", () => {
     fireEvent.click(listBox.getByText(/11/i));
     fireEvent.click(listBox.getByText(/12/i));
     expect(recordedEvents.length).toBe(2);
-    expect(recordedEvents[1]).toEqual({
-      componentType: "Select",
-      id: "sel",
-      property: "value",
-      value: [12],
-    });
-    expect(recordedEvents).toEqual([{
-      componentType: "Select",
-      id: "sel",
-      property: "value",
-      value: [11],
-    },
+    expect(recordedEvents).toEqual([
       {
-      componentType: "Select",
-      id: "sel",
-      property: "value",
-      value: [12],
-    }]);
+        componentType: "Select",
+        id: "sel",
+        property: "value",
+        value: [11],
+      },
+      {
+        componentType: "Select",
+        id: "sel",
+        property: "value",
+        value: [12],
+      },
+    ]);
   });
 
   it("should fire 'value' property with object options", () => {

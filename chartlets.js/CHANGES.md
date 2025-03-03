@@ -1,7 +1,7 @@
 ## Version 0.1.4 (in development)
   
-* Add `multiple` property for `Select` component to enable the
-  of multiple elements.
+* Add `multiple` property for `Select` component to enable the selection
+  of multiple elements. The `default` mode is supported at the moment.
 
 ## Version 0.1.3 (from 2025/01/28)
 

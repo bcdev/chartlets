@@ -14,7 +14,7 @@ class Select(Component):
     information from a list of options."""
 
     multiple: bool | None = None
-    """Allows for multiple selection in Select Menu. If `true` value 
+    """Allows for multiple selection in Select Menu. If `true`, value 
     must be an array.
     """
 

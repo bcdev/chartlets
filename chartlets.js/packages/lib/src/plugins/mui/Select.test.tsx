@@ -105,6 +105,47 @@ describe("Select", () => {
     });
   });
 
+  it("should fire 'value' property with an array of multiple values", () => {
+    const { recordedEvents, onChange } = createChangeHandler();
+    render(
+      <Select
+        id="sel"
+        type={"Select"}
+        label={"Colors"}
+        options={[10, 11, 12]}
+        value={[]}
+        onChange={onChange}
+        multiple={true}
+      />,
+    );
+    // open the Select component's list box
+    // note, we must use "mouseDown" as "click" doesn't work
+    fireEvent.mouseDown(screen.getByRole("combobox"));
+    // click item in the Select component's list box
+    const listBox = within(screen.getByRole("listbox"));
+    fireEvent.click(listBox.getByText(/11/i));
+    fireEvent.click(listBox.getByText(/12/i));
+    expect(recordedEvents.length).toBe(2);
+    expect(recordedEvents[1]).toEqual({
+      componentType: "Select",
+      id: "sel",
+      property: "value",
+      value: [12],
+    });
+    expect(recordedEvents).toEqual([{
+      componentType: "Select",
+      id: "sel",
+      property: "value",
+      value: [11],
+    },
+      {
+      componentType: "Select",
+      id: "sel",
+      property: "value",
+      value: [12],
+    }]);
+  });
+
   it("should fire 'value' property with object options", () => {
     const { recordedEvents, onChange } = createChangeHandler();
     render(

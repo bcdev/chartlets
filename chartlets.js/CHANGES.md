@@ -1,4 +1,4 @@
-## Version 0.1.4 (in development)
+## Version 0.1.4 (from 2025/03/06)
 
 * In `chartlets.js` we no longer emit warnings and errors in common 
   situations to avoid too much spam in the browser console.

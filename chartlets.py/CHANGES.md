@@ -1,4 +1,4 @@
-## Version 0.1.4 (in development)
+## Version 0.1.4 (from 2025/03/06)
 
 * New (MUI) components
   - `DataGrid`

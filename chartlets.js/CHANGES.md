@@ -1,7 +1,18 @@
-## Version 0.1.4 (in development)
+## Version 0.1.5 (in development)
   
 * Add `multiple` property for `Select` component to enable the selection
   of multiple elements. The `default` mode is supported at the moment.
+
+
+## Version 0.1.4 (from 2025/03/06)
+
+* In `chartlets.js` we no longer emit warnings and errors in common 
+  situations to avoid too much spam in the browser console.
+
+* New (MUI) components
+  - `DataGrid`
+  - `Dialog`
+  - `Table`
 
 ## Version 0.1.3 (from 2025/01/28)
 
@@ -148,5 +159,4 @@
   
 ## Version 0.0.16 (from 2024/11/12)
 
-Initial, still experimental version.
- 
+Initial, still experimental version. 

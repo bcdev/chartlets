@@ -1,13 +1,23 @@
-## Version 0.1.4 (in development)
+## Version 0.1.5 (in development)
 
 * Add `multiple` property for `Select` component to enable the
   of multiple elements.
-  
+
+
+## Version 0.1.4 (from 2025/03/06)
+
+* New (MUI) components
+  - `DataGrid`
+  - `Dialog`
+  - `Table`
+
+
 ## Version 0.1.3 (from 2025/01/28)
 
 * **Chore:** Version bump to align CI process with GitHub release flow. 
   No functional changes. This release ensures proper triggering of the CI 
   pipeline for publishing to PyPI.
+
 
 ## Version 0.1.0 (from 2025/01/14)
 

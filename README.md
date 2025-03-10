@@ -7,6 +7,7 @@
 [![CI](https://github.com/bcdev/chartlets/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/bcdev/chartlets/actions/workflows/backend-ci.yml)
 [![codecov](https://codecov.io/gh/bcdev/chartlets/graph/badge.svg?token=zJBPMFvnpg&flag=backend)](https://codecov.io/gh/bcdev/chartlets)
 [![PyPI](https://img.shields.io/pypi/v/chartlets)](https://pypi.org/project/chartlets/)
+[![Anaconda-Server Badge](https://anaconda.org/conda-forge/chartlets/badges/version.svg)](https://anaconda.org/conda-forge/chartlets)
 
 Chartlets is a software framework that allows websites developed with
 React to be extended by server-side UI contributions programmed in Python 

@@ -16,6 +16,7 @@ export type SelectOption =
 
 interface SelectState extends ComponentState {
   options?: SelectOption[];
+  multiple?: boolean;
 }
 
 interface SelectProps extends ComponentProps, SelectState {}
@@ -30,14 +31,19 @@ export function Select({
   style,
   tooltip,
   label,
+  multiple = false,
   onChange,
 }: SelectProps) {
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleChange = (event: SelectChangeEvent<unknown>) => {
     if (id) {
-      let newValue: string | number = event.target.value;
-      if (typeof value == "number") {
-        newValue = Number.parseInt(newValue);
+      let newValue: string | number | (string | number)[] = multiple
+        ? (event.target.value as (string | number)[])
+        : (event.target.value as string | number);
+
+      if (!multiple && typeof value === "number") {
+        newValue = Number.parseInt(newValue as string);
       }
+
       onChange({
         componentType: type,
         id: id,
@@ -54,16 +60,18 @@ export function Select({
           labelId={`${id}-label`}
           id={id}
           name={name}
-          value={`${value}`}
+          value={value}
           disabled={disabled}
-          onChange={handleChange}
-        >
+          multiple={multiple}
+          onChange={handleChange}>
           {Array.isArray(options) &&
-            options.map(normalizeSelectOption).map(([value, text], index) => (
-              <MuiMenuItem key={index} value={value}>
-                {text}
-              </MuiMenuItem>
-            ))}
+            options
+              .map(normalizeSelectOption)
+              .map(([optionValue, optionLabel], index) => (
+                <MuiMenuItem key={index} value={optionValue}>
+                  {optionLabel}
+                </MuiMenuItem>
+              ))}
         </MuiSelect>
       </MuiFormControl>
     </Tooltip>
@@ -71,7 +79,7 @@ export function Select({
 }
 
 function normalizeSelectOption(
-  option: SelectOption,
+  option: SelectOption
 ): [string | number, string] {
   if (isString(option)) {
     return [option, option];

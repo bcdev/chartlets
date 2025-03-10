@@ -13,6 +13,11 @@ class Select(Component):
     """Select components are used for collecting user provided
     information from a list of options."""
 
+    multiple: bool | None = None
+    """Allows for multiple selection in Select Menu. If `true`, value 
+    must be an array.
+    """
+
     options: list[SelectOption] = field(default_factory=list)
     """The options given as a list of number or text values or a list
     of (value, label) pairs.

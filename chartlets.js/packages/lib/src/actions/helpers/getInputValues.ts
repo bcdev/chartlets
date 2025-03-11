@@ -13,6 +13,7 @@ import {
 import { formatObjPath, getValue, type ObjPathLike } from "@/utils/objPath";
 import { isObject } from "@/utils/isObject";
 import type { HostStore } from "@/types/state/host";
+import memoize from "fast-memoize";
 
 export function getInputValues(
   inputs: Input[],
@@ -26,7 +27,9 @@ export function getInputValues(
 
 const noValue = {};
 
-export function getInputValue(
+export const getInputValue = memoize(_getInputValue);
+
+function _getInputValue(
   input: Input,
   contributionState: ContributionState,
   hostStore?: HostStore,

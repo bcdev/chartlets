@@ -11,6 +11,7 @@ import { invokeCallbacks } from "@/actions/helpers/invokeCallbacks";
 import type { ContributionState } from "@/types/state/contribution";
 import type { HostStore } from "@/types/state/host";
 import { store } from "@/store";
+import { shallowEqualArrays } from "@/utils/compare";
 
 /**
  * A reference to a property of an input of a callback of a contribution.
@@ -18,6 +19,8 @@ import { store } from "@/store";
 export interface PropertyRef extends ContribRef, CallbackRef, InputRef {
   /** The property. */
   property: string;
+  /** Property ID for memoization */
+  id: string;
 }
 
 export function handleHostStoreChange() {
@@ -44,16 +47,23 @@ export function handleHostStoreChange() {
     hostStore,
   );
 
-  if (callbackRequests && callbackRequests.length > 0) {
-    invokeCallbacks(callbackRequests);
+  const filteredCallbackRequests = callbackRequests.filter(
+    (callbackRequest): callbackRequest is CallbackRequest =>
+      callbackRequest !== undefined,
+  );
+  if (filteredCallbackRequests && filteredCallbackRequests.length > 0) {
+    invokeCallbacks(filteredCallbackRequests);
   }
 }
 
-function getCallbackRequests(
+// Exporting for testing only
+export function getCallbackRequests(
   propertyRefs: PropertyRef[],
   contributionsRecord: Record<string, ContributionState[]>,
   hostStore: HostStore,
-): CallbackRequest[] {
+): (CallbackRequest | undefined)[] {
+  const { configuration, lastInputValues } = store.getState();
+  const { logging } = configuration;
   return propertyRefs.map((propertyRef) => {
     const contributions = contributionsRecord[propertyRef.contribPoint];
     const contribution = contributions[propertyRef.contribIndex];
@@ -63,6 +73,27 @@ function getCallbackRequests(
       contribution,
       hostStore,
     );
+    const propRefId = propertyRef.id;
+    if (
+      lastInputValues?.[propRefId] &&
+      shallowEqualArrays(lastInputValues?.[propRefId], inputValues)
+    ) {
+      // Skip adding the inputValues if memoized values are returned.
+      if (logging?.enabled) {
+        console.groupCollapsed("Skipping callback request");
+        console.log("inputValues", inputValues);
+        console.groupEnd();
+      }
+      return;
+    }
+    if (lastInputValues) {
+      lastInputValues[propRefId] = inputValues;
+      store.setState({
+        lastInputValues: { ...lastInputValues },
+      });
+    } else {
+      store.setState({ lastInputValues: { [propRefId]: inputValues } });
+    }
     return { ...propertyRef, inputValues };
   });
 }
@@ -92,6 +123,7 @@ function getHostStorePropertyRefs(): PropertyRef[] {
                 callbackIndex,
                 inputIndex,
                 property: formatObjPath(input.property),
+                id: `${contribPoint}-${contribIndex}-${callbackIndex}-${inputIndex}`,
               });
             }
           }),

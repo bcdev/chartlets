@@ -55,6 +55,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "fast-memoize": "^2.5.2",
     "microdiff": "^1.4",
     "zustand": "^5.0"
   },

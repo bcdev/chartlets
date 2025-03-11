@@ -20,6 +20,8 @@ export interface PropertyRef extends ContribRef, CallbackRef, InputRef {
   property: string;
 }
 
+const processedinputValuess = new Map<string, boolean>();
+
 export function handleHostStoreChange() {
   const { extensions, configuration, contributionsRecord } = store.getState();
   const { hostStore } = configuration;
@@ -43,8 +45,11 @@ export function handleHostStoreChange() {
     contributionsRecord,
     hostStore,
   );
-  if (callbackRequests && callbackRequests.length > 0) {
-    invokeCallbacks(callbackRequests);
+  const filtered_callbackRequests = callbackRequests.filter(
+    (req): req is CallbackRequest => req !== undefined,
+  );
+  if (filtered_callbackRequests && filtered_callbackRequests.length > 0) {
+    invokeCallbacks(filtered_callbackRequests);
   }
 }
 
@@ -52,7 +57,9 @@ function getCallbackRequests(
   propertyRefs: PropertyRef[],
   contributionsRecord: Record<string, ContributionState[]>,
   hostStore: HostStore,
-): CallbackRequest[] {
+): (CallbackRequest | undefined)[] {
+  const { configuration } = store.getState();
+  const loggingEnabled = configuration.logging?.enabled;
   return propertyRefs.map((propertyRef) => {
     const contributions = contributionsRecord[propertyRef.contribPoint];
     const contribution = contributions[propertyRef.contribIndex];
@@ -62,6 +69,20 @@ function getCallbackRequests(
       contribution,
       hostStore,
     );
+    const serializedInputValues = JSON.stringify(inputValues);
+    if (processedinputValuess.has(serializedInputValues)) {
+      if (loggingEnabled) {
+        console.groupCollapsed(
+          "Skipping this callback as no state has changed!",
+        );
+        console.log("propertyRef", propertyRef);
+        console.log("inputValues", inputValues);
+        console.groupEnd();
+      }
+      return;
+    } else {
+      processedinputValuess.set(serializedInputValues, true);
+    }
     return { ...propertyRef, inputValues };
   });
 }

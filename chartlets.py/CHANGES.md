@@ -1,3 +1,9 @@
+## Version 0.1.5 (in development)
+
+* Add `multiple` property for `Select` component to enable the
+  of multiple elements.
+
+
 ## Version 0.1.4 (from 2025/03/06)
 
 * New (MUI) components
@@ -39,6 +45,7 @@
   - `Switch`
   - `Slider`
   - `Tabs` and `Tab`
+ 
 
 ## Version 0.0.29 (from 2024/11/26)
 

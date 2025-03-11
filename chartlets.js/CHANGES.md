@@ -1,3 +1,9 @@
+## Version 0.1.5 (in development)
+  
+* Add `multiple` property for `Select` component to enable the selection
+  of multiple elements. The `default` mode is supported at the moment.
+
+
 ## Version 0.1.4 (from 2025/03/06)
 
 * In `chartlets.js` we no longer emit warnings and errors in common 

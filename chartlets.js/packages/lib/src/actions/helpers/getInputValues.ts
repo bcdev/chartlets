@@ -15,7 +15,9 @@ import { isObject } from "@/utils/isObject";
 import type { HostStore } from "@/types/state/host";
 import memoize from "fast-memoize";
 
-export function getInputValues(
+export const getInputValues = memoize(_getInputValues);
+
+export function _getInputValues(
   inputs: Input[],
   contributionState: ContributionState,
   hostStore?: HostStore,
@@ -27,9 +29,7 @@ export function getInputValues(
 
 const noValue = {};
 
-export const getInputValue = memoize(_getInputValue);
-
-function _getInputValue(
+function getInputValue(
   input: Input,
   contributionState: ContributionState,
   hostStore?: HostStore,

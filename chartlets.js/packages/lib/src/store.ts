@@ -7,4 +7,5 @@ export const store = create<StoreState>(() => ({
   extensions: [],
   contributionsResult: {},
   contributionsRecord: {},
+  lastInputValues: {},
 }));

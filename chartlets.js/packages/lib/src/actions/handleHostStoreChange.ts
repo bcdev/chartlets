@@ -12,6 +12,7 @@ import type { ContributionState } from "@/types/state/contribution";
 import type { HostStore } from "@/types/state/host";
 import { store } from "@/store";
 import { shallowEqualArrays } from "@/utils/compare";
+import memoize from "fast-memoize";
 
 /**
  * A reference to a property of an input of a callback of a contribution.
@@ -62,41 +63,59 @@ export function getCallbackRequests(
   contributionsRecord: Record<string, ContributionState[]>,
   hostStore: HostStore,
 ): (CallbackRequest | undefined)[] {
-  const { configuration, lastInputValues } = store.getState();
-  const { logging } = configuration;
-  return propertyRefs.map((propertyRef) => {
-    const contributions = contributionsRecord[propertyRef.contribPoint];
-    const contribution = contributions[propertyRef.contribIndex];
-    const callback = contribution.callbacks![propertyRef.callbackIndex];
-    const inputValues = getInputValues(
-      callback.inputs!,
-      contribution,
+  const { lastCallbackInputValues } = store.getState();
+  return propertyRefs.map((propertyRef) =>
+    getCallbackRequest(
+      propertyRef,
+      lastCallbackInputValues,
+      contributionsRecord,
       hostStore,
-    );
-    const propRefId = propertyRef.id;
-    if (
-      lastInputValues?.[propRefId] &&
-      shallowEqualArrays(lastInputValues?.[propRefId], inputValues)
-    ) {
-      // Skip adding the inputValues if memoized values are returned.
-      if (logging?.enabled) {
-        console.groupCollapsed("Skipping callback request");
-        console.log("inputValues", inputValues);
-        console.groupEnd();
-      }
-      return;
-    }
-    if (lastInputValues) {
-      lastInputValues[propRefId] = inputValues;
-      store.setState({
-        lastInputValues: { ...lastInputValues },
-      });
-    } else {
-      store.setState({ lastInputValues: { [propRefId]: inputValues } });
-    }
-    return { ...propertyRef, inputValues };
-  });
+    ),
+  );
 }
+
+const getCallbackRequest = (
+  propertyRef: PropertyRef,
+  lastCallbackInputValues: Record<string, unknown[]> | undefined,
+  contributionsRecord: Record<string, ContributionState[]>,
+  hostStore: HostStore,
+) => {
+  const contributions = contributionsRecord[propertyRef.contribPoint];
+  const contribution = contributions[propertyRef.contribIndex];
+  const callback = contribution.callbacks![propertyRef.callbackIndex];
+  const _inputValues = getInputValues(
+    callback.inputs!,
+    contribution,
+    hostStore,
+  );
+
+  // This is a dummy function created to memoize the _inputValues values
+  const _getInputValues = (_inputValues: unknown[]): unknown[] => {
+    return _inputValues;
+  };
+  const memoizedInputValues = memoize(_getInputValues);
+  const inputValues = memoizedInputValues(_inputValues);
+
+  const propRefId = propertyRef.id;
+  if (lastCallbackInputValues) {
+    const lastInputValues = lastCallbackInputValues[propRefId];
+    if (lastInputValues && shallowEqualArrays(lastInputValues, inputValues)) {
+      // We no longer log, as the situation is quite common
+      // Enable error logging for debugging only:
+      // console.groupCollapsed("Skipping callback request");
+      // console.debug("inputValues", inputValues);
+      // console.groupEnd();
+      return undefined;
+    }
+    lastCallbackInputValues[propRefId] = inputValues;
+    store.setState({
+      lastCallbackInputValues: { ...lastCallbackInputValues },
+    });
+  } else {
+    store.setState({ lastCallbackInputValues: { [propRefId]: inputValues } });
+  }
+  return { ...propertyRef, inputValues };
+};
 
 // TODO: use a memoized selector to get hostStorePropertyRefs
 // Note that this will only be effective and once we split the

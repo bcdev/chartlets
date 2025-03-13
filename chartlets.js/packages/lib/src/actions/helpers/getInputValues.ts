@@ -13,11 +13,8 @@ import {
 import { formatObjPath, getValue, type ObjPathLike } from "@/utils/objPath";
 import { isObject } from "@/utils/isObject";
 import type { HostStore } from "@/types/state/host";
-import memoize from "fast-memoize";
 
-export const getInputValues = memoize(_getInputValues);
-
-export function _getInputValues(
+export function getInputValues(
   inputs: Input[],
   contributionState: ContributionState,
   hostStore?: HostStore,

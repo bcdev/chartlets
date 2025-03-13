@@ -21,12 +21,12 @@ describe("handleHostStoreChange", () => {
       listeners.push(_l);
     },
   };
-  let lastInputValues: Record<string, unknown[]> = {};
+  let lastCallbackInputValues: Record<string, unknown[]> = {};
 
   beforeEach(() => {
     listeners = [];
     hostState = {};
-    lastInputValues = {};
+    lastCallbackInputValues = {};
   });
 
   it("should do nothing without host store", () => {
@@ -86,13 +86,40 @@ describe("handleHostStoreChange", () => {
           },
         },
       },
+      contributionsRecord: {
+        panel: [
+          {
+            name: "p0",
+            container: { title: "Panel A" },
+            extension: "e0",
+            componentResult: {},
+            initialState: {},
+            callbacks: [
+              {
+                function: {
+                  name: "callback",
+                  parameters: [],
+                  return: {},
+                },
+                inputs: [{ id: "@app", property: "variableName" }],
+                outputs: [{ id: "select", property: "value" }],
+              },
+            ],
+          },
+        ],
+      },
     });
     hostStore.set("variableName", "CHL");
     handleHostStoreChange();
+
+    // calling it second time for coverage. No state change changes the
+    // control flow
+    handleHostStoreChange();
+    //   TODO: Update this test to assert the generated callback request
   });
 
   it("should memoize second call with same arguments", () => {
-    const extensions = [{ name: "e0", version: "0", contributes: ["panels"] }];
+    const extensions = [{ name: "ext", version: "0", contributes: ["panels"] }];
     store.setState({
       configuration: { hostStore, logging: { enabled: false } },
       extensions,
@@ -122,7 +149,6 @@ describe("handleHostStoreChange", () => {
                       return: {},
                     },
                     inputs: [{ id: "@app", property: "variableName" }],
-                    outputs: [{ id: "select", property: "value" }],
                   },
                 ],
                 initialState: {},
@@ -131,9 +157,8 @@ describe("handleHostStoreChange", () => {
           },
         },
       },
-      lastInputValues: lastInputValues,
+      lastCallbackInputValues: lastCallbackInputValues,
     });
-    hostStore.set("variableName", "CHL");
     const propertyRefs: PropertyRef[] = [
       {
         id: "panel-0-0-0",
@@ -165,7 +190,11 @@ describe("handleHostStoreChange", () => {
         },
       ],
     };
-    const result = getCallbackRequests(
+
+    hostStore.set("variableName", "CHL");
+
+    // first call -> should create callback request
+    let result = getCallbackRequests(
       propertyRefs,
       contributionsRecord,
       hostStore,
@@ -174,5 +203,21 @@ describe("handleHostStoreChange", () => {
       ...propertyRefs[0],
       inputValues: ["CHL"],
     });
+
+    // second call -> memoized -> should not create callback request
+    result = getCallbackRequests(propertyRefs, contributionsRecord, hostStore);
+    expect(result).toEqual([undefined]);
+
+    // Third call - change state -> should create callback request
+    hostStore.set("variableName", "TMP");
+    result = getCallbackRequests(propertyRefs, contributionsRecord, hostStore);
+    expect(result[0]).toEqual({
+      ...propertyRefs[0],
+      inputValues: ["TMP"],
+    });
+
+    // fourth call -> memoized -> should not invoke callback
+    result = getCallbackRequests(propertyRefs, contributionsRecord, hostStore);
+    expect(result).toEqual([undefined]);
   });
 });

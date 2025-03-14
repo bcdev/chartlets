@@ -88,7 +88,6 @@ const getCallbackRequest = (
   const contribPoint: string = propertyRef.contribPoint;
   const contribIndex: number = propertyRef.contribIndex;
   const callbackIndex: number = propertyRef.callbackIndex;
-  const inputIndex: number = propertyRef.inputIndex;
   const contributions = contributionsRecord[contribPoint];
   const contribution = contributions[contribIndex];
   const callback = contribution.callbacks![callbackIndex];
@@ -100,7 +99,7 @@ const getCallbackRequest = (
 
   const inputValues = memoizedInputValues(_inputValues);
 
-  const callbackId = `${contribPoint}-${contribIndex}-${callbackIndex}-${inputIndex}`;
+  const callbackId = `${contribPoint}-${contribIndex}-${callbackIndex}`;
   if (lastCallbackInputValues) {
     const lastInputValues = lastCallbackInputValues[callbackId];
     if (lastInputValues && shallowEqualArrays(lastInputValues, inputValues)) {

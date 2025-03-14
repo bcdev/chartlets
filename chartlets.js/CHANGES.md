@@ -3,8 +3,8 @@
 * Add `multiple` property for `Select` component to enable the selection
   of multiple elements. The `default` mode is supported at the moment.
 
-* Callbacks will now only be invoked when there’s an actual change in state, reducing unnecessary processing and 
-  improving performance.
+* Callbacks will now only be invoked when there’s an actual change in state, 
+  reducing unnecessary processing and improving performance. (#112)
 
 ## Version 0.1.4 (from 2025/03/06)
 

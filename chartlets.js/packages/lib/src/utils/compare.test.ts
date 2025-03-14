@@ -18,11 +18,13 @@ describe("Test shallowEqualArrays()", () => {
   const arr_n: number[] = [1, 2];
   const arr_o: null[] = [null];
   const arr_p: null[] = [null];
+  const arr_q: null[] = [];
   it("works", () => {
     expect(shallowEqualArrays(arr_a, arr_b)).toBe(true);
     expect(shallowEqualArrays(arr_a, arr_c)).toBe(false);
     expect(shallowEqualArrays(arr_a, arr_d)).toBe(false);
     expect(shallowEqualArrays(arr_a, arr_e)).toBe(false);
+    expect(shallowEqualArrays(arr_e, arr_c)).toBe(false);
     expect(shallowEqualArrays(arr_f, arr_g)).toBe(true);
     expect(shallowEqualArrays(arr_h, arr_i)).toBe(false);
     expect(shallowEqualArrays(arr_j, arr_k)).toBe(false);
@@ -30,5 +32,7 @@ describe("Test shallowEqualArrays()", () => {
     expect(shallowEqualArrays(arr_m, arr_n)).toBe(true);
     expect(shallowEqualArrays(arr_m, arr_l)).toBe(false);
     expect(shallowEqualArrays(arr_o, arr_p)).toBe(true);
+    expect(shallowEqualArrays(arr_p, arr_q)).toBe(false);
+    expect(shallowEqualArrays(arr_p)).toBe(false);
   });
 });

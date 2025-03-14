@@ -20,8 +20,6 @@ import memoize from "fast-memoize";
 export interface PropertyRef extends ContribRef, CallbackRef, InputRef {
   /** The property. */
   property: string;
-  /** Property ID for memoization */
-  id: string;
 }
 
 export function handleHostStoreChange() {
@@ -74,29 +72,34 @@ export function getCallbackRequests(
   );
 }
 
+// This is a dummy function created to memoize the _inputValues values
+const _getInputValues = (_inputValues: unknown[]): unknown[] => {
+  return _inputValues;
+};
+const memoizedInputValues = memoize(_getInputValues);
+
 const getCallbackRequest = (
   propertyRef: PropertyRef,
   lastCallbackInputValues: Record<string, unknown[]> | undefined,
   contributionsRecord: Record<string, ContributionState[]>,
   hostStore: HostStore,
 ) => {
-  const contributions = contributionsRecord[propertyRef.contribPoint];
-  const contribution = contributions[propertyRef.contribIndex];
-  const callback = contribution.callbacks![propertyRef.callbackIndex];
+  const contribPoint: string = propertyRef.contribPoint;
+  const contribIndex: number = propertyRef.contribIndex;
+  const callbackIndex: number = propertyRef.callbackIndex;
+  const inputIndex: number = propertyRef.inputIndex;
+  const contributions = contributionsRecord[contribPoint];
+  const contribution = contributions[contribIndex];
+  const callback = contribution.callbacks![callbackIndex];
   const _inputValues = getInputValues(
     callback.inputs!,
     contribution,
     hostStore,
   );
 
-  // This is a dummy function created to memoize the _inputValues values
-  const _getInputValues = (_inputValues: unknown[]): unknown[] => {
-    return _inputValues;
-  };
-  const memoizedInputValues = memoize(_getInputValues);
   const inputValues = memoizedInputValues(_inputValues);
 
-  const propRefId = propertyRef.id;
+  const propRefId = `${contribPoint}-${contribIndex}-${callbackIndex}-${inputIndex}`;
   if (lastCallbackInputValues) {
     const lastInputValues = lastCallbackInputValues[propRefId];
     if (lastInputValues && shallowEqualArrays(lastInputValues, inputValues)) {
@@ -142,7 +145,6 @@ function getHostStorePropertyRefs(): PropertyRef[] {
                 callbackIndex,
                 inputIndex,
                 property: formatObjPath(input.property),
-                id: `${contribPoint}-${contribIndex}-${callbackIndex}-${inputIndex}`,
               });
             }
           }),

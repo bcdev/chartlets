@@ -161,7 +161,6 @@ describe("handleHostStoreChange", () => {
     });
     const propertyRefs: PropertyRef[] = [
       {
-        id: "panel-0-0-0",
         contribPoint: "panel",
         contribIndex: 0,
         callbackIndex: 0,

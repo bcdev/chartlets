@@ -12,7 +12,6 @@ import type { ContributionState } from "@/types/state/contribution";
 import type { HostStore } from "@/types/state/host";
 import { store } from "@/store";
 import { shallowEqualArrays } from "@/utils/compare";
-import memoize from "fast-memoize";
 
 /**
  * A reference to a property of an input of a callback of a contribution.
@@ -72,16 +71,9 @@ export function getCallbackRequests(
   );
 }
 
-// This is a dummy function created to memoize the _inputValues values from
-// getCallbackRequest()
-const _getInputValues = (_inputValues: unknown[]): unknown[] => {
-  return _inputValues;
-};
-const memoizedInputValues = memoize(_getInputValues);
-
 const getCallbackRequest = (
   propertyRef: PropertyRef,
-  lastCallbackInputValues: Record<string, unknown[]> | undefined,
+  lastCallbackInputValues: Record<string, unknown[]>,
   contributionsRecord: Record<string, ContributionState[]>,
   hostStore: HostStore,
 ) => {
@@ -91,32 +83,23 @@ const getCallbackRequest = (
   const contributions = contributionsRecord[contribPoint];
   const contribution = contributions[contribIndex];
   const callback = contribution.callbacks![callbackIndex];
-  const _inputValues = getInputValues(
-    callback.inputs!,
-    contribution,
-    hostStore,
-  );
-
-  const inputValues = memoizedInputValues(_inputValues);
-
+  const inputValues = getInputValues(callback.inputs!, contribution, hostStore);
   const callbackId = `${contribPoint}-${contribIndex}-${callbackIndex}`;
-  if (lastCallbackInputValues) {
-    const lastInputValues = lastCallbackInputValues[callbackId];
-    if (lastInputValues && shallowEqualArrays(lastInputValues, inputValues)) {
-      // We no longer log, as the situation is quite common
-      // Enable error logging for debugging only:
-      // console.groupCollapsed("Skipping callback request");
-      // console.debug("inputValues", inputValues);
-      // console.groupEnd();
-      return undefined;
-    }
-    lastCallbackInputValues[callbackId] = inputValues;
-    store.setState({
-      lastCallbackInputValues: { ...lastCallbackInputValues },
-    });
-  } else {
-    store.setState({ lastCallbackInputValues: { [callbackId]: inputValues } });
+  const lastInputValues = lastCallbackInputValues[callbackId];
+  if (shallowEqualArrays(lastInputValues, inputValues)) {
+    // We no longer log, as the situation is quite common
+    // Enable error logging for debugging only:
+    // console.groupCollapsed("Skipping callback request");
+    // console.debug("inputValues", inputValues);
+    // console.groupEnd();
+    return undefined;
   }
+  store.setState({
+    lastCallbackInputValues: {
+      ...lastCallbackInputValues,
+      [callbackId]: inputValues,
+    },
+  });
   return { ...propertyRef, inputValues };
 };
 

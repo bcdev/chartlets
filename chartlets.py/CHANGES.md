@@ -1,6 +1,27 @@
-## Version 0.1.0 (in development)
+## Version 0.1.5 (in development)
 
-* Reorganised Chartlets project to better separate demo from library code.
+* Add `multiple` property for `Select` component to enable the
+  of multiple elements.
+
+
+## Version 0.1.4 (from 2025/03/06)
+
+* New (MUI) components
+  - `DataGrid`
+  - `Dialog`
+  - `Table`
+
+
+## Version 0.1.3 (from 2025/01/28)
+
+* **Chore:** Version bump to align CI process with GitHub release flow. 
+  No functional changes. This release ensures proper triggering of the CI 
+  pipeline for publishing to PyPI.
+
+
+## Version 0.1.0 (from 2025/01/14)
+
+* Reorganised Chartlets project to better separate demo from library code. 
   Created separate folder `demo` in `chartlets.py` that contains 
   a demo `server` package and example configuration.
   Also simplified demo server code:
@@ -19,11 +40,12 @@
 * Added `tooltip` property to interactive components.
 
 * New components
-  - `Switch`
+  - `Divider`
   - `RadioGroup` and `Radio`
-  - `Tabs`
+  - `Switch`
   - `Slider`
-  - `Skeleton` (currently supported for Vega Charts)
+  - `Tabs` and `Tab`
+ 
 
 ## Version 0.0.29 (from 2024/11/26)
 

@@ -72,7 +72,8 @@ export function getCallbackRequests(
   );
 }
 
-// This is a dummy function created to memoize the _inputValues values
+// This is a dummy function created to memoize the _inputValues values from
+// getCallbackRequest()
 const _getInputValues = (_inputValues: unknown[]): unknown[] => {
   return _inputValues;
 };
@@ -99,9 +100,9 @@ const getCallbackRequest = (
 
   const inputValues = memoizedInputValues(_inputValues);
 
-  const propRefId = `${contribPoint}-${contribIndex}-${callbackIndex}-${inputIndex}`;
+  const callbackId = `${contribPoint}-${contribIndex}-${callbackIndex}-${inputIndex}`;
   if (lastCallbackInputValues) {
-    const lastInputValues = lastCallbackInputValues[propRefId];
+    const lastInputValues = lastCallbackInputValues[callbackId];
     if (lastInputValues && shallowEqualArrays(lastInputValues, inputValues)) {
       // We no longer log, as the situation is quite common
       // Enable error logging for debugging only:
@@ -110,12 +111,12 @@ const getCallbackRequest = (
       // console.groupEnd();
       return undefined;
     }
-    lastCallbackInputValues[propRefId] = inputValues;
+    lastCallbackInputValues[callbackId] = inputValues;
     store.setState({
       lastCallbackInputValues: { ...lastCallbackInputValues },
     });
   } else {
-    store.setState({ lastCallbackInputValues: { [propRefId]: inputValues } });
+    store.setState({ lastCallbackInputValues: { [callbackId]: inputValues } });
   }
   return { ...propertyRef, inputValues };
 };

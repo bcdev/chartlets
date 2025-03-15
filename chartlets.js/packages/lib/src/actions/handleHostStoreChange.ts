@@ -1,4 +1,7 @@
+import memoize from "micro-memoize";
+
 import type {
+  Callback,
   CallbackRef,
   CallbackRequest,
   ContribRef,
@@ -11,6 +14,7 @@ import { invokeCallbacks } from "@/actions/helpers/invokeCallbacks";
 import type { ContributionState } from "@/types/state/contribution";
 import type { HostStore } from "@/types/state/host";
 import { store } from "@/store";
+import type { ContribPoint } from "@/types/model/extension";
 
 /**
  * A reference to a property of an input of a callback of a contribution.
@@ -33,7 +37,7 @@ export function handleHostStoreChange() {
     // Exit if there are no extensions (yet)
     return;
   }
-  const propertyRefs = getHostStorePropertyRefs();
+  const propertyRefs = getHostStorePropertyRefs(contributionsRecord);
   if (!propertyRefs || propertyRefs.length === 0) {
     // Exit if there are is nothing to be changed
     return;
@@ -66,37 +70,42 @@ function getCallbackRequests(
   });
 }
 
-// TODO: use a memoized selector to get hostStorePropertyRefs
-// Note that this will only be effective and once we split the
-// static contribution infos and dynamic contribution states.
-// The hostStorePropertyRefs only depend on the static
-// contribution infos.
-
 /**
  * Get the static list of host state property references for all contributions.
  */
-function getHostStorePropertyRefs(): PropertyRef[] {
-  const { contributionsRecord } = store.getState();
+const getHostStorePropertyRefs = memoize(_getHostStorePropertyRefs);
+
+function getCallbackfn(
+  contribPoint: string,
+  contribution: ContributionState,
+  contribIndex: number,
+) {
+  const propertyRefs: PropertyRef[] = [];
+  const callbacks: Callback[] = contribution.callbacks || [];
+  callbacks.forEach((callback, callbackIndex) => {
+    const inputs = callback.inputs || [];
+    inputs.forEach((input, inputIndex) => {
+      if (!input.noTrigger && input.id === "@app" && input.property) {
+        propertyRefs.push({
+          contribPoint,
+          contribIndex,
+          callbackIndex,
+          inputIndex,
+          property: formatObjPath(input.property),
+        });
+      }
+    });
+  });
+  return propertyRefs;
+}
+
+function _getHostStorePropertyRefs(
+  contributionsRecord: Record<ContribPoint, ContributionState[]>,
+): PropertyRef[] {
   const propertyRefs: PropertyRef[] = [];
   Object.getOwnPropertyNames(contributionsRecord).forEach((contribPoint) => {
     const contributions = contributionsRecord[contribPoint];
-    contributions.forEach((contribution, contribIndex) => {
-      (contribution.callbacks || []).forEach(
-        (callback, callbackIndex) =>
-          (callback.inputs || []).forEach((input, inputIndex) => {
-            if (!input.noTrigger && input.id === "@app" && input.property) {
-              propertyRefs.push({
-                contribPoint,
-                contribIndex,
-                callbackIndex,
-                inputIndex,
-                property: formatObjPath(input.property),
-              });
-            }
-          }),
-        [] as Input[],
-      );
-    });
+    contributions.forEach(getCallbackfn(propertyRefs, contribPoint));
   });
   return propertyRefs;
 }

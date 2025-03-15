@@ -13,7 +13,7 @@ import { invokeCallbacks } from "@/actions/helpers/invokeCallbacks";
 import type { ContributionState } from "@/types/state/contribution";
 import type { HostStore } from "@/types/state/host";
 import { store } from "@/store";
-import { shallowEqualArrays } from "@/utils/compare";
+import { shallowEqualArrays } from "@/utils/shallowEqualArrays";
 import type { ContribPoint } from "@/types/model/extension";
 
 /**
@@ -109,8 +109,9 @@ const getCallbackRequest = (
 /**
  * Get the static list of host state property references
  * for given contribution points.
+ * Note: the export exists only for testing.
  */
-const getPropertyRefsForContribPoints = memoize(
+export const getPropertyRefsForContribPoints = memoize(
   _getPropertyRefsForContribPoints,
 );
 

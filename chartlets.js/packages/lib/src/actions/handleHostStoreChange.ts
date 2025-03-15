@@ -7,7 +7,6 @@ import type {
   ContribRef,
   InputRef,
 } from "@/types/model/callback";
-import type { Input } from "@/types/model/channel";
 import { getInputValues } from "@/actions/helpers/getInputValues";
 import { formatObjPath } from "@/utils/objPath";
 import { invokeCallbacks } from "@/actions/helpers/invokeCallbacks";
@@ -37,7 +36,7 @@ export function handleHostStoreChange() {
     // Exit if there are no extensions (yet)
     return;
   }
-  const propertyRefs = getHostStorePropertyRefs(contributionsRecord);
+  const propertyRefs = getPropertyRefsForContribPoints(contributionsRecord);
   if (!propertyRefs || propertyRefs.length === 0) {
     // Exit if there are is nothing to be changed
     return;
@@ -71,18 +70,64 @@ function getCallbackRequests(
 }
 
 /**
- * Get the static list of host state property references for all contributions.
+ * Get the static list of host state property references
+ * for given contribution points.
  */
-const getHostStorePropertyRefs = memoize(_getHostStorePropertyRefs);
+const getPropertyRefsForContribPoints = memoize(
+  _getPropertyRefsForContribPoints,
+);
 
-function getCallbackfn(
+function _getPropertyRefsForContribPoints(
+  contributionsRecord: Record<ContribPoint, ContributionState[]>,
+): PropertyRef[] {
+  const propertyRefs: PropertyRef[] = [];
+  Object.getOwnPropertyNames(contributionsRecord).forEach((contribPoint) => {
+    const contributions = contributionsRecord[contribPoint];
+    propertyRefs.push(
+      ...getPropertyRefsForContributions(contribPoint, contributions),
+    );
+  });
+  return propertyRefs;
+}
+
+/**
+ * Get the static list of host state property references
+ * for given contributions.
+ */
+const getPropertyRefsForContributions = memoize(
+  _getPropertyRefsForContributions,
+);
+
+function _getPropertyRefsForContributions(
   contribPoint: string,
-  contribution: ContributionState,
+  contributions: ContributionState[],
+): PropertyRef[] {
+  const propertyRefs: PropertyRef[] = [];
+  contributions.forEach((contribution, contribIndex) => {
+    propertyRefs.push(
+      ...getPropertyRefsForCallbacks(
+        contribPoint,
+        contribIndex,
+        contribution.callbacks,
+      ),
+    );
+  });
+  return propertyRefs;
+}
+
+/**
+ * Get the static list of host state property references
+ * for given callbacks.
+ */
+const getPropertyRefsForCallbacks = memoize(_getPropertyRefsForCallbacks);
+
+function _getPropertyRefsForCallbacks(
+  contribPoint: string,
   contribIndex: number,
+  callbacks: Callback[] | undefined,
 ) {
   const propertyRefs: PropertyRef[] = [];
-  const callbacks: Callback[] = contribution.callbacks || [];
-  callbacks.forEach((callback, callbackIndex) => {
+  (callbacks || []).forEach((callback, callbackIndex) => {
     const inputs = callback.inputs || [];
     inputs.forEach((input, inputIndex) => {
       if (!input.noTrigger && input.id === "@app" && input.property) {
@@ -95,17 +140,6 @@ function getCallbackfn(
         });
       }
     });
-  });
-  return propertyRefs;
-}
-
-function _getHostStorePropertyRefs(
-  contributionsRecord: Record<ContribPoint, ContributionState[]>,
-): PropertyRef[] {
-  const propertyRefs: PropertyRef[] = [];
-  Object.getOwnPropertyNames(contributionsRecord).forEach((contribPoint) => {
-    const contributions = contributionsRecord[contribPoint];
-    contributions.forEach(getCallbackfn(propertyRefs, contribPoint));
   });
   return propertyRefs;
 }

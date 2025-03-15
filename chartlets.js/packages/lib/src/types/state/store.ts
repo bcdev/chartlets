@@ -44,4 +44,9 @@ export interface StoreState {
    * See hook `useThemeMode()`.
    */
   themeMode?: ThemeMode;
+  /**
+   * Store last input values for callback requests to avoid invoking them if
+   * there are no  state changes
+   */
+  lastCallbackInputValues: Record<string, unknown[]>;
 }

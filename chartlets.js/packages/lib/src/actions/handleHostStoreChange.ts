@@ -1,17 +1,20 @@
+import memoize from "micro-memoize";
+
 import type {
+  Callback,
   CallbackRef,
   CallbackRequest,
   ContribRef,
   InputRef,
 } from "@/types/model/callback";
-import type { Input } from "@/types/model/channel";
 import { getInputValues } from "@/actions/helpers/getInputValues";
 import { formatObjPath } from "@/utils/objPath";
 import { invokeCallbacks } from "@/actions/helpers/invokeCallbacks";
 import type { ContributionState } from "@/types/state/contribution";
 import type { HostStore } from "@/types/state/host";
 import { store } from "@/store";
-import { shallowEqualArrays } from "@/utils/compare";
+import { shallowEqualArrays } from "@/utils/shallowEqualArrays";
+import type { ContribPoint } from "@/types/model/extension";
 
 /**
  * A reference to a property of an input of a callback of a contribution.
@@ -34,7 +37,7 @@ export function handleHostStoreChange() {
     // Exit if there are no extensions (yet)
     return;
   }
-  const propertyRefs = getHostStorePropertyRefs();
+  const propertyRefs = getPropertyRefsForContribPoints(contributionsRecord);
   if (!propertyRefs || propertyRefs.length === 0) {
     // Exit if there are is nothing to be changed
     return;
@@ -103,36 +106,77 @@ const getCallbackRequest = (
   return { ...propertyRef, inputValues };
 };
 
-// TODO: use a memoized selector to get hostStorePropertyRefs
-// Note that this will only be effective and once we split the
-// static contribution infos and dynamic contribution states.
-// The hostStorePropertyRefs only depend on the static
-// contribution infos.
-
 /**
- * Get the static list of host state property references for all contributions.
+ * Get the static list of host state property references
+ * for given contribution points.
+ * Note: the export exists only for testing.
  */
-function getHostStorePropertyRefs(): PropertyRef[] {
-  const { contributionsRecord } = store.getState();
+export const getPropertyRefsForContribPoints = memoize(
+  _getPropertyRefsForContribPoints,
+);
+
+function _getPropertyRefsForContribPoints(
+  contributionsRecord: Record<ContribPoint, ContributionState[]>,
+): PropertyRef[] {
   const propertyRefs: PropertyRef[] = [];
   Object.getOwnPropertyNames(contributionsRecord).forEach((contribPoint) => {
     const contributions = contributionsRecord[contribPoint];
-    contributions.forEach((contribution, contribIndex) => {
-      (contribution.callbacks || []).forEach(
-        (callback, callbackIndex) =>
-          (callback.inputs || []).forEach((input, inputIndex) => {
-            if (!input.noTrigger && input.id === "@app" && input.property) {
-              propertyRefs.push({
-                contribPoint,
-                contribIndex,
-                callbackIndex,
-                inputIndex,
-                property: formatObjPath(input.property),
-              });
-            }
-          }),
-        [] as Input[],
-      );
+    propertyRefs.push(
+      ...getPropertyRefsForContributions(contribPoint, contributions),
+    );
+  });
+  return propertyRefs;
+}
+
+/**
+ * Get the static list of host state property references
+ * for given contributions.
+ */
+const getPropertyRefsForContributions = memoize(
+  _getPropertyRefsForContributions,
+);
+
+function _getPropertyRefsForContributions(
+  contribPoint: string,
+  contributions: ContributionState[],
+): PropertyRef[] {
+  const propertyRefs: PropertyRef[] = [];
+  contributions.forEach((contribution, contribIndex) => {
+    propertyRefs.push(
+      ...getPropertyRefsForCallbacks(
+        contribPoint,
+        contribIndex,
+        contribution.callbacks,
+      ),
+    );
+  });
+  return propertyRefs;
+}
+
+/**
+ * Get the static list of host state property references
+ * for given callbacks.
+ */
+const getPropertyRefsForCallbacks = memoize(_getPropertyRefsForCallbacks);
+
+function _getPropertyRefsForCallbacks(
+  contribPoint: string,
+  contribIndex: number,
+  callbacks: Callback[] | undefined,
+) {
+  const propertyRefs: PropertyRef[] = [];
+  (callbacks || []).forEach((callback, callbackIndex) => {
+    const inputs = callback.inputs || [];
+    inputs.forEach((input, inputIndex) => {
+      if (!input.noTrigger && input.id === "@app" && input.property) {
+        propertyRefs.push({
+          contribPoint,
+          contribIndex,
+          callbackIndex,
+          inputIndex,
+          property: formatObjPath(input.property),
+        });
+      }
     });
   });
   return propertyRefs;

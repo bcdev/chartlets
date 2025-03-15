@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { shallowEqualArrays } from "@/utils/compare";
+import { shallowEqualArrays } from "@/utils/shallowEqualArrays";
 
 describe("Test shallowEqualArrays()", () => {
   const arr_a: string[] = ["a", "b", "c"];
@@ -11,15 +11,16 @@ describe("Test shallowEqualArrays()", () => {
   const arr_g: (string | null)[] = ["a", "b", "c", null];
   const arr_h = [1, [1, 2, 3], [4, 5, 6]];
   const arr_i = [1, [1, 2, 3], [4, 5, 6]];
-  const arr_j: (number | string | null)[] = [1, 2, "c", null];
-  const arr_k: (number | string | null)[] = [1, 3, "c", null];
-  const arr_l: (number | string | null)[] = [1, 2, "c", null];
-  const arr_m: number[] = [1, 2];
-  const arr_n: number[] = [1, 2];
+  const arr_j: (number | string | null)[] = [1, 2.3, "c", null];
+  const arr_k: (number | string | null)[] = [1, 3.1, "c", null];
+  const arr_l: (number | string | null)[] = [1, 2.3, "c", null];
+  const arr_m: number[] = [1, 2, NaN, Infinity];
+  const arr_n: number[] = [1, 2, NaN, Infinity];
   const arr_o: null[] = [null];
   const arr_p: null[] = [null];
   const arr_q: null[] = [];
   it("works", () => {
+    expect(shallowEqualArrays(arr_a, arr_a)).toBe(true);
     expect(shallowEqualArrays(arr_a, arr_b)).toBe(true);
     expect(shallowEqualArrays(arr_a, arr_c)).toBe(false);
     expect(shallowEqualArrays(arr_a, arr_d)).toBe(false);
@@ -33,6 +34,7 @@ describe("Test shallowEqualArrays()", () => {
     expect(shallowEqualArrays(arr_m, arr_l)).toBe(false);
     expect(shallowEqualArrays(arr_o, arr_p)).toBe(true);
     expect(shallowEqualArrays(arr_p, arr_q)).toBe(false);
-    expect(shallowEqualArrays(arr_p)).toBe(false);
+    expect(shallowEqualArrays(arr_p, undefined)).toBe(false);
+    expect(shallowEqualArrays(undefined, arr_p)).toBe(false);
   });
 });

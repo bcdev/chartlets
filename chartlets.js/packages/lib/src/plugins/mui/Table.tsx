@@ -9,6 +9,9 @@ import {
 } from "@mui/material";
 import type { ComponentProps, ComponentState } from "@/index";
 import type { SxProps } from "@mui/system";
+import { Skeleton } from "@/plugins/mui/Skeleton";
+import type { ReactElement } from "react";
+import { useLoadingState } from "@/hooks";
 
 interface TableCellProps {
   id: string | number;
@@ -38,8 +41,19 @@ export const Table = ({
   columns,
   hover,
   stickyHeader,
+  skeletonProps,
   onChange,
 }: TableProps) => {
+  const loadingState = useLoadingState();
+  console.log("loadingState", loadingState);
+  if (!id) {
+    return;
+  }
+  const isLoading = loadingState[id];
+  if (isLoading == "failed") {
+    return <div>An error occurred while loading the data.</div>;
+  }
+
   if (!columns || columns.length === 0) {
     return <div>No columns provided.</div>;
   }
@@ -69,7 +83,7 @@ export const Table = ({
     }
   };
 
-  return (
+  const table: ReactElement | null = (
     <TableContainer component={Paper} sx={style} id={id}>
       <MuiTable stickyHeader={stickyHeader}>
         <TableHead>
@@ -106,5 +120,21 @@ export const Table = ({
         </TableBody>
       </MuiTable>
     </TableContainer>
+  );
+
+  const isSkeletonRequired = skeletonProps !== undefined;
+  if (!isSkeletonRequired) {
+    return table;
+  }
+  const skeletonId = id + "-skeleton";
+  return (
+    <Skeleton
+      isLoading={isLoading}
+      id={skeletonId}
+      style={style}
+      {...skeletonProps}
+    >
+      {table}
+    </Skeleton>
   );
 };

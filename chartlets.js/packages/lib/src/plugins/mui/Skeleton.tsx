@@ -25,12 +25,11 @@ export const Skeleton = ({
   isLoading,
   ...props
 }: SkeletonProps) => {
+  // Set default values if not available
   const opacity: number = props.opacity ?? 0.7;
   props.width = props.width ?? "100%";
   props.height = props.height ?? "100%";
-  console.log("opacity", opacity);
-  console.log("props.width", props.width);
-  console.log("props.height", props.height);
+
   return (
     <div style={{ position: "relative", ...style }} id={id}>
       {children}

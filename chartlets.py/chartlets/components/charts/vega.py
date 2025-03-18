@@ -36,10 +36,6 @@ class VegaChart(Component):
     chart: altair.Chart | None = None
     """The [Vega Altair chart](https://altair-viz.github.io/gallery/index.html)."""
 
-    skeletonProps: dict[str, Any] | None = None
-    """Add the skeleton props from the Skeleton MUI component to render a 
-    skeleton during long loading times."""
-
     def to_dict(self) -> dict[str, Any]:
         d = super().to_dict()
         if self.chart is not None:

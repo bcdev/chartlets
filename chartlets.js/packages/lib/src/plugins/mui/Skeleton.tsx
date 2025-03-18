@@ -11,27 +11,52 @@ interface SkeletonState extends Omit<ComponentState, "type" | "children"> {
   width?: MuiSkeletonProps["width"];
   height?: MuiSkeletonProps["height"];
   animation?: MuiSkeletonProps["animation"];
-  loading: boolean;
+  opacity?: number;
+  isLoading: boolean;
   children?: ReactElement;
 }
 
-interface SkeletonProps extends SkeletonState {}
+export interface SkeletonProps extends SkeletonState {}
 
 export const Skeleton = ({
   id,
   style,
-  loading,
   children,
-  ...skeletonProps
+  isLoading,
+  ...props
 }: SkeletonProps) => {
-  return loading && skeletonProps && Object.keys(skeletonProps).length > 0 ? (
-    <MuiSkeleton
-      id={id}
-      style={style}
-      {...skeletonProps}
-      data-testid="skeleton-test-id"
-    />
-  ) : (
-    children
+  const opacity: number = props.opacity ?? 0.7;
+  props.width = props.width ?? "100%";
+  props.height = props.height ?? "100%";
+  console.log("opacity", opacity);
+  console.log("props.width", props.width);
+  console.log("props.height", props.height);
+  return (
+    <div style={{ position: "relative", ...style }} id={id}>
+      {children}
+      {isLoading && (
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: `rgba(255, 255, 255, ${opacity})`,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1,
+          }}
+        >
+          <MuiSkeleton
+            id={id}
+            style={{ transform: "none" }}
+            {...props}
+            data-testid="skeleton-test-id"
+          />
+        </div>
+      )}
+    </div>
   );
 };

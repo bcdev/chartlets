@@ -1,11 +1,12 @@
 import { VegaLite } from "react-vega";
 import type { TopLevelSpec } from "vega-lite";
 
-import type { ComponentProps, ComponentState } from "@/index";
-import { useSignalListeners } from "./hooks/useSignalListeners";
+import { type ComponentProps, type ComponentState } from "@/index";
 import { useVegaTheme, type VegaTheme } from "./hooks/useVegaTheme";
-import { useEffect, useState } from "react";
+import { useSignalListeners } from "@/plugins/vega/hooks/useSignalListeners";
 import { Skeleton } from "@/plugins/mui/Skeleton";
+import { useLoadingState } from "@/hooks";
+import type { ReactElement } from "react";
 
 interface VegaChartState extends ComponentState {
   theme?: VegaTheme | "default" | "system";
@@ -27,29 +28,39 @@ export function VegaChart({
 }: VegaChartProps) {
   const signalListeners = useSignalListeners(initialChart, type, id, onChange);
   const vegaTheme = useVegaTheme(theme);
-  const [chart, setChart] = useState<TopLevelSpec | null | undefined>(null);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (initialChart) {
-      setLoading(false);
-      setChart(initialChart);
-    }
-  }, [initialChart]);
+  const loadingState = useLoadingState();
+  if (!id) {
+    return;
+  }
+  const isLoading = loadingState[id];
 
+  if (isLoading == "failed") {
+    return <div>An error occurred while loading the data.</div>;
+  }
+  const chart: ReactElement | null = initialChart ? (
+    <VegaLite
+      theme={vegaTheme}
+      spec={initialChart}
+      signalListeners={signalListeners}
+      actions={false}
+    />
+  ) : (
+    <div />
+  );
+  const isSkeletonRequired = skeletonProps !== undefined;
+  if (!isSkeletonRequired) {
+    return chart;
+  }
+  const skeletonId = id + "-skeleton";
   return (
-    <Skeleton loading={loading} {...skeletonProps}>
-      {chart ? (
-        <VegaLite
-          theme={vegaTheme}
-          spec={chart}
-          style={style}
-          signalListeners={signalListeners}
-          actions={false}
-        />
-      ) : (
-        <div id={id} style={style} />
-      )}
+    <Skeleton
+      isLoading={isLoading}
+      id={skeletonId}
+      style={style}
+      {...skeletonProps}
+    >
+      {chart}
     </Skeleton>
   );
 }

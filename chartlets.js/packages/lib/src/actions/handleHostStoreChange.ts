@@ -11,6 +11,7 @@ import { invokeCallbacks } from "@/actions/helpers/invokeCallbacks";
 import type { ContributionState } from "@/types/state/contribution";
 import type { HostStore } from "@/types/state/host";
 import { store } from "@/store";
+import { shallowEqualArrays } from "@/utils/compare";
 
 /**
  * A reference to a property of an input of a callback of a contribution.
@@ -43,28 +44,68 @@ export function handleHostStoreChange() {
     contributionsRecord,
     hostStore,
   );
-  if (callbackRequests && callbackRequests.length > 0) {
-    invokeCallbacks(callbackRequests);
+
+  const filteredCallbackRequests = callbackRequests.filter(
+    (callbackRequest): callbackRequest is CallbackRequest =>
+      callbackRequest !== undefined,
+  );
+  if (filteredCallbackRequests && filteredCallbackRequests.length > 0) {
+    invokeCallbacks(filteredCallbackRequests);
   }
 }
 
-function getCallbackRequests(
+// Exporting for testing only
+export function getCallbackRequests(
   propertyRefs: PropertyRef[],
   contributionsRecord: Record<string, ContributionState[]>,
   hostStore: HostStore,
-): CallbackRequest[] {
-  return propertyRefs.map((propertyRef) => {
-    const contributions = contributionsRecord[propertyRef.contribPoint];
-    const contribution = contributions[propertyRef.contribIndex];
-    const callback = contribution.callbacks![propertyRef.callbackIndex];
-    const inputValues = getInputValues(
-      callback.inputs!,
-      contribution,
+): (CallbackRequest | undefined)[] {
+  const { lastCallbackInputValues } = store.getState();
+  return propertyRefs.map((propertyRef) =>
+    getCallbackRequest(
+      propertyRef,
+      lastCallbackInputValues,
+      contributionsRecord,
       hostStore,
-    );
-    return { ...propertyRef, inputValues };
-  });
+    ),
+  );
 }
+
+const getCallbackRequest = (
+  propertyRef: PropertyRef,
+  lastCallbackInputValues: Record<string, unknown[]>,
+  contributionsRecord: Record<string, ContributionState[]>,
+  hostStore: HostStore,
+) => {
+  const contribPoint: string = propertyRef.contribPoint;
+  const contribIndex: number = propertyRef.contribIndex;
+  const callbackIndex: number = propertyRef.callbackIndex;
+  const contributions = contributionsRecord[contribPoint];
+  const contribution = contributions[contribIndex];
+  const callback = contribution.callbacks![callbackIndex];
+  const inputValues = getInputValues(callback.inputs!, contribution, hostStore);
+  const callbackId = `${contribPoint}-${contribIndex}-${callbackIndex}`;
+  const lastInputValues = lastCallbackInputValues[callbackId];
+  if (shallowEqualArrays(lastInputValues, inputValues)) {
+    // We no longer log, as the situation is quite common
+    // Enable error logging for debugging only:
+    // console.groupCollapsed("Skipping callback request");
+    // console.debug("inputValues", inputValues);
+    // console.groupEnd();
+    return undefined;
+  }
+  store.setState({
+    lastCallbackInputValues: {
+      ...lastCallbackInputValues,
+      [callbackId]: inputValues,
+    },
+  });
+  // Collect output IDs for updating their respective loading states
+  const outputs = contribution.callbacks?.[callbackIndex]["outputs"];
+  const outputIds: string[] =
+    outputs?.map((output) => output.id as string) ?? [];
+  return { ...propertyRef, inputValues, outputIds };
+};
 
 // TODO: use a memoized selector to get hostStorePropertyRefs
 // Note that this will only be effective and once we split the

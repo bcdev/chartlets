@@ -25,3 +25,11 @@ class Skeleton(Component):
     - 'wave': A shimmering animation.
     - False: No animation.
     """
+
+    opacity: float | None  = None
+    """Opacity to change what is seen during the load time.
+    If opacity is set to 1, it will hide everything behind it.
+    If opacity is less than 1 but not 0, it provides a opaque view of the 
+    background
+    If opacity is set to 0, it still shows the minimal amount of skeleton.  
+    """

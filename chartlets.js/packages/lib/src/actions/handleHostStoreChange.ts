@@ -100,7 +100,11 @@ const getCallbackRequest = (
       [callbackId]: inputValues,
     },
   });
-  return { ...propertyRef, inputValues };
+  // Collect output IDs for updating their respective loading states
+  const outputs = contribution.callbacks?.[callbackIndex]["outputs"];
+  const outputIds: string[] =
+    outputs?.map((output) => output.id as string) ?? [];
+  return { ...propertyRef, inputValues, outputIds };
 };
 
 // TODO: use a memoized selector to get hostStorePropertyRefs

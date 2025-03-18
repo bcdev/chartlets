@@ -1,9 +1,12 @@
 import { VegaLite } from "react-vega";
 import type { TopLevelSpec } from "vega-lite";
 
-import type { ComponentState, ComponentProps } from "@/index";
-import { useSignalListeners } from "./hooks/useSignalListeners";
+import { type ComponentProps, type ComponentState } from "@/index";
 import { useVegaTheme, type VegaTheme } from "./hooks/useVegaTheme";
+import { useSignalListeners } from "@/plugins/vega/hooks/useSignalListeners";
+import { Skeleton } from "@/plugins/mui/Skeleton";
+import { useLoadingState } from "@/hooks";
+import type { ReactElement } from "react";
 
 interface VegaChartState extends ComponentState {
   theme?: VegaTheme | "default" | "system";
@@ -19,22 +22,45 @@ export function VegaChart({
   id,
   style,
   theme,
-  chart,
+  chart: initialChart,
+  skeletonProps,
   onChange,
 }: VegaChartProps) {
-  const signalListeners = useSignalListeners(chart, type, id, onChange);
+  const signalListeners = useSignalListeners(initialChart, type, id, onChange);
   const vegaTheme = useVegaTheme(theme);
-  if (chart) {
-    return (
-      <VegaLite
-        theme={vegaTheme}
-        spec={chart}
-        style={style}
-        signalListeners={signalListeners}
-        actions={false}
-      />
-    );
-  } else {
-    return <div id={id} style={style} />;
+
+  const loadingState = useLoadingState();
+  if (!id) {
+    return;
   }
+  const isLoading = loadingState[id];
+
+  if (isLoading == "failed") {
+    return <div>An error occurred while loading the data.</div>;
+  }
+  const chart: ReactElement | null = initialChart ? (
+    <VegaLite
+      theme={vegaTheme}
+      spec={initialChart}
+      signalListeners={signalListeners}
+      actions={false}
+    />
+  ) : (
+    <div />
+  );
+  const isSkeletonRequired = skeletonProps !== undefined;
+  if (!isSkeletonRequired) {
+    return chart;
+  }
+  const skeletonId = id + "-skeleton";
+  return (
+    <Skeleton
+      isLoading={isLoading}
+      id={skeletonId}
+      style={style}
+      {...skeletonProps}
+    >
+      {chart}
+    </Skeleton>
+  );
 }

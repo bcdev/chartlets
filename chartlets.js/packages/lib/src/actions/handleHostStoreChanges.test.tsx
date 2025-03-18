@@ -201,6 +201,7 @@ describe("handleHostStoreChange", () => {
     expect(result[0]).toEqual({
       ...propertyRefs[0],
       inputValues: ["CHL"],
+      outputIds: [],
     });
 
     // second call -> memoized -> should not create callback request
@@ -213,6 +214,7 @@ describe("handleHostStoreChange", () => {
     expect(result[0]).toEqual({
       ...propertyRefs[0],
       inputValues: ["TMP"],
+      outputIds: [],
     });
 
     // fourth call -> memoized -> should not invoke callback

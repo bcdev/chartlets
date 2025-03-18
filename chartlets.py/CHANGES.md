@@ -2,6 +2,8 @@
 
 * Add `multiple` property for `Select` component to enable the
   of multiple elements.
+* New (MUI) components
+  - `Skeleton` (currently supported for Vega Charts and Tables)
 
 
 ## Version 0.1.4 (from 2025/03/06)

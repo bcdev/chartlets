@@ -26,7 +26,7 @@ export function getInputValues(
 
 const noValue = {};
 
-export function getInputValue(
+function getInputValue(
   input: Input,
   contributionState: ContributionState,
   hostStore?: HostStore,

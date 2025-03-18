@@ -30,5 +30,9 @@ export interface StoreState {
    * there are no  state changes
    */
   lastCallbackInputValues: Record<string, unknown[]>;
+  /**
+   * Store the loading state of each output ID of the callback that is invoked.
+   * If the request fails, the state is set to `failed`
+   */
   loadingState: Record<string, boolean | "failed">;
 }

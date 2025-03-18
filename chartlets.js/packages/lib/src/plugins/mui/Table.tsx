@@ -45,7 +45,6 @@ export const Table = ({
   onChange,
 }: TableProps) => {
   const loadingState = useLoadingState();
-  console.log("loadingState", loadingState);
   if (!id) {
     return;
   }

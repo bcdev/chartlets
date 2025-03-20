@@ -155,4 +155,47 @@ _Coming soon._
 
 ## Extending the framework
 
-_Coming soon._
+### Add your Plugins
+
+#### DataGrid Usage from Chartlets v0.1.5
+In the `v0.1.5` release of Chartlets, the `@mui/x-data-grid` library was removed 
+from `peerDependencies`. This change was made to give users the flexibility 
+to install the library only if needed, as it is relatively large 
+(>6MB at the time of writing).
+
+However, the `DataGrid` component remains fully supported. To use it, 
+follow these steps:
+
+1. Create a Plugin Function 
+
+Define a plugin function that integrates DataGrid with Chartlets.
+
+```typescript
+import { DataGrid } from "chartlets/packages/lib/src/plugins/mui/DataGrid";
+import type { Plugin } from "chartlets";
+
+export default function your_plugin(): Plugin {
+  return {
+    components: [
+      ["DataGrid", DataGrid],
+    ],
+  };
+}
+
+```
+2. Pass the Plugin to `initializeContributions`
+Register the plugin within Chartlets using initializeContributions.
+
+```typescript
+import your_plugin from "./plugin";
+
+initializeContributions({
+      plugins: [your_plugin()],
+      .....
+})
+```
+Once this setup is complete, `DataGrid` will be available for use, allowing 
+users to create server-side panels using this component. 
+
+_More Coming soon._
+

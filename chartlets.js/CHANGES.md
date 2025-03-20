@@ -3,6 +3,9 @@
 * Add `multiple` property for `Select` component to enable the selection
   of multiple elements. The `default` mode is supported at the moment.
 
+* Static information about callbacks retrieved from API is not cached
+  reducing unnecessary processing and improving performance. (#113)
+
 * Callbacks will now only be invoked when there’s an actual change in state, 
   reducing unnecessary processing and improving performance. (#112)
 

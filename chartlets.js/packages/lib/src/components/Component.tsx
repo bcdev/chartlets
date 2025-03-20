@@ -1,12 +1,7 @@
 import { type FC } from "react";
-import { type ComponentChangeHandler } from "@/types/state/event";
 import { isString } from "@/utils/isString";
 import { registry } from "@/components/registry";
-
-export interface ComponentProps {
-  type: string;
-  onChange: ComponentChangeHandler;
-}
+import type { ComponentProps } from "@/types/state/plugin";
 
 export const Component: FC<ComponentProps> = (props: ComponentProps) => {
   const ActualComponent = isString(props.type) && registry.lookup(props.type);

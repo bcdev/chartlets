@@ -2,11 +2,11 @@ import type { FC } from "react";
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { configureFramework, resolvePlugin } from "./configureFramework";
 import { store } from "@/store";
-import { type ComponentRegistration, registry } from "@/components/registry";
+import { registry } from "@/components/registry";
 import type { HostStore } from "@/types/state/host";
-import type { Plugin } from "@/types/state/plugin";
+import type { RegistrableComponent, Plugin } from "@/types/state/plugin";
 
-function getComponents(): [string, ComponentRegistration][] {
+function getComponents(): [string, RegistrableComponent][] {
   interface DivProps {
     text: string;
   }

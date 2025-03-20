@@ -1,10 +1,4 @@
-import type { ComponentType } from "react";
-
-import type { ComponentProps } from "@/components/Component";
-
-export type ComponentRegistration =
-  | ComponentType<Record<string, unknown>>
-  | ComponentType<ComponentProps>;
+import type { RegistrableComponent } from "@/types/state/plugin";
 
 /**
  * A registry for Chartlets components.
@@ -29,14 +23,14 @@ export interface Registry {
    * @param type The Chartlets component's unique type name.
    * @param component A functional React component.
    */
-  register(type: string, component: ComponentRegistration): () => void;
+  register(type: string, component: RegistrableComponent): () => void;
 
   /**
    * Lookup the component of the provided type.
    *
    * @param type The Chartlets component's type name.
    */
-  lookup(type: string): ComponentRegistration | undefined;
+  lookup(type: string): RegistrableComponent | undefined;
 
   /**
    * Clears the registry.
@@ -52,9 +46,9 @@ export interface Registry {
 
 // export for testing only
 export class RegistryImpl implements Registry {
-  private components = new Map<string, ComponentRegistration>();
+  private components = new Map<string, RegistrableComponent>();
 
-  register(type: string, component: ComponentRegistration): () => void {
+  register(type: string, component: RegistrableComponent): () => void {
     const oldComponent = this.components.get(type);
     this.components.set(type, component);
     return () => {
@@ -66,7 +60,7 @@ export class RegistryImpl implements Registry {
     };
   }
 
-  lookup(type: string): ComponentRegistration | undefined {
+  lookup(type: string): RegistrableComponent | undefined {
     return this.components.get(type);
   }
 

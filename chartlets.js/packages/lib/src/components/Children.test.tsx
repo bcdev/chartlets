@@ -2,7 +2,6 @@ import type { FC } from "react";
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { registry } from "@/components/registry";
-import { type ComponentProps } from "./Component";
 import { Children } from "./Children";
 
 describe("Children", () => {
@@ -33,7 +32,7 @@ describe("Children", () => {
   });
 
   it("should render all child types", () => {
-    interface DivProps extends ComponentProps {
+    interface DivProps {
       text: string;
     }
     const Div: FC<DivProps> = ({ text }) => <div>{text}</div>;

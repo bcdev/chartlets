@@ -40,6 +40,7 @@ export default defineConfig({
         chartlets: resolve(__dirname, "src/index.ts"),
         "mui-plugin": resolve(__dirname, "src/plugins/mui/index.ts"),
         "vega-plugin": resolve(__dirname, "src/plugins/vega/index.ts"),
+        datagrid: resolve(__dirname, "src/plugins/mui/DataGrid.tsx"),
       },
       //formats: ["es"],
     },

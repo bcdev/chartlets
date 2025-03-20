@@ -177,7 +177,7 @@ follow these steps:
 Define a plugin function that integrates DataGrid with Chartlets.
 
 ```typescript
-import { DataGrid } from "chartlets/packages/lib/src/plugins/mui/DataGrid";
+import { DataGrid } from "chartlets/DataGrid";
 import type { Plugin } from "chartlets";
 
 export default function your_plugin(): Plugin {

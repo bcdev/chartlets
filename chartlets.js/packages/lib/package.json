@@ -44,6 +44,11 @@
       "types": "./dist/plugins/vega/index.d.ts",
       "module": "./dist/vega-plugin.js",
       "require": "./dist/vega-plugin.cjs"
+    },
+    "./datagrid": {
+      "types": "./dist/plugins/mui/DataGrid.d.ts",
+      "module": "./dist/dataGrid.js",
+      "require": "./dist/dataGrid.cjs"
     }
   },
   "scripts": {

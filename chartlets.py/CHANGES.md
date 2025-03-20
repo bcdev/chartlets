@@ -3,6 +3,8 @@
 * Add `multiple` property for `Select` component to enable the
   of multiple elements.
 
+* Add support for `Python 3.13`
+
 
 ## Version 0.1.4 (from 2025/03/06)
 

@@ -166,6 +166,12 @@ to install the library only if needed, as it is relatively large
 However, the `DataGrid` component remains fully supported. To use it, 
 follow these steps:
 
+0. Install `@mui/x-data-grid` in your application
+
+```shell
+  npm i @mui/x-data-grid
+```
+
 1. Create a Plugin Function 
 
 Define a plugin function that integrates DataGrid with Chartlets.

@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { store } from "@/store";
 import {
   getCallbackRequests,
+  getPropertyRefsForContribPoints,
   handleHostStoreChange,
   type PropertyRef,
 } from "./handleHostStoreChange";
@@ -11,6 +12,7 @@ import type { ContributionState } from "@/types/state/contribution";
 describe("handleHostStoreChange", () => {
   let listeners: (() => void)[] = [];
   let hostState: Record<string, unknown> = {};
+  // noinspection JSUnusedGlobalSymbols
   const hostStore = {
     get: (key: string) => hostState[key],
     set: (key: string, value: unknown) => {
@@ -44,6 +46,76 @@ describe("handleHostStoreChange", () => {
     hostStore.set("themeMode", "light");
     handleHostStoreChange();
     expect(store.getState().themeMode).toEqual("light");
+  });
+
+  it("should memoize computation of property refs", () => {
+    const contributionsRecord: Record<string, ContributionState[]> = {
+      panels: [
+        {
+          name: "p0",
+          container: { title: "Panel A" },
+          extension: "e0",
+          componentResult: {},
+          initialState: {},
+          callbacks: [
+            {
+              function: {
+                name: "callback",
+                parameters: [],
+                return: {},
+              },
+              inputs: [{ id: "@app", property: "variableName" }],
+              outputs: [{ id: "select", property: "value" }],
+            },
+            {
+              function: {
+                name: "callback2",
+                parameters: [],
+                return: {},
+              },
+              inputs: [
+                { id: "@app", property: "datasetId" },
+                { id: "@app", property: "variableName" },
+              ],
+              outputs: [{ id: "plot", property: "value" }],
+            },
+          ],
+        },
+      ],
+    };
+    const propertyRefs1 = getPropertyRefsForContribPoints(contributionsRecord);
+    const propertyRefs2 = getPropertyRefsForContribPoints(contributionsRecord);
+    const propertyRefs3 = getPropertyRefsForContribPoints({
+      ...contributionsRecord,
+    });
+    expect(propertyRefs1).toBe(propertyRefs2);
+    expect(propertyRefs2).not.toBe(propertyRefs3);
+    expect(propertyRefs1).toEqual([
+      {
+        callbackIndex: 0,
+        contribIndex: 0,
+        contribPoint: "panels",
+        inputIndex: 0,
+        property: "variableName",
+      },
+      {
+        callbackIndex: 1,
+        contribIndex: 0,
+        contribPoint: "panels",
+        inputIndex: 0,
+        property: "datasetId",
+      },
+      {
+        callbackIndex: 1,
+        contribIndex: 0,
+        contribPoint: "panels",
+        inputIndex: 1,
+        property: "variableName",
+      },
+    ]);
+    expect(propertyRefs1).toEqual(propertyRefs2);
+    expect(propertyRefs1).toEqual(propertyRefs3);
+    expect(propertyRefs2).toEqual(propertyRefs3);
   });
 
   it("should generate callback requests", () => {
@@ -110,12 +182,20 @@ describe("handleHostStoreChange", () => {
       },
     });
     hostStore.set("variableName", "CHL");
-    handleHostStoreChange();
+    expect(handleHostStoreChange()).toEqual([
+      {
+        contribPoint: "panel",
+        contribIndex: 0,
+        callbackIndex: 0,
+        inputIndex: 0,
+        inputValues: ["CHL"],
+        property: "variableName",
+      },
+    ]);
 
-    // calling it second time for coverage. No state change changes the
-    // control flow
-    handleHostStoreChange();
-    //   TODO: Update this test to assert the generated callback request
+    // calling it second time for coverage,
+    // because the no-state-change changes the control flow
+    expect(handleHostStoreChange()).toBeUndefined();
   });
 
   it("should memoize second call with same arguments", () => {

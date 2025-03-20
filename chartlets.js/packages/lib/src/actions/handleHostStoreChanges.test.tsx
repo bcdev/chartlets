@@ -12,6 +12,7 @@ import type { ContributionState } from "@/types/state/contribution";
 describe("handleHostStoreChange", () => {
   let listeners: (() => void)[] = [];
   let hostState: Record<string, unknown> = {};
+  // noinspection JSUnusedGlobalSymbols
   const hostStore = {
     get: (key: string) => hostState[key],
     set: (key: string, value: unknown) => {
@@ -181,12 +182,20 @@ describe("handleHostStoreChange", () => {
       },
     });
     hostStore.set("variableName", "CHL");
-    handleHostStoreChange();
+    expect(handleHostStoreChange()).toEqual([
+      {
+        contribPoint: "panel",
+        contribIndex: 0,
+        callbackIndex: 0,
+        inputIndex: 0,
+        inputValues: ["CHL"],
+        property: "variableName",
+      },
+    ]);
 
-    // calling it second time for coverage. No state change changes the
-    // control flow
-    handleHostStoreChange();
-    //   TODO: Update this test to assert the generated callback request
+    // calling it second time for coverage,
+    // because the no-state-change changes the control flow
+    expect(handleHostStoreChange()).toBeUndefined();
   });
 
   it("should memoize second call with same arguments", () => {

@@ -24,23 +24,31 @@ export interface PropertyRef extends ContribRef, CallbackRef, InputRef {
   property: string;
 }
 
-export function handleHostStoreChange() {
+/**
+ * This action is called once a host store change has been detected.
+ * Note this will only create callback requests for callbacks whose input
+ * value are affected by the change.
+ *
+ * @returns The array of callback requests made or `undefined`,
+ *   if no callback requests have been made.
+ */
+export function handleHostStoreChange(): CallbackRequest[] | undefined {
   const { extensions, configuration, contributionsRecord } = store.getState();
   const { hostStore } = configuration;
   if (!hostStore) {
     // Exit if no host store configured.
     // Actually, we should not come here.
-    return;
+    return undefined;
   }
   synchronizeThemeMode(hostStore);
   if (extensions.length === 0) {
     // Exit if there are no extensions (yet)
-    return;
+    return undefined;
   }
   const propertyRefs = getPropertyRefsForContribPoints(contributionsRecord);
   if (!propertyRefs || propertyRefs.length === 0) {
     // Exit if there are is nothing to be changed
-    return;
+    return undefined;
   }
   const callbackRequests = getCallbackRequests(
     propertyRefs,
@@ -52,9 +60,12 @@ export function handleHostStoreChange() {
     (callbackRequest): callbackRequest is CallbackRequest =>
       callbackRequest !== undefined,
   );
-  if (filteredCallbackRequests && filteredCallbackRequests.length > 0) {
-    invokeCallbacks(filteredCallbackRequests);
+  if (!filteredCallbackRequests || !filteredCallbackRequests.length) {
+    return undefined;
   }
+
+  invokeCallbacks(filteredCallbackRequests);
+  return filteredCallbackRequests;
 }
 
 // Exporting for testing only

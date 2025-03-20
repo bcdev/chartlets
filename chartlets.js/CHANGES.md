@@ -6,6 +6,9 @@
 * Static information about callbacks retrieved from API is not cached
   reducing unnecessary processing and improving performance. (#113)
 
+* Relaxed requirements for adding new components to Chartlets.js via 
+  plugins. Implementing `ComponentProps` is now optional. (#115)
+
 * Callbacks will now only be invoked when there’s an actual change in state, 
   reducing unnecessary processing and improving performance. (#112)
 

@@ -37,7 +37,7 @@ describe("Children", () => {
       text: string;
     }
     const Div: FC<DivProps> = ({ text }) => <div>{text}</div>;
-    registry.register("Div", Div as FC<ComponentProps>);
+    registry.register("Div", Div);
     const divProps = {
       type: "Div",
       text: "Hello",

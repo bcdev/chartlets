@@ -5,7 +5,10 @@ import type { ComponentProps } from "@/components/Component";
  * A component registration - a pair comprising the component type name
  * and the React component.
  */
-export type ComponentRegistration = [string, ComponentType<ComponentProps>];
+export type ComponentRegistration = [
+  string,
+  ComponentType<ComponentProps> | ComponentType,
+];
 
 /**
  * A framework plugin.

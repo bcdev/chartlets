@@ -1,3 +1,4 @@
+import { type FC } from "react";
 import { type ComponentChangeHandler } from "@/types/state/event";
 import { type ComponentNode, isComponentState } from "@/types/state/component";
 import { Component } from "./Component";
@@ -7,7 +8,10 @@ export interface ChildrenProps {
   onChange: ComponentChangeHandler;
 }
 
-export function Children({ nodes, onChange }: ChildrenProps) {
+export const Children: FC<ChildrenProps> = ({
+  nodes,
+  onChange,
+}: ChildrenProps) => {
   if (!nodes || nodes.length === 0) {
     return null;
   }
@@ -27,4 +31,4 @@ export function Children({ nodes, onChange }: ChildrenProps) {
       })}
     </>
   );
-}
+};

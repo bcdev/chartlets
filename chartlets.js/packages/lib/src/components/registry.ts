@@ -2,6 +2,10 @@ import type { ComponentType } from "react";
 
 import type { ComponentProps } from "@/components/Component";
 
+export type ComponentRegistration =
+  | ComponentType<Record<string, unknown>>
+  | ComponentType<ComponentProps>;
+
 /**
  * A registry for Chartlets components.
  */
@@ -9,8 +13,10 @@ export interface Registry {
   /**
    * Register a React component that renders a Chartlets component.
    *
-   * `component` must be a functional React component with at
-   * least the following two component props:
+   * `component` can be any React component. However, if you want to register
+   * a custom, reactive component, then `component` must be of type
+   * `ComponentType<ComponentProps>` where a `ComponentProps` has at
+   * least the following two properties:
    *
    *   - `type: string`: your component's type name.
    *      This will be the same as the `type` used for registration.
@@ -23,14 +29,14 @@ export interface Registry {
    * @param type The Chartlets component's unique type name.
    * @param component A functional React component.
    */
-  register(type: string, component: ComponentType<ComponentProps>): () => void;
+  register(type: string, component: ComponentRegistration): () => void;
 
   /**
    * Lookup the component of the provided type.
    *
    * @param type The Chartlets component's type name.
    */
-  lookup(type: string): ComponentType<ComponentProps> | undefined;
+  lookup(type: string): ComponentRegistration | undefined;
 
   /**
    * Clears the registry.
@@ -46,9 +52,9 @@ export interface Registry {
 
 // export for testing only
 export class RegistryImpl implements Registry {
-  private components = new Map<string, ComponentType<ComponentProps>>();
+  private components = new Map<string, ComponentRegistration>();
 
-  register(type: string, component: ComponentType<ComponentProps>): () => void {
+  register(type: string, component: ComponentRegistration): () => void {
     const oldComponent = this.components.get(type);
     this.components.set(type, component);
     return () => {
@@ -60,7 +66,7 @@ export class RegistryImpl implements Registry {
     };
   }
 
-  lookup(type: string): ComponentType<ComponentProps> | undefined {
+  lookup(type: string): ComponentRegistration | undefined {
     return this.components.get(type);
   }
 
@@ -77,12 +83,5 @@ export class RegistryImpl implements Registry {
  * The Chartlets component registry.
  *
  * Use `registry.register("C", C)` to register your own component `C`.
- *
- * `C` must be a functional React component with at least the following
- * two properties:
- *
- *   - `type: string`: your component's type name.
- *   - `onChange: ComponentChangeHandler`: an event handler
- *     that your component may call to signal change events.
  */
 export const registry = new RegistryImpl();

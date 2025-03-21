@@ -14,7 +14,7 @@ export { handleComponentChange } from "@/actions/handleComponentChange";
 export { updateContributionContainer } from "@/actions/updateContributionContainer";
 
 // React components
-export { Component, type ComponentProps } from "@/components/Component";
+export { Component } from "@/components/Component";
 export { Children, type ChildrenProps } from "@/components/Children";
 
 // React hooks
@@ -30,5 +30,5 @@ export {
 
 // Application interface
 export type { HostStore, MutableHostStore } from "@/types/state/host";
-export type { Plugin, PluginLike } from "@/types/state/plugin";
+export type { ComponentProps, Plugin, PluginLike } from "@/types/state/plugin";
 export type { FrameworkOptions } from "@/types/state/options";

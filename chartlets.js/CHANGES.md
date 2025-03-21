@@ -9,6 +9,11 @@
 * Callbacks will now only be invoked when there’s an actual change in state, 
   reducing unnecessary processing and improving performance. (#112)
 
+* Removed `@mui/x-data-grid` from `peerDependencies`, but `DataGrid` 
+  functionality remains. Users can refer to the 
+  [Provider's guide](https://bcdev.github.io/chartlets/guide/providers/#extending-the-framework) 
+ for usage details. 
+
 ## Version 0.1.4 (from 2025/03/06)
 
 * In `chartlets.js` we no longer emit warnings and errors in common 

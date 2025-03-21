@@ -12,7 +12,7 @@ import { Switch } from "./Switch";
 import { Tabs } from "./Tabs";
 import { Typography } from "./Typography";
 import { Slider } from "./Slider";
-import { DataGrid } from "@/plugins/mui/DataGrid";
+// import { DataGrid } from "@/plugins/mui/DataGrid";
 import { Dialog } from "@/plugins/mui/Dialog";
 import { Table } from "@/plugins/mui/Table";
 
@@ -23,7 +23,9 @@ export default function mui(): Plugin {
       ["Button", Button],
       ["Checkbox", Checkbox],
       ["CircularProgress", CircularProgress],
-      ["DataGrid", DataGrid],
+      // Commenting out DataGrid as @mui/x-data-grid is quite large. It will
+      // now be used as a plugin if needed by the user from v0.1.5.
+      // ["DataGrid", DataGrid],
       ["Dialog", Dialog],
       ["Divider", Divider],
       ["IconButton", IconButton],

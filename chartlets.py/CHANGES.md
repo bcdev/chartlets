@@ -1,4 +1,4 @@
-## Version 0.1.5 (in development)
+## Version 0.1.5
 
 * Add `multiple` property for `Select` component to enable the
   of multiple elements.

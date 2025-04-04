@@ -1,4 +1,10 @@
-## Version 0.1.5
+## Version 0.1.6 (in development)
+
+* Implemented dynamic resizing for Vega Charts when the side panel's 
+  width changes.
+  See https://github.com/xcube-dev/xcube/issues/1134
+ 
+## Version 0.1.5 (from 2025/03/21)
   
 * Add `multiple` property for `Select` component to enable the selection
   of multiple elements. The `default` mode is supported at the moment.

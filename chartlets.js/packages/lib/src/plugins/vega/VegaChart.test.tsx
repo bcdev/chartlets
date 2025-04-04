@@ -1,9 +1,15 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
 // import { render, screen, fireEvent } from "@testing-library/react";
 import type { TopLevelSpec } from "vega-lite";
 import { createChangeHandler } from "@/plugins/mui/common.test";
 import { VegaChart } from "./VegaChart";
+
+global.ResizeObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
 
 describe("VegaChart", () => {
   it("should render if chart is not given", () => {

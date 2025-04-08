@@ -4,7 +4,7 @@ import type { TopLevelSpec } from "vega-lite";
 import type { ComponentProps, ComponentState } from "@/index";
 import { useSignalListeners } from "./hooks/useSignalListeners";
 import { useVegaTheme, type VegaTheme } from "./hooks/useVegaTheme";
-import { useCallback, useRef, useState } from "react";
+import { useResizeObserver } from "./hooks/useResizeObserver";
 
 interface VegaChartState extends ComponentState {
   theme?: VegaTheme | "default" | "system";
@@ -25,24 +25,7 @@ export function VegaChart({
 }: VegaChartProps) {
   const signalListeners = useSignalListeners(chart, type, id, onChange);
   const vegaTheme = useVegaTheme(theme);
-  const containerRef = useRef<ResizeObserver | null>(null);
-  const [containerSizeKey, setContainerSizeKey] = useState(0);
-  const containerCallbackRef = useCallback((node: Element | null) => {
-    if (containerRef.current) {
-      containerRef.current.disconnect();
-      containerRef.current = null;
-    }
-    if (node !== null) {
-      const resizeObserver = new ResizeObserver((_entries) => {
-        // We only need to know that a resize happened because it triggers a
-        // re-render allowing vega to get the latest layout.
-        setContainerSizeKey(Date.now());
-      });
-
-      resizeObserver.observe(node);
-      containerRef.current = resizeObserver;
-    }
-  }, []);
+  const { containerSizeKey, containerCallbackRef } = useResizeObserver();
   if (chart) {
     return (
       <div id="chart-container" ref={containerCallbackRef} style={style}>

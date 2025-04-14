@@ -1,9 +1,10 @@
 import { VegaLite } from "react-vega";
 import type { TopLevelSpec } from "vega-lite";
 
-import type { ComponentState, ComponentProps } from "@/index";
+import type { ComponentProps, ComponentState } from "@/index";
 import { useSignalListeners } from "./hooks/useSignalListeners";
 import { useVegaTheme, type VegaTheme } from "./hooks/useVegaTheme";
+import { useResizeObserver } from "./hooks/useResizeObserver";
 
 interface VegaChartState extends ComponentState {
   theme?: VegaTheme | "default" | "system";
@@ -24,17 +25,21 @@ export function VegaChart({
 }: VegaChartProps) {
   const signalListeners = useSignalListeners(chart, type, id, onChange);
   const vegaTheme = useVegaTheme(theme);
+  const { containerSizeKey, containerCallbackRef } = useResizeObserver();
   if (chart) {
     return (
-      <VegaLite
-        theme={vegaTheme}
-        spec={chart}
-        style={style}
-        signalListeners={signalListeners}
-        actions={false}
-      />
+      <div id="chart-container" ref={containerCallbackRef} style={style}>
+        <VegaLite
+          key={containerSizeKey}
+          theme={vegaTheme}
+          spec={chart}
+          style={style}
+          signalListeners={signalListeners}
+          actions={false}
+        />
+      </div>
     );
   } else {
-    return <div id={id} style={style} />;
+    return <div id={id} />;
   }
 }

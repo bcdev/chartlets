@@ -32,6 +32,7 @@ jobs:
             cache-dependency-path: chartlets.js/package-lock.json
             
         - run: npm ci
+        - run: npm run compile
         - run: npm run lint
         - run: npm run test
         
@@ -62,7 +63,12 @@ jobs:
           run: |
             cd chartlets.js 
             npm install 
-  
+
+        - name: Lib compile
+          run: |
+            cd chartlets.js/packages/lib  
+            npm run compile
+
         - name: Lib lint
           run: |
             cd chartlets.js/packages/lib  
@@ -77,7 +83,12 @@ jobs:
           run: |
             cd chartlets.js/packages/lib  
             npm run build
-  
+
+        - name: Demo compile
+          run: |
+            cd chartlets.js/packages/demo  
+            npm run compile
+
         - name: Demo lint
           run: |
             cd chartlets.js/packages/demo  

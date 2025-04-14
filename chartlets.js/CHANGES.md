@@ -1,7 +1,16 @@
-## Version 0.1.5 (in development)
+## Version 0.1.6 (in development)
+
+* Implemented dynamic resizing for Vega Charts when the side panel's 
+  width changes.
+  See https://github.com/xcube-dev/xcube/issues/1134
+ 
+## Version 0.1.5 (from 2025/03/21)
   
 * Add `multiple` property for `Select` component to enable the selection
   of multiple elements. The `default` mode is supported at the moment.
+
+* Static information about callbacks retrieved from API is not cached
+  reducing unnecessary processing and improving performance. (#113)
 
 * Callbacks will now only be invoked when there’s an actual change in state, 
   reducing unnecessary processing and improving performance. (#112)

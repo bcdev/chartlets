@@ -3,7 +3,7 @@ channels:
   - conda-forge
 dependencies:
   # Library Dependencies
-  - python >=3.12,<3.13
+  - python >=3.10
   # Optional Dependencies
   - altair
   # Demo Dependencies

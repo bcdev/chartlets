@@ -1,9 +1,10 @@
 import { VegaLite } from "react-vega";
 import type { TopLevelSpec } from "vega-lite";
 
-import { type ComponentProps, type ComponentState } from "@/index";
+import type { ComponentProps, ComponentState } from "@/index";
+import { useSignalListeners } from "./hooks/useSignalListeners";
 import { useVegaTheme, type VegaTheme } from "./hooks/useVegaTheme";
-import { useSignalListeners } from "@/plugins/vega/hooks/useSignalListeners";
+import { useResizeObserver } from "./hooks/useResizeObserver";
 import { Skeleton } from "@/plugins/mui/Skeleton";
 import { useLoadingState } from "@/hooks";
 import type { ReactElement } from "react";
@@ -28,6 +29,7 @@ export function VegaChart({
 }: VegaChartProps) {
   const signalListeners = useSignalListeners(initialChart, type, id, onChange);
   const vegaTheme = useVegaTheme(theme);
+  const { containerSizeKey, containerCallbackRef } = useResizeObserver();
 
   const loadingState = useLoadingState();
   if (!id) {
@@ -38,19 +40,23 @@ export function VegaChart({
   if (isLoading == "failed") {
     return <div>An error occurred while loading the data.</div>;
   }
+
   const chart: ReactElement | null = initialChart ? (
-    <VegaLite
-      theme={vegaTheme}
-      spec={initialChart}
-      signalListeners={signalListeners}
-      actions={false}
-    />
+   <div id="chart-container" ref={containerCallbackRef} style={style}>
+       <VegaLite
+          key={containerSizeKey}
+          theme={vegaTheme}
+          spec={initialChart}
+          signalListeners={signalListeners}
+          actions={false}
+      />
+  </div>
   ) : (
-    <div />
+      <div id={id}/>
   );
   const isSkeletonRequired = skeletonProps !== undefined;
   if (!isSkeletonRequired) {
-    return chart;
+      return chart;
   }
   const skeletonId = id + "-skeleton";
   return (

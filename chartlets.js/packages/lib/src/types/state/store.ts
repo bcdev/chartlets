@@ -9,14 +9,33 @@ import type { FrameworkOptions } from "./options";
 
 export type ThemeMode = "dark" | "light" | "system";
 
+// TODO: Split contributionsRecord into two fields comprising static
+//  contribution data and dynamic contribution states.
+//  This will allow memoizing the computation of property references
+//  (PropertyRef[]) on the level of the StoreState from static data only.
+//  The property references would then be just computed once.
+//  See function getPropertyRefsForContribPoints()
+//  in actions/handleHostStoreChange.ts
+
+/**
+ * The state of the Chartlets main store.
+ */
 export interface StoreState {
-  /** Framework configuration */
+  /**
+   * Framework configuration.
+   */
   configuration: FrameworkOptions;
-  /** All extensions */
+  /**
+   * All extensions.
+   */
   extensions: Extension[];
-  /** API call result from `GET /contributions`. */
+  /**
+   * API call result from `GET /contributions`.
+   */
   contributionsResult: ApiResult<Contributions>;
-  /** A record that maps contribPoint --> ContributionState[].*/
+  /**
+   * A record that maps contribPoint --> ContributionState[].
+   */
   contributionsRecord: Record<ContribPoint, ContributionState[]>;
   /**
    * The app's current theme mode.

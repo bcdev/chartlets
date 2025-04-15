@@ -190,6 +190,7 @@ describe("handleHostStoreChange", () => {
         inputIndex: 0,
         inputValues: ["CHL"],
         property: "variableName",
+        outputIds: ["select"],
       },
     ]);
 

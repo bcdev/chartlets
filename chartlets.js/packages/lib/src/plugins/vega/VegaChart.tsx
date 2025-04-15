@@ -42,21 +42,26 @@ export function VegaChart({
   }
 
   const chart: ReactElement | null = initialChart ? (
-   <div id="chart-container" ref={containerCallbackRef} style={style}>
-       <VegaLite
-          key={containerSizeKey}
-          theme={vegaTheme}
-          spec={initialChart}
-          signalListeners={signalListeners}
-          actions={false}
+    <div
+      id="chart-container"
+      ref={containerCallbackRef}
+      style={style}
+      data-testid={"vega-test-id"} // For testing purposes
+    >
+      <VegaLite
+        key={containerSizeKey}
+        theme={vegaTheme}
+        spec={initialChart}
+        signalListeners={signalListeners}
+        actions={false}
       />
-  </div>
+    </div>
   ) : (
-      <div id={id}/>
+    <div id={id} />
   );
   const isSkeletonRequired = skeletonProps !== undefined;
   if (!isSkeletonRequired) {
-      return chart;
+    return chart;
   }
   const skeletonId = id + "-skeleton";
   return (

@@ -6,7 +6,7 @@ import MuiFormControlLabel from "@mui/material/FormControlLabel";
 import MuiFormLabel from "@mui/material/FormLabel";
 import { Tooltip } from "./Tooltip";
 
-import type { ComponentState, ComponentProps } from "@/index";
+import type { ComponentProps, ComponentState } from "@/index";
 
 interface RadioState extends ComponentState {
   type: "Radio";
@@ -54,13 +54,14 @@ export function RadioGroup({
   };
   return (
     <Tooltip title={tooltip}>
-      <MuiFormControl style={style} disabled={disabled}>
+      <MuiFormControl disabled={disabled}>
         <MuiFormLabel>{label}</MuiFormLabel>
         <MuiRadioGroup
           id={id}
           name={name}
           row={row}
           value={value}
+          style={style}
           onChange={handleChange}
         >
           {radioButtons &&

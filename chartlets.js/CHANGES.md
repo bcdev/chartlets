@@ -3,6 +3,8 @@
 * Implemented dynamic resizing for Vega Charts when the side panel's 
   width changes.
   See https://github.com/xcube-dev/xcube/issues/1134
+
+* Styles are now correctly applied to `RadioGroup` component.
  
 ## Version 0.1.5 (from 2025/03/21)
   

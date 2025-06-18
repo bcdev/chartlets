@@ -1,4 +1,8 @@
-## Version 0.1.5
+## Version 0.1.6 (from 2025/06/18)
+
+* **Chore:**: Version bump in `chartlets.py` to align with `chartlets.js` release.
+
+## Version 0.1.5 (from 2025/03/21)
 
 * Add `multiple` property for `Select` component to enable the
   of multiple elements.

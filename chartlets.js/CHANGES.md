@@ -1,3 +1,9 @@
+## Version 0.1.7 (in development)
+
+* Typology component now allows color and text arguments. 
+  If a user uses text and children, the text argument replaces the 
+  children.
+
 ## Version 0.1.6 (from 2025/06/18)
 
 * Implemented dynamic resizing for Vega Charts when the side panel's 

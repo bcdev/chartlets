@@ -39,7 +39,7 @@ def render_panel(
         ariaDescribedBy="dialog-description",
     )
 
-    info_text = Typography(id="info_text")
+    info_text = Typography(id="info_text", color="grey")
 
     return Box(
         style={
@@ -63,17 +63,17 @@ def dialog_on_open(ctx: Context, button) -> bool:
 @panel.callback(
     Input("okay_button", "clicked"),
     Output("dialog", "open"),
-    Output("info_text", "children"),
+    Output("info_text", "text"),
 )
-def dialog_on_close(ctx: Context, button) -> tuple[bool, list[str]]:
-    return False, ["Okay button was clicked!"]
+def dialog_on_close(ctx: Context, button) -> tuple[bool, str]:
+    return False, "Okay button was clicked!"
 
 
 # noinspection PyUnusedLocal
 @panel.callback(
     Input("not_okay_button", "clicked"),
     Output("dialog", "open"),
-    Output("info_text", "children"),
+    Output("info_text", "text"),
 )
-def dialog_on_close(ctx: Context, button) -> tuple[bool, list[str]]:
-    return False, ["Not okay button was clicked!"]
+def dialog_on_close(ctx: Context, button) -> tuple[bool, str]:
+    return False, "Not okay button was clicked!"

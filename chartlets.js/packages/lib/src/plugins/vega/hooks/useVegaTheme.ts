@@ -2,7 +2,10 @@ import * as vegaThemes from "vega-themes";
 import { useThemeMode } from "@/hooks";
 import { useMemo } from "react";
 
-export type VegaTheme = keyof Omit<typeof vegaThemes, "version">;
+// while using `react-vega` v7 the vegaTheme needs to be restricted to:
+// "dark" | "excel" | "ggplot2" | "quartz" | "vox" | "default" | "system" | undefined
+export type VegaTheme = keyof Omit<typeof vegaThemes, "version" | "latimes"| "fivethirtyeight" | "urbaninstitute" |
+    "googlecharts" | "powerbi" | "carbonwhite" | "carbong10" | "carbong90" | "carbong100">;
 
 const isVegaTheme = (key?: string): key is VegaTheme =>
   !!key && key in vegaThemes;

@@ -1,3 +1,12 @@
+## Version 0.1.7 (in development)
+
+* Updated dependencies
+	- `react-vega: ^7.7.1`
+	
+* Omitted multiple VegaTheme options. While using `react-vega` v7 the 
+  vegaTheme needs to be restricted to: "dark" | "excel" | "ggplot2" | 
+  "quartz" | "vox" | "default" | "system" | undefined .
+
 ## Version 0.1.6 (from 2025/06/18)
 
 * Implemented dynamic resizing for Vega Charts when the side panel's 

@@ -79,13 +79,13 @@ describe("useVegaTheme", () => {
 
   it("vega theme in dark mode", () => {
     setMatchMediaState(true);
-    const { result } = renderHook(() => useVegaTheme("carbong90"));
-    expect(result.current).toEqual("carbong90");
+    const { result } = renderHook(() => useVegaTheme("quartz"));
+    expect(result.current).toEqual("quartz");
   });
 
   it("vega theme in light mode", () => {
     setMatchMediaState(false);
-    const { result } = renderHook(() => useVegaTheme("carbong90"));
-    expect(result.current).toEqual("carbong90");
+    const { result } = renderHook(() => useVegaTheme("quartz"));
+    expect(result.current).toEqual("quartz");
   });
 });

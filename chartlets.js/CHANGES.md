@@ -1,11 +1,19 @@
 ## Version 0.1.7 (in development)
 
 * Updated dependencies
+	- `canvas: ^3.2.0`
 	- `react-vega: ^7.7.1`
+	- `vite: ^7.1.12`
+	- `vitest: ^4.0.5`
+	- `@vitejs/plugin-react-swc: ^4.2.0`
+    - `@vitest/coverage-istanbul: ^4.0.5`
 	
 * Omitted multiple VegaTheme options. While using `react-vega` v7 the 
   vegaTheme needs to be restricted to: "dark" | "excel" | "ggplot2" | 
-  "quartz" | "vox" | "default" | "system" | undefined .
+  "quartz" | "vox" | "default" | "system" | undefined . 
+    
+* Changed `global` to `globalThis`. This change is relevant due to 
+  dependency updates.
 
 ## Version 0.1.6 (from 2025/06/18)
 

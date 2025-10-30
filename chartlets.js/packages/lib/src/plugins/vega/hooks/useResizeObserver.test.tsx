@@ -3,7 +3,7 @@ import { useResizeObserver } from "./useResizeObserver";
 import { act, render } from "@testing-library/react";
 import { useEffect } from "react";
 
-global.ResizeObserver = class {
+globalThis.ResizeObserver = class {
   observe() {}
   unobserve() {}
   disconnect() {}
@@ -21,7 +21,7 @@ describe("useResizeObserver", () => {
 
     render(<TestComponent />);
 
-    const observeSpy = vi.spyOn(global.ResizeObserver.prototype, "observe");
+    const observeSpy = vi.spyOn(globalThis.ResizeObserver.prototype, "observe");
 
     const node = document.createElement("div");
     act(() => {
@@ -45,11 +45,11 @@ describe("useResizeObserver", () => {
     render(<TestComponent />);
 
     const disconnectSpy = vi.spyOn(
-      global.ResizeObserver.prototype,
+      globalThis.ResizeObserver.prototype,
       "disconnect",
     );
 
-    const observeSpy = vi.spyOn(global.ResizeObserver.prototype, "observe");
+    const observeSpy = vi.spyOn(globalThis.ResizeObserver.prototype, "observe");
 
     const node1 = document.createElement("div");
     const node2 = document.createElement("div");
@@ -68,7 +68,7 @@ describe("useResizeObserver", () => {
   it("should update containerSizeKey on resize", () => {
     let observerCallback: ResizeObserverCallback | null = null;
 
-    global.ResizeObserver = class {
+    globalThis.ResizeObserver = class {
       constructor(cb: ResizeObserverCallback) {
         observerCallback = cb;
       }

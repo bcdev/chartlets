@@ -5,7 +5,7 @@ import type { TopLevelSpec } from "vega-lite";
 import { createChangeHandler } from "@/plugins/mui/common.test";
 import { VegaChart } from "./VegaChart";
 
-global.ResizeObserver = class {
+globalThis.ResizeObserver = class {
   observe() {}
   unobserve() {}
   disconnect() {}

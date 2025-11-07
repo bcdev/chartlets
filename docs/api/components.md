@@ -23,7 +23,23 @@ and providers:
 
 ::: chartlets.components.IconButton
 
+::: chartlets.components.DataGrid
+
+::: chartlets.components.Dialog
+
+::: chartlets.components.Divider
+
+::: chartlets.components.RadioGroup
+
 ::: chartlets.components.Select
+
+::: chartlets.components.Slider
+
+::: chartlets.components.Switch
+
+::: chartlets.components.Table
+
+::: chartlets.components.Tabs
 
 ::: chartlets.components.Typography
 

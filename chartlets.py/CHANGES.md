@@ -1,3 +1,8 @@
+## Version 0.1.7 (in development)
+
+* Updated dependencies
+	- `altair>=5.5.0,<6.0.0`
+
 ## Version 0.1.6 (from 2025/06/18)
 
 * **Chore:**: Version bump in `chartlets.py` to align with `chartlets.js` release.

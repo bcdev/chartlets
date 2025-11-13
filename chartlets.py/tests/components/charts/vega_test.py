@@ -13,6 +13,7 @@ from tests.component_test import make_base
 class VegaChartTest(make_base(VegaChart)):
 
     def test_with_chart_prop(self):
+        self.maxDiff = None
         source = pd.DataFrame(
             {"x": ["A", "B", "C", "D", "E"], "a": [28, 55, 43, 91, 81]}
         )
@@ -32,7 +33,7 @@ class VegaChartTest(make_base(VegaChart)):
                 "id": "plot",
                 "theme": "dark",
                 "chart": {
-                    "$schema": "https://vega.github.io/schema/vega-lite/v5.23.0.json",
+                    "$schema": "https://vega.github.io/schema/vega-lite/v5.20.1.json",
                     "config": {
                         "view": {"continuousHeight": 300, "continuousWidth": 300}
                     },

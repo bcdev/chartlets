@@ -32,7 +32,7 @@ class VegaChartTest(make_base(VegaChart)):
                 "id": "plot",
                 "theme": "dark",
                 "chart": {
-                    "$schema": "https://vega.github.io/schema/vega-lite/v5.20.1.json",
+                    "$schema": "https://vega.github.io/schema/vega-lite/v5.23.0.json",
                     "config": {
                         "view": {"continuousHeight": 300, "continuousWidth": 300}
                     },

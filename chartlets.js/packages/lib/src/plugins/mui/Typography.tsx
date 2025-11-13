@@ -9,6 +9,8 @@ interface TypographyState extends ComponentState {
   gutterBottom?: boolean;
   noWrap?: boolean;
   variant?: TypographyVariant;
+  text?: string;
+  color?: string;
 }
 
 interface TypographyProps extends ComponentProps, TypographyState {}
@@ -20,9 +22,13 @@ export const Typography = ({
   gutterBottom,
   noWrap,
   variant,
+  text,
+  color,
   children: nodes,
   onChange,
 }: TypographyProps) => {
+  nodes = text ? [text] : nodes;
+
   return (
     <MuiTypography
       id={id}
@@ -31,6 +37,7 @@ export const Typography = ({
       gutterBottom={gutterBottom}
       noWrap={noWrap}
       variant={variant}
+      color={color}
     >
       <Children nodes={nodes} onChange={onChange} />
     </MuiTypography>

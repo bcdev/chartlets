@@ -1,5 +1,7 @@
+import time
+
 from chartlets import Component, Input, Output
-from chartlets.components import Box, Typography, Table
+from chartlets.components import Box, Typography, Table, Skeleton, Button
 
 from server.context import Context
 from server.panel import Panel
@@ -32,10 +34,22 @@ def render_panel(
         ["3", "Peter", "Jones", 40],
     ]
 
-    table = Table(id="table", rows=rows, columns=columns, hover=True)
+    table_skeleton = Skeleton(
+        height="100%", width="100%", variant="rounded", animation="wave", opacity=0.1
+    )
+
+    table = Table(
+        id="table",
+        rows=rows,
+        columns=columns,
+        hover=True,
+        skeletonProps=table_skeleton.to_dict(),
+    )
 
     title_text = Typography(id="title_text", children=["Basic Table"])
     info_text = Typography(id="info_text", children=["Click on any row."])
+
+    update_button = Button(id="update_button", text="Update Table")
 
     return Box(
         style={
@@ -45,14 +59,31 @@ def render_panel(
             "height": "100%",
             "gap": "6px",
         },
-        children=[title_text, table, info_text],
+        children=[title_text, table, update_button, info_text],
     )
 
 
 # noinspection PyUnusedLocal
-@panel.callback(Input("table"), Output("info_text", "children"))
-def update_info_text(
-    ctx: Context,
-    table_row: int,
-) -> list[str]:
+@panel.callback(
+    Input("table"),
+    Output("info_text", "children"),
+)
+def update_info_text(ctx: Context, table_row: int) -> list[str]:
+    time.sleep(3)
+
     return [f"The clicked row value is {table_row}."]
+
+
+@panel.callback(
+    Input("update_button", "clicked"),
+    Output("table", "rows"),
+)
+def update_table_rows(ctx: Context, update_button_clicked) -> TableRow:
+    # simulate lag to show skeleton
+    time.sleep(3)
+    rows: TableRow = [
+        ["1", "John", "Smith", 94],
+        ["2", "Jane", "Jones", 5],
+        ["3", "Peter", "Doe", 40.5],
+    ]
+    return rows

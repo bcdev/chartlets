@@ -1,6 +1,7 @@
 import { type CSSProperties } from "react";
 import { isObject } from "@/utils/isObject";
 import { isString } from "@/utils/isString";
+import type { SkeletonProps } from "@/plugins/mui/Skeleton";
 
 export type ComponentNode =
   | ComponentState
@@ -24,6 +25,7 @@ export interface ComponentState {
   label?: string;
   color?: string;
   tooltip?: string;
+  skeletonProps?: Omit<SkeletonProps, "isLoading" | "children">;
 }
 
 export interface ContainerState extends ComponentState {

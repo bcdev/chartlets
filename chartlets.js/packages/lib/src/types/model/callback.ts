@@ -73,8 +73,8 @@ export interface InputRef {
 
 /**
  * A `CallbackRequest` is a request to invoke a server-side callback.
- * The result from invoking server-side callbacks is a list of `StateChangeRequest`
- * instances.
+ * The result from invoking server-side callbacks is a list of
+ * `StateChangeRequest` instances.
  */
 export interface CallbackRequest extends ContribRef, CallbackRef, InputRef {
   /**
@@ -83,11 +83,17 @@ export interface CallbackRequest extends ContribRef, CallbackRef, InputRef {
    * as the callback's inputs.
    */
   inputValues: unknown[];
+  /**
+   * The output IDs of the callback that will be used to update the
+   * loading state of its respective output.
+   */
+  outputIds: string[];
 }
 
 /**
  * A `StateChangeRequest` is a request to change the application state.
- * Instances of this interface are returned from invoking a server-side callback.
+ * Instances of this interface are returned from invoking a server-side
+ * callback.
  */
 export interface StateChangeRequest extends ContribRef {
   /**

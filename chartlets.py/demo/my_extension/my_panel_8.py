@@ -55,7 +55,7 @@ def render_panel(
     tab2 = Tab(id = "tab2", label="Tab 2", children=[info_text])
     tab3 = Tab(id="tab3", label="Tab 3", children=[chart])
 
-    tabs = Tabs(id = "tab", value = 0, children=[tab1,tab2,tab3])
+    tabs = Tabs(id = "tabs", value = 0, children=[tab1,tab2,tab3])
 
     return Box(
         style={

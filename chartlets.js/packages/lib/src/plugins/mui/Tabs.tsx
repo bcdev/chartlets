@@ -2,7 +2,7 @@ import MuiIcon from "@mui/material/Icon";
 import MuiTabs from "@mui/material/Tabs";
 import MuiTab from "@mui/material/Tab";
 
-import { type ComponentProps, type ComponentState } from "@/index";
+import type { ComponentProps, ComponentState } from "@/index";
 import type { SyntheticEvent } from "react";
 import { Box } from "@/plugins/mui/Box";
 import { isString } from "@/utils/isString";

@@ -1,11 +1,27 @@
 import type { ComponentType } from "react";
-import type { ComponentProps } from "@/components/Component";
+
+import type { ComponentChangeHandler } from "@/types/state/event";
+
+/**
+ * Properties that custom components must support.
+ */
+export interface ComponentProps {
+  type: string;
+  onChange: ComponentChangeHandler;
+}
+
+/**
+ * A component type that is eligible for registration.
+ */
+export type RegistrableComponent =
+  | ComponentType<object>
+  | ComponentType<ComponentProps>;
 
 /**
  * A component registration - a pair comprising the component type name
  * and the React component.
  */
-export type ComponentRegistration = [string, ComponentType<ComponentProps>];
+export type ComponentRegistration = [string, RegistrableComponent];
 
 /**
  * A framework plugin.

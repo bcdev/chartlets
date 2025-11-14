@@ -2,6 +2,9 @@
 
 * Updated dependencies
 	- `react-vega: ^7.7.1`
+	- `vega: ^6.2.0`
+	- `vega-embed: ^7.1.0`
+	- `vega-lite: ^6.4.1`
 	- `canvas: ^3.2.0`
 	
 * Omitted multiple VegaTheme options. While using `react-vega` v7 the 

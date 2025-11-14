@@ -2,8 +2,9 @@ import MuiIcon from "@mui/material/Icon";
 import MuiTabs from "@mui/material/Tabs";
 import MuiTab from "@mui/material/Tab";
 
-import type { ComponentProps, ComponentState } from "@/index";
+import { type ComponentProps, type ComponentState } from "@/index";
 import type { SyntheticEvent } from "react";
+import { Box } from "@/plugins/mui/Box";
 import { isString } from "@/utils/isString";
 import { isComponentState } from "@/types/state/component";
 
@@ -12,6 +13,7 @@ interface TabState {
   label?: string;
   icon?: string;
   disabled?: boolean;
+  children?: ComponentProps[];
 }
 
 interface TabsState extends ComponentState {
@@ -41,19 +43,37 @@ export function Tabs({
     }
   };
   return (
-    <MuiTabs id={id} style={style} value={value} onChange={handleChange}>
-      {tabItems?.map((tab) => {
+    <div>
+      <MuiTabs id={id} style={style} value={value} onChange={handleChange}>
+        {tabItems?.map((tab, index) => {
+          const tabState = isComponentState(tab)
+            ? (tab as TabState)
+            : undefined;
+          return (
+            <MuiTab
+              key={index}
+              label={tabState ? tabState.label : isString(tab) ? tab : ""}
+              icon={
+                tabState && tabState.icon && <MuiIcon>{tabState.icon}</MuiIcon>
+              }
+              disabled={disabled || (tabState && tabState.disabled)}
+            />
+          );
+        })}
+      </MuiTabs>
+      {tabItems?.map((tab, index) => {
         const tabState = isComponentState(tab) ? (tab as TabState) : undefined;
         return (
-          <MuiTab
-            label={tabState ? tabState.label : isString(tab) ? tab : ""}
-            icon={
-              tabState && tabState.icon && <MuiIcon>{tabState.icon}</MuiIcon>
-            }
-            disabled={disabled || (tabState && tabState.disabled)}
-          />
+          value === index && (
+            <Box
+              key={index}
+              type={type}
+              onChange={onChange}
+              children={tabState?.children ?? undefined}
+            />
+          )
         );
       })}
-    </MuiTabs>
+    </div>
   );
 }

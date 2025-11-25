@@ -23,6 +23,7 @@ export interface Input extends Channel {
   noTrigger?: boolean;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface Output extends Channel {}
 
 export function isComponentChannel(channel: Channel): boolean {

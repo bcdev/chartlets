@@ -15,7 +15,9 @@ describe("useResizeObserver", () => {
 
     const TestComponent = () => {
       const { containerCallbackRef } = useResizeObserver();
-      callbackRef = containerCallbackRef;
+      useEffect(() => {
+        callbackRef = containerCallbackRef;
+      }, [containerCallbackRef]);
       return <div ref={containerCallbackRef} />;
     };
 
@@ -38,7 +40,9 @@ describe("useResizeObserver", () => {
 
     const TestComponent = () => {
       const { containerCallbackRef } = useResizeObserver();
-      callbackRef = containerCallbackRef;
+      useEffect(() => {
+        callbackRef = containerCallbackRef;
+      }, [containerCallbackRef]);
       return null;
     };
 
@@ -81,11 +85,9 @@ describe("useResizeObserver", () => {
 
     const TestComponent = () => {
       const { containerCallbackRef, containerSizeKey } = useResizeObserver();
-
       useEffect(() => {
         lastKey = containerSizeKey;
       }, [containerSizeKey]);
-
       return <div ref={containerCallbackRef} />;
     };
 

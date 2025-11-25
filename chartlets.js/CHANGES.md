@@ -3,6 +3,8 @@
 * Updated dependencies
 	- `react-vega: ^7.7.1`
 	- `canvas: ^3.2.0`
+	
+* Updated `eslint` to v9 with related dependencies and configuration.
 
 * Omitted multiple VegaTheme options. While using `react-vega` v7 the 
   vegaTheme needs to be restricted to: "dark" | "excel" | "ggplot2" | 
@@ -10,9 +12,7 @@
 
 * Typology component now allows color and text arguments. 
   If a user uses text and children, the text argument replaces the 
-  children.
- 
-* Updated `eslint` to v9 with related dependencies and configuration. 
+  children. 
   
 ## Version 0.1.6 (from 2025/06/18)
 

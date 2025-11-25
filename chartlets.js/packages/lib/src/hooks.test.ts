@@ -61,7 +61,7 @@ describe("useContributionsRecord", () => {
 describe("useThemeMode", () => {
   it("should initially return undefined", () => {
     const { result } = renderHook(() => useThemeMode());
-    expect(result.current).toBeUndefined;
+    expect(result.current).toBeUndefined();
   });
 });
 

@@ -72,6 +72,6 @@ export default defineConfig({
         return false;
       }
     },
-    exclude: ["**/index.test.ts", "**/VegaChart.test.tsx"],
+    exclude: ["**/vega/index.test.ts", "**/vega/VegaChart.test.tsx"],
   },
 });

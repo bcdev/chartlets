@@ -1,7 +1,8 @@
+import time
 from typing import Any
 import altair as alt
 from chartlets import Component, Input, Output, State
-from chartlets.components import VegaChart, Box, Select
+from chartlets.components import VegaChart, Box, Select, Skeleton
 
 from server.context import Context
 from server.panel import Panel
@@ -13,8 +14,14 @@ panel = Panel(__name__, title="Panel A")
 @panel.layout()
 def render_panel(ctx: Context) -> Component:
     selected_dataset: int = 0
+    chart_skeleton = Skeleton(
+        height="100%", width="100%", variant="rounded", animation="wave", opacity=0.1
+    )
     chart = VegaChart(
-        id="chart", chart=make_chart(ctx, selected_dataset), style={"flexGrow": 1}
+        id="chart",
+        chart=make_chart(ctx, selected_dataset),
+        style={"flexGrow": 1},
+        skeletonProps=chart_skeleton.to_dict(),
     )
     select = Select(
         id="selected_dataset",
@@ -52,6 +59,8 @@ def render_panel(ctx: Context) -> Component:
 def make_chart(ctx: Context, selected_dataset: int = 0) -> alt.Chart:
     dataset_key = tuple(ctx.datasets.keys())[selected_dataset]
     dataset = ctx.datasets[dataset_key]
+    # simulate lag to show skeleton
+    time.sleep(5)
 
     variable_name = "a" if selected_dataset == 0 else "u"
 
@@ -103,6 +112,8 @@ def get_click_event_points(
     that was clicked.
 
     """
+    # simulate lag to show skeleton
+    time.sleep(5)
     if points:
         conditions = []
         for field, values in points.items():

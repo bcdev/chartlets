@@ -1,8 +1,12 @@
 ## Version 0.1.7 (in development)
 
 * Updated dependencies
-	- `react-vega: ^7.7.1`
 	- `canvas: ^3.2.0`
+	- `glob: ^11.1.0`
+	- `react-vega: ^7.7.1`
+	- `vega: ^6.2.0`
+	- `vega-embed: ^7.1.0`
+	- `vega-lite: ^6.4.1`
 	
 * Updated `eslint` to v9 with related dependencies and configuration.
 

@@ -1,3 +1,4 @@
+import MuiBox from "@mui/material/Box";
 import MuiIcon from "@mui/material/Icon";
 import MuiTabs from "@mui/material/Tabs";
 import MuiTab from "@mui/material/Tab";
@@ -43,24 +44,27 @@ export function Tabs({
     }
   };
   return (
-    <div>
-      <MuiTabs id={id} style={style} value={value} onChange={handleChange}>
-        {tabItems?.map((tab, index) => {
-          const tabState = isComponentState(tab)
-            ? (tab as TabState)
-            : undefined;
-          return (
-            <MuiTab
-              key={index}
-              label={tabState ? tabState.label : isString(tab) ? tab : ""}
-              icon={
-                tabState && tabState.icon && <MuiIcon>{tabState.icon}</MuiIcon>
-              }
-              disabled={disabled || (tabState && tabState.disabled)}
-            />
-          );
-        })}
-      </MuiTabs>
+    <MuiBox sx={{ width: "100%" }}>
+      <MuiBox sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <MuiTabs id={id} style={style} value={value} onChange={handleChange}>
+          {tabItems?.map((tab, index) => {
+            const tabState = isComponentState(tab)
+              ? (tab as TabState)
+              : undefined;
+            return (
+              <MuiTab
+                key={index}
+                label={tabState ? tabState.label : isString(tab) ? tab : ""}
+                icon={
+                  tabState &&
+                  tabState.icon && <MuiIcon>{tabState.icon}</MuiIcon>
+                }
+                disabled={disabled || (tabState && tabState.disabled)}
+              />
+            );
+          })}
+        </MuiTabs>
+      </MuiBox>
       {tabItems?.map((tab, index) => {
         const tabState = isComponentState(tab) ? (tab as TabState) : undefined;
         return (
@@ -74,6 +78,6 @@ export function Tabs({
           )
         );
       })}
-    </div>
+    </MuiBox>
   );
 }

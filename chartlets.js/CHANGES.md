@@ -1,4 +1,4 @@
-## Version 0.1.7 (in development)
+## Version 0.1.7
 
 * Updated dependencies
 	- `canvas: ^3.2.0`

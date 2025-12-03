@@ -16,8 +16,11 @@
 
 * Typology component now allows color and text arguments. 
   If a user uses text and children, the text argument replaces the 
-  children. 
+  children.
   
+* Applied changes to the return value of `Tabs` component and added 
+  demo panel H, that showcases the use of `Tabs` component. (#129).
+
 ## Version 0.1.6 (from 2025/06/18)
 
 * Implemented dynamic resizing for Vega Charts when the side panel's 

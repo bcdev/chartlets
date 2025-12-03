@@ -1,4 +1,4 @@
-## Version 0.1.7 (in development)
+## Version 0.1.7
 
 * Updated dependencies
 	- `altair>=5.5.0,<6.0.0`

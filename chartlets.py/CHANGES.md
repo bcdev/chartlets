@@ -1,4 +1,4 @@
-## Version 0.1.7
+## Version 0.1.7 (from 2025/12/03)
 
 * Updated dependencies
 	- `altair>=5.5.0,<6.0.0`

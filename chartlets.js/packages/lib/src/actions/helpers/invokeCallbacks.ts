@@ -4,7 +4,7 @@ import { fetchCallback } from "@/api/fetchCallback";
 import { applyStateChangeRequests } from "@/actions/helpers/applyStateChangeRequests";
 
 export function invokeCallbacks(callbackRequests: CallbackRequest[]) {
-  const { configuration } = store.getState();
+  const { configuration, loadingState } = store.getState();
   const shouldLog = configuration.logging?.enabled;
   const invocationId = getInvocationId();
   if (shouldLog) {
@@ -13,6 +13,20 @@ export function invokeCallbacks(callbackRequests: CallbackRequest[]) {
       callbackRequests,
     );
   }
+
+  // Set the respective callback's outputs loading state to true before
+  // sending the request
+  callbackRequests.forEach((callbackRequest) => {
+    const outputIds = callbackRequest.outputIds;
+    outputIds.forEach((outputId) => {
+      store.setState({
+        loadingState: {
+          ...loadingState,
+          [outputId]: true,
+        },
+      });
+    });
+  });
   fetchCallback(callbackRequests, configuration.api).then(
     (changeRequestsResult) => {
       if (changeRequestsResult.data) {
@@ -23,6 +37,19 @@ export function invokeCallbacks(callbackRequests: CallbackRequest[]) {
           );
         }
         applyStateChangeRequests(changeRequestsResult.data);
+        // Set the loading state of each output ID of the callback's that
+        // were invoked to false as the fetch was successful.
+        callbackRequests.forEach((callbackRequest) => {
+          const outputIds = callbackRequest.outputIds;
+          outputIds.forEach((outputId) => {
+            store.setState({
+              loadingState: {
+                ...loadingState,
+                [outputId]: false,
+              },
+            });
+          });
+        });
       } else {
         console.error(
           "callback failed:",
@@ -30,6 +57,19 @@ export function invokeCallbacks(callbackRequests: CallbackRequest[]) {
           "for call requests:",
           callbackRequests,
         );
+        // Set the loading state of each output ID of the callback's that
+        // were invoked to `failed` as the fetch was unsuccessful.
+        callbackRequests.forEach((callbackRequest) => {
+          const outputIds = callbackRequest.outputIds;
+          outputIds.forEach((outputId) => {
+            store.setState({
+              loadingState: {
+                ...loadingState,
+                [outputId]: "failed",
+              },
+            });
+          });
+        });
       }
     },
   );

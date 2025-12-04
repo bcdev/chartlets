@@ -73,4 +73,30 @@ describe("Table", () => {
       },
     });
   });
+
+  it("should not render the Table component when no id provided", () => {
+    render(<Table type={"Table"} rows={rows} onChange={() => {}} />);
+
+    const table = screen.queryByRole("table");
+    expect(table).toBeNull();
+  });
+
+  it(
+    "should render the Table component with skeleton when skeletonProps are" +
+      " provided",
+    () => {
+      render(
+        <Table
+          id="table"
+          type={"Table"}
+          rows={rows}
+          onChange={() => {}}
+          skeletonProps={{ variant: "rectangular" }}
+        />,
+      );
+
+      const table = screen.queryByRole("table");
+      expect(table).toBeNull();
+    },
+  );
 });

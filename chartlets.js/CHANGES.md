@@ -1,3 +1,5 @@
+## Version 0.1.8 (in developement)
+
 ## Version 0.1.7 (from 2025/12/03)
 
 * Updated dependencies

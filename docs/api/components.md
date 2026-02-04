@@ -39,6 +39,8 @@ and providers:
 
 ::: chartlets.components.Table
 
+::: chartlets.components.Tab
+
 ::: chartlets.components.Tabs
 
 ::: chartlets.components.Typography

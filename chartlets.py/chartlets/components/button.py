@@ -24,7 +24,7 @@ class Button(Component):
     """
 
     variant: str | None = None
-    """The button variant. 
+    """The button variant.
     One "contained" | "outlined" | "text". Defaults to "text".
     """
 
@@ -49,10 +49,10 @@ class IconButton(Component):
     "info" | "warning". Defaults to "primary".
     """
 
-    variant: str | None = None
-    """The button variant. 
-    One "contained" | "outlined" | "text". Defaults to "text".
-    """
-
     tooltip: str | None = None
     """Tooltip title. Optional."""
+
+    size: str | None = None
+    """The button size.
+    One of "small" | "medium" | "large". Defaults to "medium".
+    """

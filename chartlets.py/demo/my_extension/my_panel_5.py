@@ -12,7 +12,13 @@ panel = Panel(__name__, title="Panel E")
 def render_panel(
     ctx: Context,
 ) -> Component:
-    open_button = Button(id="open_button", text="Open Dialog", startIcon="ChatBubble")
+    open_button = Button(
+        id="open_button",
+        text="Open Dialog",
+        startIcon="ChatBubble",
+        variant="outlined",
+        color="warning",
+    )
     okay_button = Button(id="okay_button", text="Okay")
     not_okay_button = Button(id="not_okay_button", text="Not okay")
     dialog = Dialog(

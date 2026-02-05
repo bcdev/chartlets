@@ -8,4 +8,5 @@ export const store = create<StoreState>(() => ({
   contributionsResult: {},
   contributionsRecord: {},
   lastCallbackInputValues: {},
+  loadingState: {},
 }));

@@ -43,6 +43,9 @@
 * Callbacks will now only be invoked when there’s an actual change in state, 
   reducing unnecessary processing and improving performance. (#112)
 
+* New (MUI) components
+  - `Skeleton` (currently supported for Vega Charts and Tables)
+
 ## Version 0.1.4 (from 2025/03/06)
 
 * In `chartlets.js` we no longer emit warnings and errors in common 

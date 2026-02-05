@@ -5,6 +5,9 @@ import type { ComponentProps, ComponentState } from "@/index";
 import { useSignalListeners } from "./hooks/useSignalListeners";
 import { useVegaTheme, type VegaTheme } from "./hooks/useVegaTheme";
 import { useResizeObserver } from "./hooks/useResizeObserver";
+import { Skeleton } from "@/plugins/mui/Skeleton";
+import { useLoadingState } from "@/hooks";
+import type { ReactElement } from "react";
 
 interface VegaChartState extends ComponentState {
   theme?: VegaTheme | "default" | "system";
@@ -20,26 +23,55 @@ export function VegaChart({
   id,
   style,
   theme,
-  chart,
+  chart: initialChart,
+  skeletonProps,
   onChange,
 }: VegaChartProps) {
-  const signalListeners = useSignalListeners(chart, type, id, onChange);
+  const signalListeners = useSignalListeners(initialChart, type, id, onChange);
   const vegaTheme = useVegaTheme(theme);
   const { containerSizeKey, containerCallbackRef } = useResizeObserver();
-  if (chart) {
-    return (
-      <div id="chart-container" ref={containerCallbackRef} style={style}>
-        <VegaLite
-          key={containerSizeKey}
-          theme={vegaTheme}
-          spec={chart}
-          style={style}
-          signalListeners={signalListeners}
-          actions={false}
-        />
-      </div>
-    );
-  } else {
-    return <div id={id} />;
+
+  const loadingState = useLoadingState();
+  if (!id) {
+    return;
   }
+  const isLoading = loadingState[id];
+
+  if (isLoading == "failed") {
+    return <div>An error occurred while loading the data.</div>;
+  }
+
+  const chart: ReactElement | null = initialChart ? (
+    <div
+      id="chart-container"
+      ref={containerCallbackRef}
+      style={style}
+      data-testid={"vega-test-id"} // For testing purposes
+    >
+      <VegaLite
+        key={containerSizeKey}
+        theme={vegaTheme}
+        spec={initialChart}
+        signalListeners={signalListeners}
+        actions={false}
+      />
+    </div>
+  ) : (
+    <div id={id} />
+  );
+  const isSkeletonRequired = skeletonProps !== undefined;
+  if (!isSkeletonRequired) {
+    return chart;
+  }
+  const skeletonId = id + "-skeleton";
+  return (
+    <Skeleton
+      isLoading={isLoading}
+      id={skeletonId}
+      style={style}
+      {...skeletonProps}
+    >
+      {chart}
+    </Skeleton>
+  );
 }

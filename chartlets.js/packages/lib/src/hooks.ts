@@ -20,6 +20,8 @@ const selectContributionsRecord = (state: StoreState) =>
 
 const selectThemeMode = (state: StoreState) => state.themeMode;
 
+const selectLoadingState = (state: StoreState) => state.loadingState;
+
 const useStore = store;
 
 export const useConfiguration = () => useStore(selectConfiguration);
@@ -27,6 +29,7 @@ export const useExtensions = () => useStore(selectExtensions);
 export const useContributionsResult = () => useStore(selectContributionsResult);
 export const useContributionsRecord = () => useStore(selectContributionsRecord);
 export const useThemeMode = () => useStore(selectThemeMode);
+export const useLoadingState = () => useStore(selectLoadingState);
 
 /**
  * A hook that retrieves the contributions for the given contribution

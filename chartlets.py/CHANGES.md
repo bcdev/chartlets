@@ -13,6 +13,8 @@
 
 * Add `multiple` property for `Select` component to enable the
   of multiple elements.
+* New (MUI) components
+  - `Skeleton` (currently supported for Vega Charts and Tables)
 
 * Add support for `Python 3.13`
 

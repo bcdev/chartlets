@@ -37,6 +37,10 @@ class Component(ABC):
     children: list[Union["Component", str, None]] | None = None
     """Children used by many specific components. Optional."""
 
+    skeletonProps: dict[str, Any] | None = None
+    """Add the skeleton props from the Skeleton MUI component to render a 
+    skeleton during long loading times."""
+
     @property
     def type(self):
         return self.__class__.__name__

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { render } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 // import { render, screen, fireEvent } from "@testing-library/react";
 import type { TopLevelSpec } from "vega-lite";
 import { createChangeHandler } from "@/plugins/mui/common.test";
@@ -21,7 +21,7 @@ describe("VegaChart", () => {
     expect(document.querySelector("#vc")).not.toBeUndefined();
   });
 
-  it("should render if chart is given", () => {
+  it("should render if chart is given", async () => {
     const { recordedEvents, onChange } = createChangeHandler();
     render(
       <VegaChart
@@ -35,11 +35,24 @@ describe("VegaChart", () => {
     // expect(document.body).toEqual({});
     expect(recordedEvents.length).toBe(0);
 
+    const test_chart = screen.queryByTestId("vega-test-id");
+    expect(test_chart).toBeDefined();
+    const canvas = await waitFor(() => screen.getByRole("graphics-document"));
+    expect(canvas).toBeInTheDocument();
+
     // TODO: all of the following doesn't work!
     // expect(document.querySelector("canvas")).toEqual({});
     // expect(screen.getByRole("canvas")).not.toBeUndefined();
     // fireEvent.click(screen.getByRole("canvas"));
     // expect(recordedEvents.length).toBe(1);
+  });
+
+  it("should not render if id is not given", () => {
+    const { recordedEvents, onChange } = createChangeHandler();
+    render(<VegaChart type={"VegaChart"} chart={chart} onChange={onChange} />);
+    expect(recordedEvents.length).toBe(0);
+    const test_chart = screen.queryByTestId("vega-test-id");
+    expect(test_chart).toBeNull();
   });
 });
 

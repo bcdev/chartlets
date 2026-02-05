@@ -70,6 +70,10 @@ function getCallbackRequests(
           equalObjPaths(input.property, changeEvent.property),
       );
       if (inputIndex >= 0) {
+        // Collect output IDs for updating their respective loading states
+        const outputs = contribution.callbacks?.[callbackIndex]["outputs"];
+        const outputIds: string[] =
+          outputs?.map((output) => output.id as string) ?? [];
         // Collect triggered callback
         callbackRequests.push({
           contribPoint,
@@ -77,6 +81,7 @@ function getCallbackRequests(
           callbackIndex,
           inputIndex,
           inputValues: getInputValues(inputs, contribution, hostStore),
+          outputIds: outputIds,
         });
       }
     }

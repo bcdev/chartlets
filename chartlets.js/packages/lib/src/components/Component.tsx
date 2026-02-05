@@ -1,14 +1,10 @@
-import { type ComponentChangeHandler } from "@/types/state/event";
+import { type FC } from "react";
+import { isString } from "@/utils/isString";
 import { registry } from "@/components/registry";
+import type { ComponentProps } from "@/types/state/plugin";
 
-export interface ComponentProps {
-  type: string;
-  onChange: ComponentChangeHandler;
-}
-
-export function Component(props: ComponentProps) {
-  const { type: componentType } = props;
-  const ActualComponent = registry.lookup(componentType);
+export const Component: FC<ComponentProps> = (props: ComponentProps) => {
+  const ActualComponent = isString(props.type) && registry.lookup(props.type);
   if (typeof ActualComponent === "function") {
     // eslint-disable-next-line react-hooks/static-components
     return <ActualComponent {...props} />;
@@ -21,4 +17,4 @@ export function Component(props: ComponentProps) {
     // );
     return null;
   }
-}
+};

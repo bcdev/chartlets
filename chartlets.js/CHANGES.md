@@ -37,6 +37,10 @@
 * Add `multiple` property for `Select` component to enable the selection
   of multiple elements. The `default` mode is supported at the moment.
 
+* Relaxed requirements for adding new components to Chartlets.js via
+  plugins. We no longer require registered components 
+  to implement `ComponentType<ComponentProps>`. `ComponentProps`. (#115)
+
 * Static information about callbacks retrieved from API is not cached
   reducing unnecessary processing and improving performance. (#113)
 

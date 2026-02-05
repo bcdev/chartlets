@@ -1,20 +1,19 @@
-import type { ComponentType, FC } from "react";
+import type { FC } from "react";
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { configureFramework, resolvePlugin } from "./configureFramework";
 import { store } from "@/store";
 import { registry } from "@/components/registry";
 import type { HostStore } from "@/types/state/host";
-import type { Plugin } from "@/types/state/plugin";
-import type { ComponentProps } from "@/components/Component";
+import type { RegistrableComponent, Plugin } from "@/types/state/plugin";
 
-function getComponents(): [string, ComponentType<ComponentProps>][] {
-  interface DivProps extends ComponentProps {
+function getComponents(): [string, RegistrableComponent][] {
+  interface DivProps {
     text: string;
   }
   const Div: FC<DivProps> = ({ text }) => <div>{text}</div>;
   return [
-    ["A", Div as FC<ComponentProps>],
-    ["B", Div as FC<ComponentProps>],
+    ["A", Div],
+    ["B", Div],
   ];
 }
 
@@ -55,6 +54,14 @@ describe("configureFramework", () => {
   });
 
   it("should install plugins", () => {
+    expect(registry.types.length).toBe(0);
+    configureFramework({
+      plugins: [{ components: getComponents() }],
+    });
+    expect(registry.types.length).toBe(2);
+  });
+
+  it("should allow adding plain components", () => {
     expect(registry.types.length).toBe(0);
     configureFramework({
       plugins: [{ components: getComponents() }],

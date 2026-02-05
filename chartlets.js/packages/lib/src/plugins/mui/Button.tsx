@@ -1,9 +1,9 @@
 import { type MouseEvent } from "react";
 import MuiButton from "@mui/material/Button";
-import MuiIcon from "@mui/material/Icon";
 
 import type { ComponentProps, ComponentState } from "@/index";
 import { Tooltip } from "./Tooltip";
+import { Icon } from "./Icon";
 
 interface ButtonState extends ComponentState {
   text?: string;
@@ -55,8 +55,8 @@ export function Button({
         variant={variant}
         color={color}
         disabled={disabled}
-        startIcon={startIcon && <MuiIcon>{startIcon}</MuiIcon>}
-        endIcon={endIcon && <MuiIcon>{endIcon}</MuiIcon>}
+        startIcon={startIcon && <Icon iconName={startIcon}></Icon>}
+        endIcon={endIcon && <Icon iconName={endIcon}></Icon>}
         onClick={handleClick}
       >
         {text}

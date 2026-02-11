@@ -1,5 +1,8 @@
 ## Version 0.1.8 (in development)
 
+* Fixed handling of `style` prop in `Tabs` component and added prop 
+  `iconPosition`. (#135)
+
 ## Version 0.1.7 (from 2025/12/03)
 
 * Updated dependencies

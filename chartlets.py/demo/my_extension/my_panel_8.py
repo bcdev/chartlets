@@ -9,7 +9,6 @@ from chartlets.components import (
     Box,
     VegaChart,
     Table,
-    IconButton,
     Button,
 )
 from chartlets.components.table import TableColumn, TableRow
@@ -47,12 +46,21 @@ def render_panel(
     ]
 
     open_button = Button(
-        id="open_button", startIcon="Insights", text="Please click here!"
+        id="open_button", text="Show component!", style={"margin": "20px"}
     )
 
-    table = Table(id="table", rows=rows, columns=columns, hover=True)
+    table = Table(
+        id="table",
+        rows=rows,
+        columns=columns,
+        hover=True,
+        style={"width": "250px", "margin": "30px"},
+    )
 
-    info_text = Typography(id="info_text", children=["This is a text."])
+    info_text = Typography(
+        id="info_text", children=["This is a text."], style={"color": "pink"}
+    )
+
     chart = VegaChart(
         id="chart",
         chart=(
@@ -61,15 +69,32 @@ def render_panel(
             .encode(x=alt.X("x:N", title="x"), y=alt.Y("a:Q", title="a"))
             .properties(width=290, height=300, title="Vega charts")
         ),
-        style={"flexGrow": 1},
+        style={"flexGrow": 1, "margin": "10px"},
     )
 
-    tab1 = Tab(id="tab1", label="Tab 1", children=[table])
+    tab1 = Tab(
+        id="tab1",
+        label="Tab 1",
+        children=[table],
+        style={"backgroundColor": "darkblue", "padding": "1px"},
+    )
     tab2 = Tab(id="tab2", label="Tab 2", children=[info_text])
-    tab3 = Tab(id="tab3", label="Tab 3", children=[chart])
+    tab3 = Tab(
+        id="tab3",
+        label="Tab 3",
+        children=[chart],
+        style={
+            "color": "darkseagreen",
+            "backgroundColor": "darkgreen",
+            "padding": "1px",
+        },
+    )
 
     tabs = Tabs(
-        id="tabs", value=0, children=[tab1, tab2, tab3], style={"visibility": "hidden"}
+        id="tabs",
+        value=0,
+        children=[tab1, tab2, tab3],
+        style={"visibility": "hidden"},
     )
 
     return Box(
@@ -84,6 +109,22 @@ def render_panel(
 
 
 # noinspection PyUnusedLocal
-@panel.callback(Input("open_button", "clicked"), Output("tabs", "style"))
-def tabs_on_open(ctx: Context, button) -> dict:
-    return {"visibility": "visible"}
+@panel.callback(
+    Input("open_button", "clicked"),
+    Input("tabs", "style"),
+    Output("tabs", "style"),
+    Output("open_button", "text"),
+)
+def tabs_on_open(ctx: Context, button, style) -> tuple[dict, str]:
+    visibility = style["visibility"]
+
+    if visibility == "hidden":
+        return (
+            {**style, "visibility": "visible"},
+            "Hide component!",
+        )
+    else:
+        return (
+            {**style, "visibility": "hidden"},
+            "Show component!",
+        )

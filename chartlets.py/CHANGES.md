@@ -1,5 +1,7 @@
 ## Version 0.1.8 (in development)
 
+* Added `iconPosition` to `Tabs` Component. (#135)
+
 ## Version 0.1.7 (from 2025/12/03)
 
 * Updated dependencies
@@ -11,10 +13,10 @@
 
 ## Version 0.1.5 (from 2025/03/21)
 
-* Add `multiple` property for `Select` component to enable the
+* Added `multiple` property for `Select` component to enable the selection
   of multiple elements.
 
-* Add support for `Python 3.13`
+* Added support for `Python 3.13`
 
 
 ## Version 0.1.4 (from 2025/03/06)

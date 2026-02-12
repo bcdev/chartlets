@@ -1,5 +1,4 @@
 import altair as alt
-from attr.validators import disabled
 
 from chartlets import Component, Input, State, Output
 from chartlets.components import (

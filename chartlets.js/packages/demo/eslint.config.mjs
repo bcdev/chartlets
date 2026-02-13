@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2019-2026 by Brockmann Consult Development team
+ * Permissions are hereby granted under the terms of the MIT License:
+ * https://opensource.org/licenses/MIT.
+ */
+
 import { fixupConfigRules } from "@eslint/compat";
 import reactRefresh from "eslint-plugin-react-refresh";
 import globals from "globals";

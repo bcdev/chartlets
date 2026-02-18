@@ -53,7 +53,7 @@ theme:
 repo_url: https://github.com/bcdev/chartlets
 
 site_description: Documentation of the chartlet software framework
-copyright: Brockmann Consult GmbH
+copyright: Copyright © 2026 Brockmann Consult GmbH
 
 validation:
   omitted_files: warn

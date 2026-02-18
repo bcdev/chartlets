@@ -1,3 +1,7 @@
+#  Copyright (c) 2019-2026 by Brockmann Consult Development team
+#  Permissions are hereby granted under the terms of the MIT License:
+#  https://opensource.org/licenses/MIT.
+
 from chartlets import Extension
 from .my_panel_1 import panel as my_panel_1
 from .my_panel_2 import panel as my_panel_2

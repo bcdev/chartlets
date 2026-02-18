@@ -1,5 +1,11 @@
 ## Version 0.1.8 (in development)
 
+* Updated dependencies
+	- `glob: ^13.0.1`
+	- `@vitest/coverage-istanbul: ^3.2.4`
+	- `vite: ^7.1.11`
+	- `vitest: ^3.2.4`
+
 ## Version 0.1.7 (from 2025/12/03)
 
 * Updated dependencies

@@ -15,10 +15,11 @@ import { Box } from "@/plugins/mui/Box";
 import { isString } from "@/utils/isString";
 import { isComponentState } from "@/types/state/component";
 
-interface TabState {
+interface TabState extends ComponentState {
   type: "Tab";
   label?: string;
   icon?: string;
+  iconPosition?: "bottom" | "end" | "start" | "top";
   disabled?: boolean;
   children?: ComponentProps[];
 }
@@ -50,9 +51,9 @@ export function Tabs({
     }
   };
   return (
-    <MuiBox sx={{ width: "100%" }}>
+    <MuiBox sx={{ width: "100%" }} style={style}>
       <MuiBox sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <MuiTabs id={id} style={style} value={value} onChange={handleChange}>
+        <MuiTabs id={id} value={value} onChange={handleChange}>
           {tabItems?.map((tab, index) => {
             const tabState = isComponentState(tab)
               ? (tab as TabState)
@@ -60,11 +61,13 @@ export function Tabs({
             return (
               <MuiTab
                 key={index}
+                style={tabState?.style}
                 label={tabState ? tabState.label : isString(tab) ? tab : ""}
                 icon={
                   tabState &&
                   tabState.icon && <MuiIcon>{tabState.icon}</MuiIcon>
                 }
+                iconPosition={tabState?.iconPosition}
                 disabled={disabled || (tabState && tabState.disabled)}
               />
             );
@@ -76,10 +79,11 @@ export function Tabs({
         return (
           value === index && (
             <Box
+              style={tabState?.style}
               key={index}
               type={type}
               onChange={onChange}
-              children={tabState?.children ?? undefined}
+              children={tabState?.children}
             />
           )
         );

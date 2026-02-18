@@ -1,6 +1,6 @@
 ## Version 0.1.8 (in development)
 
-* Added `iconPosition` to `Tabs` Component. (#135)
+* Added `iconPosition` to `Tabs` Component. (#135, #136)
 
 ## Version 0.1.7 (from 2025/12/03)
 

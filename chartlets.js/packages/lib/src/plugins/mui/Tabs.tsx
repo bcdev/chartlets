@@ -19,7 +19,7 @@ interface TabState extends ComponentState {
   type: "Tab";
   label?: string;
   icon?: string;
-  iconPosition?: "bottom" | "end" | "start" | "top" | undefined;
+  iconPosition?: "bottom" | "end" | "start" | "top";
   disabled?: boolean;
   children?: ComponentProps[];
 }

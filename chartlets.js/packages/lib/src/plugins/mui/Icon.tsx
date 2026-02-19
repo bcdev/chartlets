@@ -1,4 +1,10 @@
-import * as MuiIcons from "@mui/icons-material";
+/*
+ * Copyright (c) 2019-2026 by Brockmann Consult Development team
+ * Permissions are hereby granted under the terms of the MIT License:
+ * https://opensource.org/licenses/MIT.
+ */
+
+import MuiIcon from "@mui/material/Icon";
 
 interface IconProps {
   iconName?: string;
@@ -7,14 +13,15 @@ interface IconProps {
 export const Icon = ({ iconName }: IconProps) => {
   if (!iconName) return null;
 
-  const IconComponent = (MuiIcons as Record<string, React.ElementType>)[
-    iconName
-  ];
-
-  if (!IconComponent) {
-    console.warn(`Icon "${iconName}" not found in @mui/icons-material`);
-    return null;
-  }
-
-  return <IconComponent />;
+  return (
+    <MuiIcon
+      sx={{
+        fontFamily: "Material Icons",
+        textTransform: "none",
+        lineHeight: 1,
+      }}
+    >
+      {iconName}
+    </MuiIcon>
+  );
 };

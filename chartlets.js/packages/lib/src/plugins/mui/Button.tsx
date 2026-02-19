@@ -55,8 +55,8 @@ export function Button({
         variant={variant}
         color={color}
         disabled={disabled}
-        startIcon={startIcon && <Icon iconName={startIcon}></Icon>}
-        endIcon={endIcon && <Icon iconName={endIcon}></Icon>}
+        startIcon={startIcon && <Icon iconName={startIcon} />}
+        endIcon={endIcon && <Icon iconName={endIcon} />}
         onClick={handleClick}
       >
         {text}

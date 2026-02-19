@@ -61,7 +61,6 @@
     "zustand": "^5.0"
   },
   "peerDependencies": {
-    "@mui/icons-material": "^6.2.1",
     "@mui/material": "^6.2.1",
     "@mui/x-data-grid": ">=7",
     "react": "^18.3.1",

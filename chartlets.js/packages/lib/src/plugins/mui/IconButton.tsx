@@ -53,7 +53,7 @@ export function IconButton({
         disabled={disabled}
         onClick={handleClick}
       >
-        <Icon iconName={icon}></Icon>
+        <Icon iconName={icon} />
       </MuiIconButton>
     </Tooltip>
   );

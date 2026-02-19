@@ -56,8 +56,7 @@ export function Tabs({
                 key={index}
                 label={tabState ? tabState.label : isString(tab) ? tab : ""}
                 icon={
-                  tabState &&
-                  tabState.icon && <Icon iconName={tabState.icon}></Icon>
+                  tabState && tabState.icon && <Icon iconName={tabState.icon} />
                 }
                 disabled={disabled || (tabState && tabState.disabled)}
               />

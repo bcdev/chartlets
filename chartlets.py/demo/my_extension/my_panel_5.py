@@ -15,7 +15,7 @@ def render_panel(
     open_button = Button(
         id="open_button",
         text="Open Dialog",
-        startIcon="ChatBubble",
+        startIcon="chat_bubble",
         variant="outlined",
         color="warning",
     )

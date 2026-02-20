@@ -110,4 +110,3 @@ This describes the release process for chartlets.
 Chartlets is open source made available under the terms and conditions of the 
 [MIT License](https://github.com/bcdev/chartlets/blob/main/LICENSE).
 
-Copyright © 2025 Brockmann Consult Development

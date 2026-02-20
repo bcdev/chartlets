@@ -5,13 +5,13 @@
  */
 
 import MuiBox from "@mui/material/Box";
-import MuiIcon from "@mui/material/Icon";
 import MuiTabs from "@mui/material/Tabs";
 import MuiTab from "@mui/material/Tab";
 
 import type { ComponentProps, ComponentState } from "@/index";
 import type { SyntheticEvent } from "react";
 import { Box } from "@/plugins/mui/Box";
+import { Icon } from "./Icon";
 import { isString } from "@/utils/isString";
 import { isComponentState } from "@/types/state/component";
 
@@ -62,8 +62,7 @@ export function Tabs({
                 key={index}
                 label={tabState ? tabState.label : isString(tab) ? tab : ""}
                 icon={
-                  tabState &&
-                  tabState.icon && <MuiIcon>{tabState.icon}</MuiIcon>
+                  tabState && tabState.icon && <Icon iconName={tabState.icon} />
                 }
                 disabled={disabled || (tabState && tabState.disabled)}
               />

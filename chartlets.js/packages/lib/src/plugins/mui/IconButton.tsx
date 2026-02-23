@@ -6,9 +6,9 @@
 
 import { type MouseEvent } from "react";
 import MuiIconButton from "@mui/material/IconButton";
-import MuiIcon from "@mui/material/Icon";
 
 import type { ComponentState, ComponentProps } from "@/index";
+import { Icon } from "./Icon";
 import { Tooltip } from "./Tooltip";
 
 interface IconButtonState extends ComponentState {
@@ -59,7 +59,7 @@ export function IconButton({
         disabled={disabled}
         onClick={handleClick}
       >
-        <MuiIcon>{icon}</MuiIcon>
+        <Icon iconName={icon} />
       </MuiIconButton>
     </Tooltip>
   );

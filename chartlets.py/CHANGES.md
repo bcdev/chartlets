@@ -1,5 +1,8 @@
 ## Version 0.1.8 (in development)
 
+* Added `size` and removed `variant` property from `IconButton`
+  component to align with component in chartlets.js. (#124)
+
 ## Version 0.1.7 (from 2025/12/03)
 
 * Updated dependencies

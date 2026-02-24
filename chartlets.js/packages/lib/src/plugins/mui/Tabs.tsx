@@ -79,7 +79,6 @@ export function Tabs({
         return (
           value === index && (
             <Box
-              style={tabState?.style}
               key={index}
               type={type}
               onChange={onChange}

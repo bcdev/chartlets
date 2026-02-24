@@ -57,11 +57,7 @@ def render_panel(
         rows=rows,
         columns=columns,
         hover=True,
-        style={"width": "250px", "margin": "30px"},
-    )
-
-    info_text = Typography(
-        id="info_text", children=["This is a text."], style={"color": "pink"}
+        style={"width": "100%", "padding": "2px"},
     )
 
     chart = VegaChart(
@@ -81,16 +77,11 @@ def render_panel(
         children=[table],
         style={"backgroundColor": "darkblue", "padding": "1px"},
     )
-    tab2 = Tab(id="tab2", label="Tab 2", children=[info_text])
+    tab2 = Tab(id="tab2", label="Tab 2", children=["This is a text."], disabled=True)
     tab3 = Tab(
         id="tab3",
         label="Tab 3",
         children=[chart],
-        style={
-            "color": "darkseagreen",
-            "backgroundColor": "darkgreen",
-            "padding": "1px",
-        },
     )
 
     tabs = Tabs(

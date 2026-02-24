@@ -9,6 +9,9 @@
 * Added icon support for `Button`, `IconButton` and `Tabs` components.
  (#124).
 
+* Fixed handling of `style` prop in `Tabs` component and added prop 
+  `iconPosition`. (#135, #136)
+
 ## Version 0.1.7 (from 2025/12/03)
 
 * Updated dependencies

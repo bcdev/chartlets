@@ -16,6 +16,12 @@ class Tab(Component):
     icon: str | None = None
     """The tab icon's name."""
 
+    iconPosition: str | None = None
+    """	The position of the icon relative to the label.
+    One of "bottom" | "end" | "start" | "top". 
+    Defaults to "top".
+    """
+
     label: str | None = None
     """The tab label."""
 

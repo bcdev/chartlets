@@ -2,6 +2,7 @@
 #  Permissions are hereby granted under the terms of the MIT License:
 #  https://opensource.org/licenses/MIT.
 
+from .accordion import Accordion
 from .box import Box
 from .button import Button
 from .button import IconButton

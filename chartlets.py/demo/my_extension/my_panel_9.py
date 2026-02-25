@@ -20,11 +20,11 @@ from server.panel import Panel
 panel = Panel(__name__, title="Panel I")
 
 
-@panel.layout(State("@app", ))
+# noinspection PyUnusedLocal
+@panel.layout()
 def render_panel(
     ctx: Context,
 ) -> Component:
-
     columns: list[TableColumn] = [
         {"id": "id", "label": "ID", "sortDirection": "desc"},
         {

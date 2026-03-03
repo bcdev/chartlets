@@ -66,7 +66,7 @@ describe("useSignalListeners", () => {
     const { result } = renderHook(() =>
       useSignalListeners(chartWithSelect, "VegaChart", "my_chart", () => {}),
     );
-    const signalHandlers = result.current;
+    const signalHandlers = result.current.signalListenerMap;
     expect(signalHandlers).toBeDefined();
     expect(signalHandlers["sel_point"]).toBeTypeOf("function");
     expect(signalHandlers["sel_interval"]).toBeTypeOf("function");
@@ -80,7 +80,7 @@ describe("useSignalListeners", () => {
     const { result } = renderHook(() =>
       useSignalListeners(chartWithSelect, "VegaChart", "my_chart", onChange),
     );
-    const signalHandlers = result.current;
+    const signalHandlers = result.current.signalListenerMap;
     expect(signalHandlers).toBeDefined();
     const signalHandler = signalHandlers["sel_point_a"];
     expect(signalHandler).toBeTypeOf("function");

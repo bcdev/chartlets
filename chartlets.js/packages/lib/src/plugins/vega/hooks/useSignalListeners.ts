@@ -4,7 +4,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useEffect, useRef } from "react";
 import type { TopLevelSpec } from "vega-lite";
 
 import { type ComponentChangeHandler } from "@/index";
@@ -37,7 +37,7 @@ export function useSignalListeners(
   type: string,
   id: string | undefined,
   onChange: ComponentChangeHandler,
-): Record<string, SignalHandler> {
+) /*: Record<string, SignalHandler>*/ {
   /*
    * Here, we create map of signals which will be then used to create the
    * map of signal-listeners because not all params are event-listeners, and we
@@ -65,7 +65,7 @@ export function useSignalListeners(
       }, signalNames);
   }, [chart]);
 
-  const handleClickSignal = useCallback(
+  const handleSignal = useCallback(
     (signalName: string, signalValue: unknown) => {
       if (id) {
         return onChange({
@@ -83,14 +83,14 @@ export function useSignalListeners(
    * Creates the map of signal listeners based on
    * the `signals` map computed above.
    */
-  return useMemo(() => {
+  const signalListenerMap = useMemo(() => {
     /*
      * Currently, we only have click events support, but if more are required,
      * they can be implemented and added in the map below.
      */
     const signalHandlers: Record<string, SignalHandler> = {
-      click: handleClickSignal,
-      drag: handleClickSignal,
+      click: handleSignal,
+      drag: handleSignal,
     };
 
     const signalListeners: Record<string, SignalHandler> = {};
@@ -104,5 +104,49 @@ export function useSignalListeners(
       }
     });
     return signalListeners;
-  }, [signalNames, handleClickSignal]);
+  }, [signalNames, handleSignal]);
+
+  // Keep cleanup in a ref so it can run on re-embed and unmount.
+  const cleanupRef = useRef<null | (() => void)>(null);
+
+  const onEmbed = useCallback(
+    (result: any | { view: any }) => {
+      cleanupRef.current?.();
+      cleanupRef.current = null;
+
+      const view = result?.view;
+      if (!view) return;
+
+      /*
+       * Keep track of the exact listener functions registered on the Vega view.
+       * Vega requires the same function reference for removal, so we store them
+       * here in order to properly clean them up on re-embed or unmount.
+       */
+      const attachedListeners: Array<{
+        name: string;
+        fn: (name: string, value: unknown) => void;
+      }> = [];
+
+      for (const [signalName, handler] of Object.entries(signalListenerMap)) {
+        const fn = (name: string, value: unknown) => handler(name, value);
+        view.addSignalListener(signalName, fn);
+        attachedListeners.push({ name: signalName, fn });
+      }
+
+      cleanupRef.current = () => {
+        for (const { name, fn } of attachedListeners)
+          view.removeSignalListener(name, fn);
+      };
+    },
+    [signalListenerMap],
+  );
+
+  useEffect(() => {
+    return () => {
+      cleanupRef.current?.();
+      cleanupRef.current = null;
+    };
+  }, []);
+
+  return { onEmbed, signalListenerMap };
 }

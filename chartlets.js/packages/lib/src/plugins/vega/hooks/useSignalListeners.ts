@@ -5,6 +5,7 @@
  */
 
 import { useCallback, useMemo, useEffect, useRef } from "react";
+import type { Result as VegaEmbedResult } from "vega-embed";
 import type { TopLevelSpec } from "vega-lite";
 
 import { type ComponentChangeHandler } from "@/index";
@@ -110,7 +111,7 @@ export function useSignalListeners(
   const cleanupRef = useRef<null | (() => void)>(null);
 
   const onEmbed = useCallback(
-    (result: any | { view: any }) => {
+    (result: VegaEmbedResult) => {
       cleanupRef.current?.();
       cleanupRef.current = null;
 

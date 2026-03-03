@@ -47,10 +47,10 @@ exclude = [
 
 [project.optional-dependencies]
 opt = [
-  "altair>=5.5.0,<6.0.0",
+  "altair",
 ]
 dev = [
-  "altair>=5.5.0,<6.0.0",
+  "altair",
   "black",
   "flake8",
   "pytest",
@@ -67,7 +67,7 @@ doc = [
   "mkdocstrings-python"
 ]
 demo = [
-  "altair>=5.5.0,<6.0.0",
+  "altair",
   "pyaml",
   "pandas",
   "tornado",

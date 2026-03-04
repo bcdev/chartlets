@@ -50,7 +50,7 @@ describe("VegaChart", () => {
 });
 
 const chart: TopLevelSpec = {
-  $schema: "https://vega.github.io/schema/vega-lite/v5.20.1.json",
+  $schema: "https://vega.github.io/schema/vega-lite/v6.json",
   config: { view: { continuousWidth: 300, continuousHeight: 300 } },
   data: { name: "data-0" },
   mark: { type: "bar" },

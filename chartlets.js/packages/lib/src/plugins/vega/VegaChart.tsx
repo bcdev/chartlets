@@ -4,7 +4,8 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import { VegaLite } from "react-vega";
+import { useRef } from "react";
+import { VegaEmbed } from "react-vega";
 import type { TopLevelSpec } from "vega-lite";
 
 import type { ComponentProps, ComponentState } from "@/index";
@@ -14,9 +15,7 @@ import { useResizeObserver } from "./hooks/useResizeObserver";
 
 interface VegaChartState extends ComponentState {
   theme?: VegaTheme | "default" | "system";
-  chart?:
-    | TopLevelSpec // This is the vega-lite specification type
-    | null;
+  chart?: TopLevelSpec | null;
 }
 
 interface VegaChartProps extends ComponentProps, VegaChartState {}
@@ -29,19 +28,25 @@ export function VegaChart({
   chart,
   onChange,
 }: VegaChartProps) {
-  const signalListeners = useSignalListeners(chart, type, id, onChange);
+  const { onEmbed } = useSignalListeners(chart, type, id, onChange);
   const vegaTheme = useVegaTheme(theme);
   const { containerSizeKey, containerCallbackRef } = useResizeObserver();
+
+  const embedDivRef = useRef<HTMLDivElement | null>(null);
+
   if (chart) {
     return (
       <div id="chart-container" ref={containerCallbackRef} style={style}>
-        <VegaLite
+        <VegaEmbed
           key={containerSizeKey}
-          theme={vegaTheme}
+          ref={embedDivRef}
           spec={chart}
+          onEmbed={onEmbed}
+          options={{
+            actions: false,
+            theme: vegaTheme,
+          }}
           style={style}
-          signalListeners={signalListeners}
-          actions={false}
         />
       </div>
     );

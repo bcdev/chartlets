@@ -34,10 +34,10 @@
     "chartlets": "file:../lib",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-vega": "^7.7.1",
+    "react-vega": "^8.0.0",
     "vega": "^6.2.0",
     "vega-embed": "^7.1.0",
-    "vega-lite": "^6.4.1",
+    "vega-lite": "^6.4.2",
     "vega-themes": ">=2",
     "zustand": "^5.0.0"
   },

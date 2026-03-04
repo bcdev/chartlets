@@ -2,12 +2,18 @@
 
 * Updated dependencies
 	- `glob: ^13.0.1`
+	- `react-vega: ^8.0.0`
+	- `vega-lite: ^6.4.1`
 	- `@vitest/coverage-istanbul: ^3.2.4`
 	- `vite: ^7.1.11`
 	- `vitest: ^3.2.4`
 
 * Added icon support for `Button`, `IconButton` and `Tabs` components.
- (#124).
+ (#124)
+ 
+* Adjusted `VegaChart` component, due to `react-vega` upgrade
+  from v7 to v8. (#132)
+
 
 ## Version 0.1.7 (from 2025/12/03)
 

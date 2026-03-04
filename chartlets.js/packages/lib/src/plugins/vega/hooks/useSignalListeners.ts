@@ -25,6 +25,11 @@ type SelectionParameter = {
   select: "point" | "interval" | { type: "point" | "interval"; on: string };
 };
 
+type UseSignalListenersReturn = {
+  onEmbed: (result: VegaEmbedResult) => void;
+  signalListenerMap: Record<string, SignalHandler>;
+};
+
 const isSelectionParameter = (param: unknown): param is SelectionParameter =>
   isObject(param) &&
   (param.select === "point" ||
@@ -38,7 +43,7 @@ export function useSignalListeners(
   type: string,
   id: string | undefined,
   onChange: ComponentChangeHandler,
-) /*: Record<string, SignalHandler>*/ {
+): UseSignalListenersReturn {
   /*
    * Here, we create map of signals which will be then used to create the
    * map of signal-listeners because not all params are event-listeners, and we

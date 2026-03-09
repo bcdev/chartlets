@@ -45,7 +45,7 @@ def render_panel(
 
     table = Table(id="table", rows=rows, columns=columns, hover=True)
 
-    info_text = Typography(id="info_text", children=["This is a text."])
+    info_text = Typography(id="info_text", children=["This is a text."], style={"margin": "30px"})
 
     accordion1 = Accordion(
         id="accordion1",
@@ -60,7 +60,7 @@ def render_panel(
         icon="arrow_drop_down",
         # expanded=True,
         # disabled=True
-        children=[table],
+        children=[table, info_text],
     )
 
     return Box(

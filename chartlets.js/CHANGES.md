@@ -9,7 +9,7 @@
 * Added icon support for `Button`, `IconButton` and `Tabs` components.
  (#124).
  
-* Added (MUI) component `Accordion`. (#134)
+* Added (MUI) component `Accordion`. (#41, #134)
 
 ## Version 0.1.7 (from 2025/12/03)
 

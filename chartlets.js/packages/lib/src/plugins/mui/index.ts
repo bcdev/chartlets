@@ -5,6 +5,7 @@
  */
 
 import type { Plugin } from "@/index";
+import { Accordion } from "./Accordion";
 import { Box } from "./Box";
 import { Button } from "./Button";
 import { Checkbox } from "./Checkbox";
@@ -25,6 +26,7 @@ import { Table } from "@/plugins/mui/Table";
 export default function mui(): Plugin {
   return {
     components: [
+      ["Accordion", Accordion],
       ["Box", Box],
       ["Button", Button],
       ["Checkbox", Checkbox],

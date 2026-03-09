@@ -9,11 +9,16 @@
 	- `vitest: ^3.2.4`
 
 * Added icon support for `Button`, `IconButton` and `Tabs` components.
+ (#124).
+ 
+* Added (MUI) component `Accordion`. (#41, #134)
  (#124)
  
 * Adjusted `VegaChart` component, due to `react-vega` upgrade
   from v7 to v8. (#132)
 
+* Fixed handling of `style` prop in `Tabs` component and added prop 
+  `iconPosition`. (#135, #136)
 
 ## Version 0.1.7 (from 2025/12/03)
 

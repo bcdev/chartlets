@@ -2,6 +2,8 @@
 
 * Added `size` and removed `variant` property from `IconButton`
   component to align with component in chartlets.js. (#124)
+  
+* Added (MUI) component `Accordion`. (#41, #134)
 
 * Added `iconPosition` to `Tabs` Component. (#135, #136)
 

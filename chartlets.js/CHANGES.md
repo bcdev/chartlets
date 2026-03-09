@@ -8,6 +8,8 @@
 
 * Added icon support for `Button`, `IconButton` and `Tabs` components.
  (#124).
+ 
+* Added (MUI) component `Accordion`. (#41, #134)
 
 * Fixed handling of `style` prop in `Tabs` component and added prop 
   `iconPosition`. (#135, #136)

@@ -3,7 +3,8 @@
 * Added `size` and removed `variant` property from `IconButton`
   component to align with component in chartlets.js. (#124)
   
-* Removed pinning of `altair` dependency. (#132)
+* Updated dependencies
+	- `altair>=6.0.0,<7.0.0` (#132)
 
 ## Version 0.1.7 (from 2025/12/03)
 

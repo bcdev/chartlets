@@ -7,6 +7,9 @@
 
 * Added `iconPosition` to `Tabs` Component. (#135, #136)
 
+* Updated dependencies
+    - `altair>=6.0.0,<7.0.0` (#132)
+
 ## Version 0.1.7 (from 2025/12/03)
 
 * Updated dependencies

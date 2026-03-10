@@ -11,7 +11,7 @@ import { useSignalListeners } from "./useSignalListeners";
 import { createChangeHandler } from "@/plugins/mui/common.test";
 
 const chart: TopLevelSpec = {
-  $schema: "https://vega.github.io/schema/vega-lite/v5.20.1.json",
+  $schema: "https://vega.github.io/schema/vega-lite/v6.json",
   config: { view: { continuousWidth: 300, continuousHeight: 300 } },
   data: { name: "data-0" },
   mark: { type: "bar" },
@@ -54,9 +54,9 @@ describe("useSignalListeners", () => {
     const { result, rerender } = renderHook(() =>
       useSignalListeners(chart, "VegaChart", "my_chart", () => {}),
     );
-    const signalHandlers1 = result.current;
+    const signalHandlers1 = result.current.signalListenerMap;
     rerender();
-    const signalHandlers2 = result.current;
+    const signalHandlers2 = result.current.signalListenerMap;
     expect(signalHandlers1).toEqual({});
     expect(signalHandlers2).toEqual({});
     expect(signalHandlers1).toBe(signalHandlers1);
@@ -66,13 +66,13 @@ describe("useSignalListeners", () => {
     const { result } = renderHook(() =>
       useSignalListeners(chartWithSelect, "VegaChart", "my_chart", () => {}),
     );
-    const signalHandlers = result.current;
+    const signalHandlers = result.current.signalListenerMap;
     expect(signalHandlers).toBeDefined();
     expect(signalHandlers["sel_point"]).toBeTypeOf("function");
     expect(signalHandlers["sel_interval"]).toBeTypeOf("function");
     expect(signalHandlers["sel_point_a"]).toBeTypeOf("function");
     // "wheel" not supported
-    expect(signalHandlers["sel_point_b"]).toBeUndefined();
+    expect(signalHandlers["sel_interval_b"]).toBeUndefined();
   });
 
   it("should call onChange", () => {
@@ -80,7 +80,7 @@ describe("useSignalListeners", () => {
     const { result } = renderHook(() =>
       useSignalListeners(chartWithSelect, "VegaChart", "my_chart", onChange),
     );
-    const signalHandlers = result.current;
+    const signalHandlers = result.current.signalListenerMap;
     expect(signalHandlers).toBeDefined();
     const signalHandler = signalHandlers["sel_point_a"];
     expect(signalHandler).toBeTypeOf("function");

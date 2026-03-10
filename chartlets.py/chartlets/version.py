@@ -2,4 +2,4 @@
 #  Permissions are hereby granted under the terms of the MIT License:
 #  https://opensource.org/licenses/MIT.
 
-version = "0.1.8.dev0"
+version = "0.2.0"

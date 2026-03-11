@@ -8,6 +8,9 @@
 	- `vite: ^7.1.11`
 	- `vitest: ^3.2.4`
 
+* Removed `canvas` from the test setup. `vitest.setup.ts` now 
+  uses `vitest-canvas-mock` instead. (#143)
+	
 * Added icon support for `Button`, `IconButton` and `Tabs` components.
  (#124).
  

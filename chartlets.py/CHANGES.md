@@ -1,4 +1,4 @@
-## Version 0.2.0 (from 2026/03/10)
+## Version 0.2.0 (from 2026/03/11)
 
 * Added `size` and removed `variant` property from `IconButton`
   component to align with component in chartlets.js. (#124)

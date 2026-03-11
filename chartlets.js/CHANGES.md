@@ -1,4 +1,4 @@
-## Version 0.2.0 (from 2026/03/10)
+## Version 0.2.0 (from 2026/03/11)
 
 * Updated dependencies
 	- `glob: ^13.0.1`

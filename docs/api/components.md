@@ -15,6 +15,8 @@ and providers:
 
 ## Widget Components
 
+::: chartlets.components.Accordion
+
 ::: chartlets.components.Box
 
 ::: chartlets.components.Button

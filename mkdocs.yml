@@ -10,8 +10,7 @@ plugins:
             show_source: false
             show_if_no_docstring: false
             show_root_heading: true
-            toc: false
-            #toc_depth: 1
+            show_root_toc_entry: true
 
 nav:
   - Home: index.md

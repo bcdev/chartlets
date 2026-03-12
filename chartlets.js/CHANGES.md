@@ -1,3 +1,5 @@
+## Version 0.2.1 (in development)
+
 ## Version 0.2.0 (from 2026/03/11)
 
 * Updated dependencies

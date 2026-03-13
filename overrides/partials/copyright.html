@@ -4,8 +4,8 @@
     <div class="md-copyright__highlight">
         {{ config.copyright }}
         {% for link in config.extra.footer_links %}
-            <span class="md-footer-meta__separator">•</span>
-            <a href="{{ base_url }}/{{ link.href }}" rel="noopener">{{ link.text }}</a>
+        &nbsp;&nbsp;&nbsp;
+        <a href="{{ base_url }}/{{ link.href }}" rel="noopener">{{ link.text }}</a>
         {% endfor %}
     </div>
     {% endif %}

@@ -64,9 +64,9 @@ validation:
 extra:
   footer_links:
     - text: "Imprint"
-      href: "/imprint/"
+      href: "imprint/"
     - text: "Privacy Policy"
-      href: "/privacy-policy/"
+      href: "privacy-policy/"
 
 not_in_nav: |
   imprint.md 

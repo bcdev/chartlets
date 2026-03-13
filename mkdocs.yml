@@ -1,4 +1,9 @@
 site_name: chartlets
+repo_url: https://github.com/bcdev/chartlets
+
+site_description: Documentation of the chartlet software framework
+copyright: Copyright © 2026 Brockmann Consult GmbH
+
 
 plugins:
   - search
@@ -48,11 +53,7 @@ theme:
       toggle:
         icon: material/brightness-4
         name: Switch to system preference
-
-repo_url: https://github.com/bcdev/chartlets
-
-site_description: Documentation of the chartlet software framework
-copyright: Copyright © 2026 Brockmann Consult GmbH
+  custom_dir: docs/overrides
 
 validation:
   omitted_files: warn
@@ -60,3 +61,13 @@ validation:
   unrecognized_links: warn
   anchors: warn
 
+extra:
+  footer_links:
+    - text: "Imprint"
+      href: "/imprint/"
+    - text: "Privacy Policy"
+      href: "/privacy-policy/"
+
+not_in_nav: |
+  imprint.md 
+  privacy-policy.md

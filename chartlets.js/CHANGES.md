@@ -1,5 +1,11 @@
 ## Version 0.2.1 (in development)
 
+* Updated dependencies
+	- `@vitejs/plugin-react-swc: ^4.3.1`
+	- `@vitest/coverage-istanbul: ^4.1.8`
+	- `vite: ^8.0.16`
+	- `vitest: ^4.1.8`
+
 ## Version 0.2.0 (from 2026/03/11)
 
 * Updated dependencies

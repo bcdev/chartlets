@@ -21,7 +21,12 @@ export const LinearProgress = ({
   style,
   value,
   variant,
+  visible = true,
 }: LinearProgressProps) => {
+  if (!visible) {
+    return null;
+  }
+
   return (
     <MuiLinearProgress id={id} style={style} value={value} variant={variant} />
   );

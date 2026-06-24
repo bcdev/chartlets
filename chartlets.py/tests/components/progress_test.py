@@ -13,8 +13,13 @@ class CircularProgressTest(make_base(CircularProgress)):
 
     def test_is_json_serializable(self):
         self.assert_is_json_serializable(
-            self.cls(color="success", value=10),
-            {"type": "CircularProgress", "color": "success", "value": 10},
+            self.cls(color="success", value=10, visible=False),
+            {
+                "type": "CircularProgress",
+                "color": "success",
+                "value": 10,
+                "visible": False,
+            },
         )
 
 

@@ -22,4 +22,17 @@ describe("CircularProgress", () => {
     // expect(document.querySelector("#cp")).toEqual({});
     expect(screen.getByRole("progressbar")).not.toBeUndefined();
   });
+
+  it("should not render when visible is false", () => {
+    render(
+      <CircularProgress
+        type="CircularProgress"
+        id="cp"
+        visible={false}
+        onChange={() => {}}
+      />,
+    );
+
+    expect(screen.queryByRole("progressbar")).toBeNull();
+  });
 });

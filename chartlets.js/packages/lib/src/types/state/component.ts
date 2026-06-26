@@ -30,6 +30,7 @@ export interface ComponentState {
   label?: string;
   color?: string;
   tooltip?: string;
+  visible?: boolean;
 }
 
 export interface ContainerState extends ComponentState {

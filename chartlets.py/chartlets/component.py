@@ -38,6 +38,9 @@ class Component(ABC):
     color: str | None = None
     """HTML `color` attribute. Optional."""
 
+    visible: bool | None = None
+    """If set, controls whether the component is visible."""
+
     children: list[Union["Component", str, None]] | None = None
     """Children used by many specific components. Optional."""
 

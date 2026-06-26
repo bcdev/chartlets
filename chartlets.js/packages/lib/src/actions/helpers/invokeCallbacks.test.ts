@@ -7,8 +7,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { store } from "@/store";
+import type { CallbackRequest, StateChangeRequest } from "@/types/model/callback";
 import type { ComponentState } from "@/types/state/component";
-import type { StateChangeRequest } from "@/types/model/callback";
 import { invokeCallbacks } from "./invokeCallbacks";
 
 function createDeferred<T>() {
@@ -23,6 +23,14 @@ function getProgressComponent() {
   return (store.getState().contributionsRecord.panels[0].component!
     .children![0] as ComponentState);
 }
+
+const callbackRequest: CallbackRequest = {
+  contribPoint: "panels",
+  contribIndex: 0,
+  callbackIndex: 0,
+  inputIndex: 0,
+  inputValues: [true],
+};
 
 describe("invokeCallbacks", () => {
   beforeEach(() => {
@@ -66,38 +74,70 @@ describe("invokeCallbacks", () => {
     vi.restoreAllMocks();
   });
 
-  it("shows progress while a callback with a progress visibility output is pending", async () => {
+  it("shows pending progress and applies callback results", async () => {
     const deferred = createDeferred<Response>();
     globalThis.fetch = vi.fn().mockReturnValue(deferred.promise);
 
-    invokeCallbacks([
-      {
-        contribPoint: "panels",
-        contribIndex: 0,
-        callbackIndex: 0,
-        inputIndex: 0,
-        inputValues: [true],
-      },
-    ]);
+    invokeCallbacks([callbackRequest]);
 
     expect(getProgressComponent().visible).toBe(true);
 
-    const callbackResult: StateChangeRequest[] = [
+    deferred.resolve(createCallbackResponse([
       {
         contribPoint: "panels",
         contribIndex: 0,
         stateChanges: [{ id: "progress", property: "visible", value: false }],
       },
-    ];
-    deferred.resolve({
-      ok: true,
-      status: 200,
-      statusText: "ok",
-      json: vi.fn().mockResolvedValue({ result: callbackResult }),
-    } as unknown as Response);
+    ]));
 
     await vi.waitFor(() => {
       expect(getProgressComponent().visible).toBe(false);
     });
   });
+
+  it("logs and releases pending progress when a callback fails", async () => {
+    const deferred = createDeferred<Response>();
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    globalThis.fetch = vi.fn().mockReturnValue(deferred.promise);
+
+    invokeCallbacks([callbackRequest]);
+
+    expect(getProgressComponent().visible).toBe(true);
+
+    deferred.resolve({
+      ok: true,
+      status: 200,
+      statusText: "ok",
+      json: vi.fn().mockResolvedValue({ message: "unexpected" }),
+    } as unknown as Response);
+
+    await vi.waitFor(() => {
+      expect(getProgressComponent().visible).toBe(false);
+    });
+    expect(consoleError).toHaveBeenCalledOnce();
+  });
+
+  it("logs callback requests and results when logging is enabled", async () => {
+    const deferred = createDeferred<Response>();
+    const consoleInfo = vi.spyOn(console, "info").mockImplementation(() => {});
+    globalThis.fetch = vi.fn().mockReturnValue(deferred.promise);
+    store.setState({ configuration: { logging: { enabled: true } } });
+
+    invokeCallbacks([callbackRequest]);
+
+    deferred.resolve(createCallbackResponse([]));
+
+    await vi.waitFor(() => {
+      expect(consoleInfo).toHaveBeenCalledTimes(2);
+    });
+  });
 });
+
+function createCallbackResponse(result: StateChangeRequest[]) {
+  return {
+    ok: true,
+    status: 200,
+    statusText: "ok",
+    json: vi.fn().mockResolvedValue({ result }),
+  } as unknown as Response;
+}

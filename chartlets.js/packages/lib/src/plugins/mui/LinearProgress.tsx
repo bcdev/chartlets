@@ -21,9 +21,9 @@ export const LinearProgress = ({
   style,
   value,
   variant,
-  visible = true,
+  hidden = true,
 }: LinearProgressProps) => {
-  if (!visible) {
+  if (!hidden) {
     return null;
   }
 

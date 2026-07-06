@@ -6,9 +6,9 @@
 	- `vite: ^8.0.16`
 	- `vitest: ^4.1.8`
 
-* Added `visible` support for progress components. Progress indicators can
-  now be hidden via `visible={false}` and are automatically shown while a
-  server-side callback with an output such as `Output("progress", "visible")`
+* Added `hidden` support for progress components. Progress indicators can
+  now be hidden via `hidden={false}` and are automatically shown while a
+  server-side callback with an output such as `Output("progress", "hidden")`
   is pending.
   
 ## Version 0.2.0 (from 2026/03/11)

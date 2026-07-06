@@ -7,7 +7,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { store } from "@/store";
-import type { CallbackRequest, StateChangeRequest } from "@/types/model/callback";
+import type {
+  CallbackRequest,
+  StateChangeRequest,
+} from "@/types/model/callback";
 import type { ComponentState } from "@/types/state/component";
 import { invokeCallbacks } from "./invokeCallbacks";
 
@@ -20,8 +23,8 @@ function createDeferred<T>() {
 }
 
 function getProgressComponent() {
-  return (store.getState().contributionsRecord.panels[0].component!
-    .children![0] as ComponentState);
+  return store.getState().contributionsRecord.panels[0].component!
+    .children![0] as ComponentState;
 }
 
 const callbackRequest: CallbackRequest = {
@@ -51,7 +54,7 @@ describe("invokeCallbacks", () => {
                 {
                   type: "CircularProgress",
                   id: "progress",
-                  visible: false,
+                  hidden: false,
                 },
               ],
             },
@@ -59,7 +62,7 @@ describe("invokeCallbacks", () => {
               {
                 function: { name: "calculate", parameters: [], return: {} },
                 inputs: [{ id: "run", property: "clicked" }],
-                outputs: [{ id: "progress", property: "visible" }],
+                outputs: [{ id: "progress", property: "hidden" }],
               },
             ],
             initialState: {},
@@ -80,29 +83,33 @@ describe("invokeCallbacks", () => {
 
     invokeCallbacks([callbackRequest]);
 
-    expect(getProgressComponent().visible).toBe(true);
+    expect(getProgressComponent().hidden).toBe(true);
 
-    deferred.resolve(createCallbackResponse([
-      {
-        contribPoint: "panels",
-        contribIndex: 0,
-        stateChanges: [{ id: "progress", property: "visible", value: false }],
-      },
-    ]));
+    deferred.resolve(
+      createCallbackResponse([
+        {
+          contribPoint: "panels",
+          contribIndex: 0,
+          stateChanges: [{ id: "progress", property: "hidden", value: false }],
+        },
+      ]),
+    );
 
     await vi.waitFor(() => {
-      expect(getProgressComponent().visible).toBe(false);
+      expect(getProgressComponent().hidden).toBe(false);
     });
   });
 
   it("logs and releases pending progress when a callback fails", async () => {
     const deferred = createDeferred<Response>();
-    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
     globalThis.fetch = vi.fn().mockReturnValue(deferred.promise);
 
     invokeCallbacks([callbackRequest]);
 
-    expect(getProgressComponent().visible).toBe(true);
+    expect(getProgressComponent().hidden).toBe(true);
 
     deferred.resolve({
       ok: true,
@@ -112,7 +119,7 @@ describe("invokeCallbacks", () => {
     } as unknown as Response);
 
     await vi.waitFor(() => {
-      expect(getProgressComponent().visible).toBe(false);
+      expect(getProgressComponent().hidden).toBe(false);
     });
     expect(consoleError).toHaveBeenCalledOnce();
   });

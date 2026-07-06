@@ -24,8 +24,8 @@ const callbackRequest: CallbackRequest = {
 };
 
 function getProgressComponent() {
-  return (store.getState().contributionsRecord.panels[0].component!
-    .children![0] as ComponentState);
+  return store.getState().contributionsRecord.panels[0].component!
+    .children![0] as ComponentState;
 }
 
 describe("pendingProgress", () => {
@@ -47,12 +47,12 @@ describe("pendingProgress", () => {
                 {
                   type: "CircularProgress",
                   id: "progress",
-                  visible: false,
+                  hidden: false,
                 },
                 {
                   type: "Typography",
                   id: "text",
-                  visible: false,
+                  hidden: false,
                 },
               ],
             },
@@ -60,20 +60,20 @@ describe("pendingProgress", () => {
               {
                 function: { name: "calculate", parameters: [], return: {} },
                 inputs: [{ id: "run", property: "clicked" }],
-                outputs: [{ id: "progress", property: "visible" }],
+                outputs: [{ id: "progress", property: "hidden" }],
               },
               {
                 function: { name: "duplicate", parameters: [], return: {} },
                 inputs: [{ id: "run", property: "clicked" }],
                 outputs: [
-                  { id: "progress", property: "visible" },
-                  { id: "progress", property: "visible" },
+                  { id: "progress", property: "hidden" },
+                  { id: "progress", property: "hidden" },
                 ],
               },
               {
                 function: { name: "text", parameters: [], return: {} },
                 inputs: [{ id: "run", property: "clicked" }],
-                outputs: [{ id: "text", property: "visible" }],
+                outputs: [{ id: "text", property: "hidden" }],
               },
               {
                 function: { name: "value", parameters: [], return: {} },
@@ -89,13 +89,13 @@ describe("pendingProgress", () => {
     });
   });
 
-  it("finds progress components targeted by visible callback outputs", () => {
+  it("finds progress components targeted by hidden callback outputs", () => {
     expect(getPendingProgressTargets([callbackRequest])).toEqual([
       {
         contribPoint: "panels",
         contribIndex: 0,
         id: "progress",
-        output: { id: "progress", property: "visible" },
+        output: { id: "progress", property: "hidden" },
       },
     ]);
   });
@@ -108,7 +108,7 @@ describe("pendingProgress", () => {
     expect(targets).toHaveLength(1);
   });
 
-  it("ignores non-progress components and non-visible outputs", () => {
+  it("ignores non-progress components and non-hidden outputs", () => {
     expect(
       getPendingProgressTargets([{ ...callbackRequest, callbackIndex: 2 }]),
     ).toEqual([]);
@@ -137,14 +137,14 @@ describe("pendingProgress", () => {
 
     showPendingProgressTargets(targets);
 
-    expect(getProgressComponent().visible).toBe(true);
+    expect(getProgressComponent().hidden).toBe(true);
 
     releasePendingProgressTargets(targets, false);
 
-    expect(getProgressComponent().visible).toBe(false);
+    expect(getProgressComponent().hidden).toBe(false);
   });
 
-  it("keeps progress visible until overlapping callbacks have completed", () => {
+  it("keeps progress hidden until overlapping callbacks have completed", () => {
     const targets = getPendingProgressTargets([callbackRequest]);
 
     showPendingProgressTargets(targets);
@@ -152,10 +152,10 @@ describe("pendingProgress", () => {
 
     releasePendingProgressTargets(targets, true);
 
-    expect(getProgressComponent().visible).toBe(true);
+    expect(getProgressComponent().hidden).toBe(true);
 
     releasePendingProgressTargets(targets, false);
 
-    expect(getProgressComponent().visible).toBe(false);
+    expect(getProgressComponent().hidden).toBe(false);
   });
 });

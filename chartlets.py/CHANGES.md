@@ -1,8 +1,8 @@
 ## Version 0.2.1 (in development)
 
-* Added `visible` property to the base `Component` class, so components can
+* Added `hidden` property to the base `Component` class, so components can
   be shown or hidden through callback outputs such as
-  `Output("progress", "visible")`.
+  `Output("progress", "hidden")`.
   
 ## Version 0.2.0 (from 2026/03/11)
 

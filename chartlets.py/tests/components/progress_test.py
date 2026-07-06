@@ -13,12 +13,11 @@ class CircularProgressTest(make_base(CircularProgress)):
 
     def test_is_json_serializable(self):
         self.assert_is_json_serializable(
-            self.cls(color="success", value=10, visible=False),
+            self.cls(color="success", value=10),
             {
                 "type": "CircularProgress",
                 "color": "success",
                 "value": 10,
-                "visible": False,
             },
         )
 
@@ -27,12 +26,11 @@ class CircularProgressWithLabelTest(make_base(CircularProgressWithLabel)):
 
     def test_is_json_serializable(self):
         self.assert_is_json_serializable(
-            self.cls(color="primary", value=12, visible=False),
+            self.cls(color="primary", value=12),
             {
                 "type": "CircularProgressWithLabel",
                 "color": "primary",
                 "value": 12,
-                "visible": False,
             },
         )
 
@@ -41,12 +39,11 @@ class LinearProgressTest(make_base(LinearProgress)):
 
     def test_is_json_serializable(self):
         self.assert_is_json_serializable(
-            self.cls(color="success", value=40, visible=False),
+            self.cls(color="success", value=40),
             {
                 "type": "LinearProgress",
                 "color": "success",
                 "value": 40,
-                "visible": False,
             },
         )
 
@@ -55,11 +52,10 @@ class LinearProgressWithLabelTest(make_base(LinearProgressWithLabel)):
 
     def test_is_json_serializable(self):
         self.assert_is_json_serializable(
-            self.cls(color="secondary", value=42, visible=False),
+            self.cls(color="secondary", value=42),
             {
                 "type": "LinearProgressWithLabel",
                 "color": "secondary",
                 "value": 42,
-                "visible": False,
             },
         )

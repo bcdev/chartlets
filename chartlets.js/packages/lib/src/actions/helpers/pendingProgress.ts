@@ -39,7 +39,7 @@ export function getPendingProgressTargets(
     const callback = contribution?.callbacks?.[callbackIndex];
     callback?.outputs?.forEach((output) => {
       if (
-        formatObjPath(output.property) === "visible" &&
+        formatObjPath(output.property) === "hidden" &&
         isProgressComponent(contribution.component, output.id)
       ) {
         const target = { contribPoint, contribIndex, id: output.id, output };
@@ -99,7 +99,7 @@ function decrementPendingProgressCounts(targets: PendingProgressTarget[]) {
 
 function applyPendingProgressTargets(
   targets: PendingProgressTarget[],
-  visible: boolean,
+  hidden: boolean,
 ) {
   if (targets.length === 0) {
     return;
@@ -108,7 +108,7 @@ function applyPendingProgressTargets(
     targets.map<StateChangeRequest>((target) => ({
       contribPoint: target.contribPoint,
       contribIndex: target.contribIndex,
-      stateChanges: [{ ...target.output, value: visible }],
+      stateChanges: [{ ...target.output, value: hidden }],
     })),
   );
 }

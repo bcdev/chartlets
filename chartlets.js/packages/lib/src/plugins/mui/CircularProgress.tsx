@@ -22,9 +22,9 @@ export const CircularProgress = ({
   size,
   value,
   variant,
-  visible = true,
+  hidden = true,
 }: CircularProgressProps) => {
-  if (!visible) {
+  if (!hidden) {
     return null;
   }
 

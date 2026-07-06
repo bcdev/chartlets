@@ -32,7 +32,7 @@ def render_panel(ctx: Context) -> Component:
     )
     progress = CircularProgress(
         id="loading_progress",
-        visible=False,
+        hidden=False,
         size=32,
         style={"margin": "16px 0"},
     )

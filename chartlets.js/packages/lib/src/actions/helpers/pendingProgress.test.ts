@@ -47,12 +47,12 @@ describe("pendingProgress", () => {
                 {
                   type: "CircularProgress",
                   id: "progress",
-                  hidden: false,
+                  hidden: true,
                 },
                 {
                   type: "Typography",
                   id: "text",
-                  hidden: false,
+                  hidden: true,
                 },
               ],
             },
@@ -137,14 +137,14 @@ describe("pendingProgress", () => {
 
     showPendingProgressTargets(targets);
 
-    expect(getProgressComponent().hidden).toBe(true);
+    expect(getProgressComponent().hidden).toBe(false);
 
     releasePendingProgressTargets(targets, false);
 
-    expect(getProgressComponent().hidden).toBe(false);
+    expect(getProgressComponent().hidden).toBe(true);
   });
 
-  it("keeps progress hidden until overlapping callbacks have completed", () => {
+  it("keeps progress visible until overlapping callbacks have completed", () => {
     const targets = getPendingProgressTargets([callbackRequest]);
 
     showPendingProgressTargets(targets);
@@ -152,10 +152,10 @@ describe("pendingProgress", () => {
 
     releasePendingProgressTargets(targets, true);
 
-    expect(getProgressComponent().hidden).toBe(true);
+    expect(getProgressComponent().hidden).toBe(false);
 
     releasePendingProgressTargets(targets, false);
 
-    expect(getProgressComponent().hidden).toBe(false);
+    expect(getProgressComponent().hidden).toBe(true);
   });
 });

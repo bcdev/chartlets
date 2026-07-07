@@ -32,7 +32,7 @@ def render_panel(ctx: Context) -> Component:
     )
     progress = CircularProgress(
         id="loading_progress",
-        hidden=False,
+        hidden=True,
         size=32,
         style={"margin": "16px 0"},
     )
@@ -58,7 +58,7 @@ def render_panel(ctx: Context) -> Component:
 @panel.callback(
     Input("start_button", "clicked"),
     State("start_button", "text"),
-    Output("loading_progress", "visible"),
+    Output("loading_progress", "hidden"),
     Output("result_text", "text"),
     Output("start_button", "text"),
     Output("start_button", "color"),
@@ -67,7 +67,8 @@ def run_calculation(
     ctx: Context, clicked: bool, button_text: str
 ) -> tuple[bool, str, str, str]:
     if button_text == "reset":
-        return False, "", "wait for 3 seconds", "primary"
+        return True, "", "wait for 3 seconds", "primary"
 
     time.sleep(3)
-    return False, "Finished waiting after 3 seconds.", "reset", "inherit"
+    return True, "Finished waiting after 3 seconds.", "reset", "inherit"
+

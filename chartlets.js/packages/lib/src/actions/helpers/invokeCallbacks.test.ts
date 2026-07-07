@@ -54,7 +54,7 @@ describe("invokeCallbacks", () => {
                 {
                   type: "CircularProgress",
                   id: "progress",
-                  hidden: false,
+                  hidden: true,
                 },
               ],
             },
@@ -83,20 +83,20 @@ describe("invokeCallbacks", () => {
 
     invokeCallbacks([callbackRequest]);
 
-    expect(getProgressComponent().hidden).toBe(true);
+    expect(getProgressComponent().hidden).toBe(false);
 
     deferred.resolve(
       createCallbackResponse([
         {
           contribPoint: "panels",
           contribIndex: 0,
-          stateChanges: [{ id: "progress", property: "hidden", value: false }],
+          stateChanges: [{ id: "progress", property: "hidden", value: true }],
         },
       ]),
     );
 
     await vi.waitFor(() => {
-      expect(getProgressComponent().hidden).toBe(false);
+      expect(getProgressComponent().hidden).toBe(true);
     });
   });
 
@@ -109,7 +109,7 @@ describe("invokeCallbacks", () => {
 
     invokeCallbacks([callbackRequest]);
 
-    expect(getProgressComponent().hidden).toBe(true);
+    expect(getProgressComponent().hidden).toBe(false);
 
     deferred.resolve({
       ok: true,
@@ -119,7 +119,7 @@ describe("invokeCallbacks", () => {
     } as unknown as Response);
 
     await vi.waitFor(() => {
-      expect(getProgressComponent().hidden).toBe(false);
+      expect(getProgressComponent().hidden).toBe(true);
     });
     expect(consoleError).toHaveBeenCalledOnce();
   });

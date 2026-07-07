@@ -5,7 +5,10 @@
  */
 
 import { store } from "@/store";
-import type { CallbackRequest, StateChangeRequest } from "@/types/model/callback";
+import type {
+  CallbackRequest,
+  StateChangeRequest,
+} from "@/types/model/callback";
 import type { Output } from "@/types/model/channel";
 import type { ComponentState } from "@/types/state/component";
 import { applyStateChangeRequests } from "@/actions/helpers/applyStateChangeRequests";
@@ -57,7 +60,7 @@ export function getPendingProgressTargets(
 
 export function showPendingProgressTargets(targets: PendingProgressTarget[]) {
   incrementPendingProgressCounts(targets);
-  applyPendingProgressTargets(targets, true);
+  applyPendingProgressTargets(targets, false);
 }
 
 export function releasePendingProgressTargets(
@@ -68,13 +71,13 @@ export function releasePendingProgressTargets(
   const stillPendingTargets = targets.filter(
     (target) => pendingProgressCounts[getPendingProgressTargetKey(target)] > 0,
   );
-  applyPendingProgressTargets(stillPendingTargets, true);
+  applyPendingProgressTargets(stillPendingTargets, false);
 
   if (!callbackSucceeded) {
     const completedTargets = targets.filter(
       (target) => !pendingProgressCounts[getPendingProgressTargetKey(target)],
     );
-    applyPendingProgressTargets(completedTargets, false);
+    applyPendingProgressTargets(completedTargets, true);
   }
 }
 

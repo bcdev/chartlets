@@ -23,12 +23,12 @@ describe("LinearProgress", () => {
     expect(screen.getByRole("progressbar")).not.toBeUndefined();
   });
 
-  it("should not render when hidden is false", () => {
+  it("should not render when hidden is true", () => {
     render(
       <LinearProgress
         type="LinearProgress"
         id="cp"
-        hidden={false}
+        hidden={true}
         onChange={() => {}}
       />,
     );

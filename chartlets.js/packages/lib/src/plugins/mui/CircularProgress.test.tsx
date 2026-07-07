@@ -23,7 +23,7 @@ describe("CircularProgress", () => {
     expect(screen.getByRole("progressbar")).not.toBeUndefined();
   });
 
-  it("should not render when hidden is true", () => {
+  it("should not render when hidden", () => {
     render(
       <CircularProgress
         type="CircularProgress"

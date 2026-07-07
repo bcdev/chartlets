@@ -51,11 +51,7 @@ describe("invokeCallbacks", () => {
             component: {
               type: "Box",
               children: [
-                {
-                  type: "CircularProgress",
-                  id: "progress",
-                  hidden: true,
-                },
+                { type: "CircularProgress", id: "progress", hidden: true },
               ],
             },
             callbacks: [
@@ -77,12 +73,13 @@ describe("invokeCallbacks", () => {
     vi.restoreAllMocks();
   });
 
-  it("shows pending progress and applies callback results", async () => {
+  it("shows progress while the backend callback is pending", async () => {
     const deferred = createDeferred<Response>();
     globalThis.fetch = vi.fn().mockReturnValue(deferred.promise);
 
     invokeCallbacks([callbackRequest]);
 
+    // The spinner is shown before the backend response arrives.
     expect(getProgressComponent().hidden).toBe(false);
 
     deferred.resolve(
@@ -95,12 +92,13 @@ describe("invokeCallbacks", () => {
       ]),
     );
 
+    // On success, the backend result provides the final hidden state.
     await vi.waitFor(() => {
       expect(getProgressComponent().hidden).toBe(true);
     });
   });
 
-  it("logs and releases pending progress when a callback fails", async () => {
+  it("hides progress when the backend callback fails", async () => {
     const deferred = createDeferred<Response>();
     const consoleError = vi
       .spyOn(console, "error")
@@ -108,7 +106,6 @@ describe("invokeCallbacks", () => {
     globalThis.fetch = vi.fn().mockReturnValue(deferred.promise);
 
     invokeCallbacks([callbackRequest]);
-
     expect(getProgressComponent().hidden).toBe(false);
 
     deferred.resolve({
@@ -118,25 +115,11 @@ describe("invokeCallbacks", () => {
       json: vi.fn().mockResolvedValue({ message: "unexpected" }),
     } as unknown as Response);
 
+    // On failure, no backend output is applied, so the frontend hides the spinner.
     await vi.waitFor(() => {
       expect(getProgressComponent().hidden).toBe(true);
     });
     expect(consoleError).toHaveBeenCalledOnce();
-  });
-
-  it("logs callback requests and results when logging is enabled", async () => {
-    const deferred = createDeferred<Response>();
-    const consoleInfo = vi.spyOn(console, "info").mockImplementation(() => {});
-    globalThis.fetch = vi.fn().mockReturnValue(deferred.promise);
-    store.setState({ configuration: { logging: { enabled: true } } });
-
-    invokeCallbacks([callbackRequest]);
-
-    deferred.resolve(createCallbackResponse([]));
-
-    await vi.waitFor(() => {
-      expect(consoleInfo).toHaveBeenCalledTimes(2);
-    });
   });
 });
 

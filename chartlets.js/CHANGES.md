@@ -7,7 +7,7 @@
 	- `vitest: ^4.1.8`
 
 * Added `hidden` support for progress components. Progress indicators can
-  now be hidden via `hidden={false}` and are automatically shown while a
+  now be hidden via `hidden={true}` and are automatically shown while a
   server-side callback with an output such as `Output("progress", "hidden")`
   is pending.
   

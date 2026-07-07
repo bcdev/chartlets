@@ -14,6 +14,13 @@ import type { ComponentState } from "@/types/state/component";
 import { applyStateChangeRequests } from "@/actions/helpers/applyStateChangeRequests";
 import { formatObjPath } from "@/utils/objPath";
 
+/**
+ * A progress component output that should be shown while a callback is pending.
+ *
+ * The output is always a component `hidden` output. While the backend callback is
+ * running, chartlets applies `hidden: false` locally. The backend callback result
+ * is still responsible for the final state after it returns.
+ */
 export interface PendingProgressTarget {
   contribPoint: string;
   contribIndex: number;
@@ -30,6 +37,14 @@ const progressComponentTypes = new Set([
 
 const pendingProgressCounts: Record<string, number> = {};
 
+/**
+ * Finds callback outputs that target the `hidden` property of progress
+ * components in the currently rendered contribution tree.
+ *
+ * This is the bridge between a Python callback declaring
+ * `Output("some_progress", "hidden")` and the frontend showing that progress
+ * component before the callback response arrives.
+ */
 export function getPendingProgressTargets(
   callbackRequests: CallbackRequest[],
 ): PendingProgressTarget[] {
@@ -58,11 +73,22 @@ export function getPendingProgressTargets(
   return targets;
 }
 
+/**
+ * Shows pending progress targets immediately by setting `hidden` to `false`.
+ */
 export function showPendingProgressTargets(targets: PendingProgressTarget[]) {
   incrementPendingProgressCounts(targets);
   applyPendingProgressTargets(targets, false);
 }
 
+/**
+ * Releases progress targets after a callback finishes.
+ *
+ * Successful callbacks are expected to provide the final progress state in their
+ * own returned outputs. Failed callbacks do not have such outputs, so completed
+ * progress targets are hidden here. Overlapping callbacks keep the progress
+ * visible until the last pending callback has finished.
+ */
 export function releasePendingProgressTargets(
   targets: PendingProgressTarget[],
   callbackSucceeded: boolean,

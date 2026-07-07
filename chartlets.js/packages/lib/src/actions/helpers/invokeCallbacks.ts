@@ -14,6 +14,15 @@ import {
   showPendingProgressTargets,
 } from "@/actions/helpers/pendingProgress";
 
+/**
+ * Invokes backend callbacks and applies their returned state changes.
+ *
+ * Before the request is sent, progress components declared as callback outputs
+ * are shown so users get immediate feedback while the backend is still
+ * working. Once the request resolves, normal callback outputs are applied. On
+ * failed callbacks, pending progress targets are hidden because no backend
+ * output will arrive to restore their final state.
+ */
 export function invokeCallbacks(callbackRequests: CallbackRequest[]) {
   const { configuration } = store.getState();
   const shouldLog = configuration.logging?.enabled;

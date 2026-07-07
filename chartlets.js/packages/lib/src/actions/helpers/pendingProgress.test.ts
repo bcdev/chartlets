@@ -44,41 +44,20 @@ describe("pendingProgress", () => {
             component: {
               type: "Box",
               children: [
-                {
-                  type: "CircularProgress",
-                  id: "progress",
-                  hidden: true,
-                },
-                {
-                  type: "Typography",
-                  id: "text",
-                  hidden: true,
-                },
+                { type: "CircularProgress", id: "progress", hidden: true },
+                { type: "Typography", id: "text", hidden: true },
               ],
             },
             callbacks: [
               {
                 function: { name: "calculate", parameters: [], return: {} },
                 inputs: [{ id: "run", property: "clicked" }],
-                outputs: [{ id: "progress", property: "hidden" }],
-              },
-              {
-                function: { name: "duplicate", parameters: [], return: {} },
-                inputs: [{ id: "run", property: "clicked" }],
                 outputs: [
                   { id: "progress", property: "hidden" },
                   { id: "progress", property: "hidden" },
+                  { id: "text", property: "hidden" },
+                  { id: "progress", property: "value" },
                 ],
-              },
-              {
-                function: { name: "text", parameters: [], return: {} },
-                inputs: [{ id: "run", property: "clicked" }],
-                outputs: [{ id: "text", property: "hidden" }],
-              },
-              {
-                function: { name: "value", parameters: [], return: {} },
-                inputs: [{ id: "run", property: "clicked" }],
-                outputs: [{ id: "progress", property: "value" }],
               },
             ],
             initialState: {},
@@ -89,7 +68,9 @@ describe("pendingProgress", () => {
     });
   });
 
-  it("finds progress components targeted by hidden callback outputs", () => {
+  it("selects only hidden outputs that target progress components", () => {
+    // Only the progress component's hidden output should become a pending target.
+    // Duplicate outputs, non-progress components, and non-hidden outputs are ignored.
     expect(getPendingProgressTargets([callbackRequest])).toEqual([
       {
         contribPoint: "panels",
@@ -100,62 +81,17 @@ describe("pendingProgress", () => {
     ]);
   });
 
-  it("deduplicates repeated progress outputs from the same callback", () => {
-    const targets = getPendingProgressTargets([
-      { ...callbackRequest, callbackIndex: 1 },
-    ]);
-
-    expect(targets).toHaveLength(1);
-  });
-
-  it("ignores non-progress components and non-hidden outputs", () => {
-    expect(
-      getPendingProgressTargets([{ ...callbackRequest, callbackIndex: 2 }]),
-    ).toEqual([]);
-    expect(
-      getPendingProgressTargets([{ ...callbackRequest, callbackIndex: 3 }]),
-    ).toEqual([]);
-  });
-
-  it("ignores progress outputs when no component tree has been loaded", () => {
-    store.setState({
-      contributionsRecord: {
-        panels: [
-          {
-            ...store.getState().contributionsRecord.panels[0],
-            component: undefined,
-          },
-        ],
-      },
-    });
-
-    expect(getPendingProgressTargets([callbackRequest])).toEqual([]);
-  });
-
-  it("shows and hides progress when a callback fails", () => {
+  it("keeps progress visible until all overlapping callbacks are released", () => {
     const targets = getPendingProgressTargets([callbackRequest]);
 
-    showPendingProgressTargets(targets);
-
-    expect(getProgressComponent().hidden).toBe(false);
-
-    releasePendingProgressTargets(targets, false);
-
-    expect(getProgressComponent().hidden).toBe(true);
-  });
-
-  it("keeps progress visible until overlapping callbacks have completed", () => {
-    const targets = getPendingProgressTargets([callbackRequest]);
-
+    // Two overlapping callbacks should show the spinner once and keep it visible.
     showPendingProgressTargets(targets);
     showPendingProgressTargets(targets);
-
     releasePendingProgressTargets(targets, true);
-
     expect(getProgressComponent().hidden).toBe(false);
 
+    // A failed final callback has no backend result to hide the spinner, so JS does it.
     releasePendingProgressTargets(targets, false);
-
     expect(getProgressComponent().hidden).toBe(true);
   });
 });

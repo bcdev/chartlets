@@ -90,7 +90,7 @@ describe("pendingProgress", () => {
     releasePendingProgressTargets(targets, true);
     expect(getProgressComponent().hidden).toBe(false);
 
-    // A failed final callback has no backend result to hide the spinner, so JS does it.
+    // A failed final callback has no backend result to hide the spinner, so the frontend does it.
     releasePendingProgressTargets(targets, false);
     expect(getProgressComponent().hidden).toBe(true);
   });

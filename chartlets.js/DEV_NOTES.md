@@ -66,8 +66,7 @@ spinner that is still needed by another pending callback.
 
 ## Alternative
 
-The alternative would be to let every panel manage long-running work with 
-background jobs, stored job state, or another user action to fetch the finished 
-result. That would keep the logic out of the frontend, but it would make each 
-panel more complicated to create and maintain for the contributors.
+The alternative would be to let every panel manage the state of long-running 
+callback requests. This would keep the logic out of the frontend, but it would 
+make each panel more complicated to set-up and maintain for the contributors.
 

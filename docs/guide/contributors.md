@@ -84,3 +84,42 @@ from .stats_panel import panel as stats_panel
 ext = Extension("my_dashboard")
 ext.add(stats_panel)
 ```
+
+## How to report progress for long-lasting processes
+
+For callbacks that may take a noticeable amount of time, add a progress
+component to the layout and declare its `hidden` property as one of the
+callback outputs.
+
+```python
+from chartlets import Input, Output
+from chartlets.components import Box, Button, CircularProgress, Typography
+
+@panel.layout()
+def get_layout(ctx):
+    return Box(
+        children=[
+            Button(id="run_button", text="Run calculation"),
+            CircularProgress(id="loading_progress", hidden=True),
+            Typography(id="result_text", text=""),
+        ]
+    )
+
+@panel.callback(
+    Input("run_button", "clicked"),
+    Output("loading_progress", "hidden"),
+    Output("result_text", "text"),
+)
+def run_calculation(ctx, clicked):
+    result = do_long_running_work()
+    return True, result
+```
+
+The progress component starts hidden. When the callback is invoked, chartlets
+sees that the callback outputs to `loading_progress.hidden` and shows the
+progress component while the backend request is pending. When the callback
+returns, the first return value is applied to `hidden`; returning `True` hides
+the progress component again.
+
+The progress output must remain part of the callback outputs. If it is removed,
+chartlets cannot know that this callback should show the progress component.

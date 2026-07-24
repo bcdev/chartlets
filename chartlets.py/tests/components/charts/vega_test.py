@@ -35,27 +35,7 @@ class VegaChartTest(make_base(VegaChart)):
                 "type": "VegaChart",
                 "id": "plot",
                 "theme": "dark",
-                "chart": {
-                    "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json",
-                    "config": {
-                        "view": {"continuousHeight": 300, "continuousWidth": 300}
-                    },
-                    "data": {"name": "data-2780b27b376c14369bf3f449cf25f092"},
-                    "datasets": {
-                        "data-2780b27b376c14369bf3f449cf25f092": [
-                            {"a": 28, "x": "A"},
-                            {"a": 55, "x": "B"},
-                            {"a": 43, "x": "C"},
-                            {"a": 91, "x": "D"},
-                            {"a": 81, "x": "E"},
-                        ]
-                    },
-                    "encoding": {
-                        "x": {"field": "x", "title": "x", "type": "nominal"},
-                        "y": {"field": "a", "title": "a", "type": "quantitative"},
-                    },
-                    "mark": {"type": "bar"},
-                },
+                "chart": self.chart.to_dict(),
             },
         )
 

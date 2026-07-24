@@ -1,0 +1,133 @@
+/*
+ * Copyright (c) 2019-2026 by Brockmann Consult Development team
+ * Permissions are hereby granted under the terms of the MIT License:
+ * https://opensource.org/licenses/MIT.
+ */
+
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+import { store } from "@/store";
+import type {
+  CallbackRequest,
+  StateChangeRequest,
+} from "@/types/model/callback";
+import type { ComponentState } from "@/types/state/component";
+import { invokeCallbacks } from "./invokeCallbacks";
+
+function createDeferred<T>() {
+  let resolve!: (value: T) => void;
+  const promise = new Promise<T>((resolvePromise) => {
+    resolve = resolvePromise;
+  });
+  return { promise, resolve };
+}
+
+function getProgressComponent() {
+  return store.getState().contributionsRecord.panels[0].component!
+    .children![0] as ComponentState;
+}
+
+const callbackRequest: CallbackRequest = {
+  contribPoint: "panels",
+  contribIndex: 0,
+  callbackIndex: 0,
+  inputIndex: 0,
+  inputValues: [true],
+};
+
+describe("invokeCallbacks", () => {
+  beforeEach(() => {
+    store.setState({
+      configuration: {},
+      extensions: [{ name: "ext", version: "0", contributes: ["panels"] }],
+      contributionsResult: {},
+      contributionsRecord: {
+        panels: [
+          {
+            name: "panel",
+            extension: "ext",
+            container: {},
+            componentResult: { status: "ok" },
+            component: {
+              type: "Box",
+              children: [
+                { type: "CircularProgress", id: "progress", hidden: true },
+              ],
+            },
+            callbacks: [
+              {
+                function: { name: "calculate", parameters: [], return: {} },
+                inputs: [{ id: "run", property: "clicked" }],
+                outputs: [{ id: "progress", property: "hidden" }],
+              },
+            ],
+            initialState: {},
+          },
+        ],
+      },
+      lastCallbackInputValues: {},
+    });
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("shows progress while the backend callback is pending", async () => {
+    const deferred = createDeferred<Response>();
+    globalThis.fetch = vi.fn().mockReturnValue(deferred.promise);
+
+    invokeCallbacks([callbackRequest]);
+
+    // The spinner is shown before the backend response arrives.
+    expect(getProgressComponent().hidden).toBe(false);
+
+    deferred.resolve(
+      createCallbackResponse([
+        {
+          contribPoint: "panels",
+          contribIndex: 0,
+          stateChanges: [{ id: "progress", property: "hidden", value: true }],
+        },
+      ]),
+    );
+
+    // On success, the backend result provides the final hidden state.
+    await vi.waitFor(() => {
+      expect(getProgressComponent().hidden).toBe(true);
+    });
+  });
+
+  it("hides progress when the backend callback fails", async () => {
+    const deferred = createDeferred<Response>();
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    globalThis.fetch = vi.fn().mockReturnValue(deferred.promise);
+
+    invokeCallbacks([callbackRequest]);
+    expect(getProgressComponent().hidden).toBe(false);
+
+    deferred.resolve({
+      ok: true,
+      status: 200,
+      statusText: "ok",
+      json: vi.fn().mockResolvedValue({ message: "unexpected" }),
+    } as unknown as Response);
+
+    // On failure, no backend output is applied, so the frontend hides the spinner.
+    await vi.waitFor(() => {
+      expect(getProgressComponent().hidden).toBe(true);
+    });
+    expect(consoleError).toHaveBeenCalledOnce();
+  });
+});
+
+function createCallbackResponse(result: StateChangeRequest[]) {
+  return {
+    ok: true,
+    status: 200,
+    statusText: "ok",
+    json: vi.fn().mockResolvedValue({ result }),
+  } as unknown as Response;
+}

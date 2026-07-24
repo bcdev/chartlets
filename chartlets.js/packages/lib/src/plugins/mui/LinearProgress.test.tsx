@@ -22,4 +22,17 @@ describe("LinearProgress", () => {
     // expect(document.querySelector("#cp")).toEqual({});
     expect(screen.getByRole("progressbar")).not.toBeUndefined();
   });
+
+  it("should not render when hidden", () => {
+    render(
+      <LinearProgress
+        type="LinearProgress"
+        id="cp"
+        hidden={true}
+        onChange={() => {}}
+      />,
+    );
+
+    expect(screen.queryByRole("progressbar")).toBeNull();
+  });
 });

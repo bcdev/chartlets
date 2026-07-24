@@ -22,7 +22,12 @@ export const CircularProgress = ({
   size,
   value,
   variant,
+  hidden = false,
 }: CircularProgressProps) => {
+  if (hidden) {
+    return null;
+  }
+
   return (
     <MuiCircularProgress
       id={id}

@@ -8,8 +8,9 @@
 
 * Added `hidden` support for progress components. Progress indicators can
   now be hidden via `hidden={true}` and are automatically shown while a
-  server-side callback with an output such as `Output("progress", "hidden")`
-  is pending.
+  server-side callback with `Output("progress", "hidden")`
+  is pending. Examples: `docs/guide/contributors.md` and 
+  `chartlets.py/demo/my_extension/my_panel_10.py`. (#145)
   
 ## Version 0.2.0 (from 2026/03/11)
 

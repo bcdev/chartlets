@@ -1,4 +1,4 @@
-## Version 0.2.1 (in development)
+## Version 0.2.1 (from 2026/08/11)
 
 * Added `hidden` property to the base `Component` class, so components can
   be shown or hidden through callback outputs such as

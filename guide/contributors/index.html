@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -440,6 +440,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#how-to-report-progress-for-long-lasting-processes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to report progress for long-lasting processes
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -750,6 +761,39 @@ from .stats_panel import panel as stats_panel
 ext = Extension(&quot;my_dashboard&quot;)
 ext.add(stats_panel)
 </code></pre>
+<h2 id="how-to-report-progress-for-long-lasting-processes">How to report progress for long-lasting processes</h2>
+<p>For callbacks that may take a noticeable amount of time, add a progress
+component to the layout and declare its <code>hidden</code> property as one of the
+callback outputs.</p>
+<pre><code class="language-python">from chartlets import Input, Output
+from chartlets.components import Box, Button, CircularProgress, Typography
+
+@panel.layout()
+def get_layout(ctx):
+    return Box(
+        children=[
+            Button(id=&quot;run_button&quot;, text=&quot;Run calculation&quot;),
+            CircularProgress(id=&quot;loading_progress&quot;, hidden=True),
+            Typography(id=&quot;result_text&quot;, text=&quot;&quot;),
+        ]
+    )
+
+@panel.callback(
+    Input(&quot;run_button&quot;, &quot;clicked&quot;),
+    Output(&quot;loading_progress&quot;, &quot;hidden&quot;),
+    Output(&quot;result_text&quot;, &quot;text&quot;),
+)
+def run_calculation(ctx, clicked):
+    result = do_long_running_work()
+    return True, result
+</code></pre>
+<p>The progress component starts hidden. When the callback is invoked, chartlets
+sees that the callback outputs to <code>loading_progress.hidden</code> and shows the
+progress component while the backend request is pending. When the callback
+returns, the first return value is applied to <code>hidden</code>; returning <code>True</code> hides
+the progress component again.</p>
+<p>The progress output must remain part of the callback outputs. If it is removed,
+chartlets cannot know that this callback should show the progress component.</p>
 
 
 
@@ -808,7 +852,7 @@ ext.add(stats_panel)
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["toc.integrate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

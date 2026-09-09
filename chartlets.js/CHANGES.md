@@ -1,7 +1,7 @@
 ## Version 0.2.2 (in development)
 
 * Replaced `@vitejs/plugin-react-swc` with `@vitejs/plugin-react` and
-  updated Vite configs to use `import.meta.dirname`.
+  updated Vite configs to use `import.meta.dirname`. (#147)
 
 ## Version 0.2.1 (from 2026/08/11)
 

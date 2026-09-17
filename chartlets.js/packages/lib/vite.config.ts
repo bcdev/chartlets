@@ -5,16 +5,18 @@
  */
 
 import { defineConfig } from "vitest/config";
-import react from "@vitejs/plugin-react-swc";
+import react from "@vitejs/plugin-react";
 import dts from "vite-plugin-dts";
 import { resolve } from "node:path";
 import { globSync } from "glob";
 
 import manifest from "./package.json";
 
+const rootDir = import.meta.dirname;
+
 function findFiles(root: string, pattern: string): string[] {
-  return globSync(`${resolve(__dirname, root)}/${pattern}`).map((path) =>
-    resolve(__dirname, path),
+  return globSync(`${resolve(rootDir, root)}/${pattern}`).map((path) =>
+    resolve(rootDir, path),
   );
 }
 
@@ -35,7 +37,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@": resolve(__dirname, "src"),
+      "@": resolve(rootDir, "src"),
     },
   },
   publicDir: false,
@@ -43,9 +45,9 @@ export default defineConfig({
     sourcemap: true,
     lib: {
       entry: {
-        chartlets: resolve(__dirname, "src/index.ts"),
-        "mui-plugin": resolve(__dirname, "src/plugins/mui/index.ts"),
-        "vega-plugin": resolve(__dirname, "src/plugins/vega/index.ts"),
+        chartlets: resolve(rootDir, "src/index.ts"),
+        "mui-plugin": resolve(rootDir, "src/plugins/mui/index.ts"),
+        "vega-plugin": resolve(rootDir, "src/plugins/vega/index.ts"),
       },
       //formats: ["es"],
     },

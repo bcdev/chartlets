@@ -26,3 +26,6 @@ site
 *.sln
 *.sw?
 .idea/
+
+# Downloaded font assets
+docs/assets/fonts/*.ttf
